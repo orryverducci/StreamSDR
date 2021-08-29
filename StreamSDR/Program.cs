@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace StreamSDR
 {
@@ -22,6 +23,11 @@ namespace StreamSDR
         /// <returns>The host builder.</returns>
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(builder =>
+                {
+                    builder.ClearProviders()
+                           .AddProvider(new Logging.SpectreConsoleLoggerProvider());
+                })
                 .ConfigureServices((hostContext, services) =>
                 {
                 });
