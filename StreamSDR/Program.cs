@@ -2,6 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Spectre.Console;
 
 namespace StreamSDR
 {
@@ -14,7 +15,13 @@ namespace StreamSDR
         /// The entry point for the application.
         /// </summary>
         /// <param name="args">The command line arguments the application is launched with.</param>
-        public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
+        public static void Main(string[] args)
+        {
+            AnsiConsole.Render(new FigletText("StreamSDR").LeftAligned().Color(Color.DeepSkyBlue1));
+            AnsiConsole.WriteLine();
+
+            CreateHostBuilder(args).Build().Run();
+        }
 
         /// <summary>
         /// Creates the builder used to set up and launch application host.
