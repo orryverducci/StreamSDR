@@ -15,7 +15,7 @@ namespace StreamSDR.Logging
         private readonly string _categoryName;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="T:StreamSDR.Logging.SpectreConsoleLogger"/> class.
+        /// Initialises a new instance of the <see cref="SpectreConsoleLogger"/> class.
         /// </summary>
         /// <param name="categoryName">The name of the category the logger is for.</param>
         public SpectreConsoleLogger(string categoryName) => _categoryName = categoryName;

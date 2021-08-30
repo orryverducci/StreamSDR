@@ -22,7 +22,7 @@ namespace StreamSDR.Logging
         public ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, new SpectreConsoleLogger(categoryName));
 
         /// <summary>
-        /// Releases all resources used by the <see cref="T:StreamSDR.Logging.SpectreConsoleLoggerProvider"/> object.
+        /// Releases all resources used by the <see cref="SpectreConsoleLoggerProvider"/> object.
         /// </summary>
         public void Dispose() => _loggers.Clear();
     }
