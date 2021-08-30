@@ -20,30 +20,13 @@ namespace StreamSDR.Logging
         /// <param name="categoryName">The name of the category the logger is for.</param>
         public SpectreConsoleLogger(string categoryName) => _categoryName = categoryName;
 
-        /// <summary>
-        /// Sets the scope for the log. This has no effect for this logger.
-        /// </summary>
-        /// <typeparam name="TState">The type of object representing the scope.</typeparam>
-        /// <param name="state">The scope to be set.</param>
-        /// <returns>Always returns <see langword="null"/>.</returns>
+        /// <inheritdoc/>
         public IDisposable? BeginScope<TState>(TState state) => null;
 
-        /// <summary>
-        /// Returns if a logging is enabled for a log level. This always returns true.
-        /// </summary>
-        /// <param name="logLevel">The log level to check if enabled.</param>
-        /// <returns><see langword="true"/>, representing that the log level is enabled.</returns>
+        /// <inheritdoc/>
         public bool IsEnabled(LogLevel logLevel) => true;
 
-        /// <summary>
-        /// Logs a message to the console.
-        /// </summary>
-        /// <typeparam name="TState">The type of object representing the scope.</typeparam>
-        /// <param name="logLevel">The log level of the message.</param>
-        /// <param name="eventId">The event ID.</param>
-        /// <param name="state">The scope for the message.</param>
-        /// <param name="exception">The exception to be logged, if there is one.</param>
-        /// <param name="formatter">The formatter containing the message.</param>
+        /// <inheritdoc/>
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             string levelText = string.Empty;

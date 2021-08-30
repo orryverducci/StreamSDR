@@ -14,11 +14,7 @@ namespace StreamSDR.Logging
         /// </summary>
         private readonly ConcurrentDictionary<string, SpectreConsoleLogger> _loggers = new();
 
-        /// <summary>
-        /// Creates a logger for the given category.
-        /// </summary>
-        /// <param name="categoryName">The name of the category to create a logger for.</param>
-        /// <returns>The logger for the category.</returns>
+        /// <inheritdoc/>
         public ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, new SpectreConsoleLogger(categoryName));
 
         /// <summary>
