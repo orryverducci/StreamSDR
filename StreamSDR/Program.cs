@@ -38,6 +38,7 @@ namespace StreamSDR
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
+                    services.AddHostedService<Server.RtlTcpServer>();
                 });
     }
 }
