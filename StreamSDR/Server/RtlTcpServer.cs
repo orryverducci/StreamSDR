@@ -126,7 +126,7 @@ namespace StreamSDR.Server
                 }
                 catch (SocketException ex)
                 {
-                    if (ex.ErrorCode != (int)SocketError.Interrupted)
+                    if (ex.SocketErrorCode != SocketError.Interrupted)
                     {
                         _logger.LogError(ex, "The TCP listener encountered an error");
                     }
