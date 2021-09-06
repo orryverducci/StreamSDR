@@ -78,6 +78,9 @@ namespace StreamSDR.Server
                 Name = "ClientCommunicationThread"
             };
 
+            // Add the dongle information header to the buffer
+            SendDongleInfoHeader();
+
             // Start the client communication worker thread
             _communicationThread.Start();
         }
@@ -148,6 +151,38 @@ namespace StreamSDR.Server
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Send the dongle information header to the client.
+        /// </summary>
+        private void SendDongleInfoHeader()
+        {
+            // Create an array of 12 bytes representing the dongle information
+            byte[] header = new byte[12];
+
+            // Fill the first 4 bytes with 'RTL0'
+            header[0] = 82;
+            header[1] = 84;
+            header[2] = 76;
+            header[3] = 48;
+
+            // Fill the next 4 bytes with the tuner type (5 for R820T)
+            uint tunerType = 5;
+            header[4] = (byte)((tunerType & 0xF000) >> 24);
+            header[5] = (byte)((tunerType & 0x0F00) >> 16);
+            header[6] = (byte)((tunerType & 0xF0) >> 8);
+            header[7] = (byte)(tunerType & 0x0F);
+
+            // Fill the final 4 bytes with the number of gain levels
+            uint tunerGainCount = 0;
+            header[8] = (byte)((tunerGainCount & 0xF000) >> 24);
+            header[9] = (byte)((tunerGainCount & 0x0F00) >> 16);
+            header[10] = (byte)((tunerGainCount & 0xF0) >> 8);
+            header[11] = (byte)(tunerGainCount & 0x0F);
+
+            // Add the array of bytes to the buffer
+            _buffers.Add(header);
         }
 
         /// <summary>
