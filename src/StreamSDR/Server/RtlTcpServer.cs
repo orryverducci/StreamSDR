@@ -38,6 +38,11 @@ namespace StreamSDR.Server
         private readonly ILogger _logger;
 
         /// <summary>
+        /// The radio service.
+        /// </summary>
+        private readonly Radios.IRadio _radio;
+
+        /// <summary>
         /// Cancellation token used to signal when the server should stop.
         /// </summary>
         private readonly CancellationTokenSource _serverCancellationToken = new();
@@ -63,10 +68,14 @@ namespace StreamSDR.Server
         /// Initialises a new instance of the <see cref="RtlTcpServer"/> class.
         /// </summary>
         /// <param name="logger">The logger provided by the host.</param>
-        public RtlTcpServer(ILogger<RtlTcpServer> logger)
+        public RtlTcpServer(ILogger<RtlTcpServer> logger, Radios.IRadio radio)
         {
             // Store a reference to the logger
             _logger = logger;
+
+            // Store a reference to the radio service and handle the samples available event
+            _radio = radio;
+            radio.SamplesAvailable += RadioSamplesAvailable;
 
             // Create the TCP listener worker thread
             _listenerThread = new(ListenerWorker)
@@ -80,6 +89,9 @@ namespace StreamSDR.Server
         {
             // Log that the server is starting
             _logger.LogInformation("Starting TCP server on port 1234");
+
+            // Start the radio
+            _radio.Start();
 
             // Set up the TCP listener on port 1234
             _listener = new(IPAddress.Any, 1234);
@@ -113,6 +125,10 @@ namespace StreamSDR.Server
             {
                 await Task.Run(() => connection.Dispose());
             }
+
+            // Stop the radio
+            _radio.Stop();
+            _radio.Dispose();
 
             // Log and return that the server has stopped
             _logger.LogInformation("TCP server has stopped");
@@ -166,6 +182,21 @@ namespace StreamSDR.Server
 
                 // Log the disconnection
                 _logger.LogInformation($"Disconnected from {connection.ClientIP}");
+            }
+        }
+        #endregion
+
+        #region Radio methods
+        /// <summary>
+        /// Event handler for the reception of samples. Sends the buffer of samples to the connected clients.
+        /// </summary>
+        /// <param name="sender">The sending object.</param>
+        /// <param name="e">The received buffer of samples.</param>
+        private void RadioSamplesAvailable(object? sender, byte[] buffer)
+        {
+            foreach (RtlTcpConnection connection in _connections)
+            {
+                connection.SendData(buffer);
             }
         }
         #endregion

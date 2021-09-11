@@ -55,6 +55,7 @@ namespace StreamSDR
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
+                    services.AddSingleton<Radios.IRadio, Radios.RtlSdr.Radio>();
                     services.AddHostedService<Server.RtlTcpServer>();
                 });
     }
