@@ -61,6 +61,11 @@ namespace StreamSDR.Server
         /// A list of the current connections to clients.
         /// </summary>
         private readonly List<RtlTcpConnection> _connections = new();
+
+        /// <summary>
+        /// The object to lock on to when using the list of connections.
+        /// </summary>
+        private readonly object _connectionsLock = new();
         #endregion
 
         #region Constructor and lifetime methods
@@ -151,7 +156,10 @@ namespace StreamSDR.Server
                     // Create a new connection instance to handle communication to the client, and add it to the list of connections
                     RtlTcpConnection connection = new(client);
                     connection.Disconnected += ClientDisconnected;
-                    _connections.Add(connection);
+                    lock (_connectionsLock)
+                    {
+                        _connections.Add(connection);
+                    }
 
                     // Log the connection
                     _logger.LogInformation($"Connected to {connection.ClientIP}");
@@ -178,7 +186,10 @@ namespace StreamSDR.Server
             {
                 RtlTcpConnection connection = (RtlTcpConnection)sender;
                 _connections.Remove(connection);
-                connection.Dispose();
+                lock (_connectionsLock)
+                {
+                    connection.Dispose();
+                }
 
                 // Log the disconnection
                 _logger.LogInformation($"Disconnected from {connection.ClientIP}");
@@ -194,9 +205,12 @@ namespace StreamSDR.Server
         /// <param name="e">The received buffer of samples.</param>
         private void RadioSamplesAvailable(object? sender, byte[] buffer)
         {
-            foreach (RtlTcpConnection connection in _connections)
+            lock (_connectionsLock)
             {
-                connection.SendData(buffer);
+                foreach (RtlTcpConnection connection in _connections)
+                {
+                    connection.SendData(buffer);
+                }
             }
         }
         #endregion
