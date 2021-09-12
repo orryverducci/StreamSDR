@@ -9,4 +9,4 @@ What's the license?
 
 This software is distributed under the terms of the [GNU General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0.html). Full terms can be read in LICENSE.md included in the source code.
 
-*Logo: Router by logan from the Noun Project*
+<p align="center">*Logo: Router by logan from the Noun Project*</p>
