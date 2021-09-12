@@ -2,7 +2,7 @@
 
 StreamSDR is a free and open source server for SDR radios. It is compatible with [rtl_tcp](https://osmocom.org/projects/rtl-sdr/wiki).
 
-StreamSDR is developed by [Orry Verducci](http://www.orryverducci.co.uk/).
+StreamSDR is developed by [Orry Verducci](https://www.orryverducci.co.uk/).
 
 What's the license?
 -------------------
