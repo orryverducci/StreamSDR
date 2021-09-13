@@ -11,6 +11,7 @@ $ScriptDir = Split-Path $MyInvocation.MyCommand.Path -Parent
 
 # Check dotnet is installed
 if (!(Get-Command "dotnet" -ErrorAction SilentlyContinue))
+{
     Write-Error "dotnet is not installed or could not be found"
     exit 1
 }
