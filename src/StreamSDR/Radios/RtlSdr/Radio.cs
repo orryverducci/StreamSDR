@@ -62,6 +62,9 @@ namespace StreamSDR.Radios.RtlSdr
         #region Properties
         /// <inheritdoc/>
         public string Name { get; private set; } = string.Empty;
+
+        /// <inheritdoc/>
+        public uint SampleRate { get; } = 2048000;
         #endregion
 
         #region Events

@@ -30,6 +30,11 @@ namespace StreamSDR.Radios
         public string Name { get; }
 
         /// <summary>
+        /// The sample rate the device is operating at in Hertz.
+        /// </summary>
+        public uint SampleRate { get; }
+
+        /// <summary>
         /// Event fired when samples have been received from the device, provided as an array of bytes containing interleaved IQ samples.
         /// </summary>
         public event EventHandler<byte[]>? SamplesAvailable;
