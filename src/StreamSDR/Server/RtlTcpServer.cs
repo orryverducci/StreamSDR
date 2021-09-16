@@ -98,23 +98,33 @@ namespace StreamSDR.Server
             // Start the radio
             _radio.Start();
 
-            // Set up the TCP listener on port 1234
-            _listener = new(IPAddress.Any, 1234);
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                // Set up the TCP listener on port 1234
+                _listener = new(IPAddress.Any, 1234);
 
-            // Start the TCP listener
-            _listener.Start();
+                // Start the TCP listener
+                _listener.Start();
 
-            // Start the listener worker thread
-            _listenerThread.Start();
+                // Start the listener worker thread
+                _listenerThread.Start();
 
-            // Log and return that the server has started
-            _logger.LogInformation("TCP server is now running");
+                // Log and return that the server has started
+                _logger.LogInformation("TCP server is now running");
+            }
+
             return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            // Check that the listener had been started
+            if (_listener == null)
+            {
+                return;
+            }
+
             // Log that the server is stopping
             _logger.LogInformation("Stopping TCP server");
 
