@@ -144,6 +144,16 @@ namespace StreamSDR.Radios.RtlSdr
                 return;
             }
 
+            // Set the initial state
+            if (Interop.SetSampleRate(_device, SampleRate) > 0)
+            {
+                _logger.LogError($"Unable to set the sample rate to {SampleRate}");
+            }
+            if (Interop.SetCenterFreq(_device, (uint)Frequency) > 0)
+            {
+                _logger.LogError($"Unable to set the centre frequency to {Frequency}");
+            }
+
             // Start the receiver thread
             _receiverThread.Start();
 
