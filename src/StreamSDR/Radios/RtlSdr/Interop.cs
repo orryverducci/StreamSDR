@@ -104,6 +104,14 @@ namespace StreamSDR.Radios.RtlSdr
         public static extern int CancelAsync(IntPtr dev);
 
         /// <summary>
+        /// Resets the device sample buffer.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_reset_buffer")]
+        public static extern int ResetBuffer(IntPtr dev);
+
+        /// <summary>
         /// Set the sample rate for the device. Also selects the baseband filters according to the requested sample rate
         /// on tuners that provide this functionality.
         /// </summary>

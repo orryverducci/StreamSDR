@@ -193,7 +193,14 @@ namespace StreamSDR.Radios.RtlSdr
         /// <summary>
         /// Worker for the receiver thead. Starts the read functionality provided by the rtl-sdr library.
         /// </summary>
-        private void ReceiverWorker() => Interop.ReadAsync(_device, _readCallback, IntPtr.Zero, 0, 0);
+        private void ReceiverWorker()
+        {
+            // Reset the device sample buffer
+            Interop.ResetBuffer(_device);
+            
+            // Start reading samples
+            Interop.ReadAsync(_device, _readCallback, IntPtr.Zero, 0, 0);
+        }
 
         /// <summary>
         /// The callback method called by the rtl-sdr library to provide received samples.
