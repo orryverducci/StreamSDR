@@ -135,15 +135,15 @@ namespace StreamSDR.Server
             // Wait until the listener thread stops
             await Task.Run(() => _listenerThread.Join(), cancellationToken);
 
+            // Stop the radio
+            _radio.Stop();
+            _radio.Dispose();
+
             // Stop each of the running connections
             foreach (RtlTcpConnection connection in _connections)
             {
                 await Task.Run(() => connection.Dispose());
             }
-
-            // Stop the radio
-            _radio.Stop();
-            _radio.Dispose();
 
             // Log and return that the server has stopped
             _logger.LogInformation("TCP server has stopped");
