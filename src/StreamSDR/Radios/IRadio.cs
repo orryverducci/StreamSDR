@@ -35,6 +35,11 @@ namespace StreamSDR.Radios
         public uint SampleRate { get; }
 
         /// <summary>
+        /// The centre frequency the device is tuned to in Hertz.
+        /// </summary>
+        public ulong Frequency { get; }
+
+        /// <summary>
         /// Event fired when samples have been received from the device, provided as an array of bytes containing interleaved IQ samples.
         /// </summary>
         public event EventHandler<byte[]>? SamplesAvailable;

@@ -65,6 +65,9 @@ namespace StreamSDR.Radios.RtlSdr
 
         /// <inheritdoc/>
         public uint SampleRate { get; } = 2048000;
+
+        /// <inheritdoc/>
+        public ulong Frequency { get; } = 107000000;
         #endregion
 
         #region Events
