@@ -195,11 +195,11 @@ namespace StreamSDR.Server
             if (sender != null)
             {
                 RtlTcpConnection connection = (RtlTcpConnection)sender;
-                _connections.Remove(connection);
                 lock (_connectionsLock)
                 {
-                    connection.Dispose();
+                    _connections.Remove(connection);
                 }
+                connection.Dispose();
 
                 // Log the disconnection
                 _logger.LogInformation($"Disconnected from {connection.ClientIP}");
