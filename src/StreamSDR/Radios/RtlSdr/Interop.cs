@@ -122,6 +122,14 @@ namespace StreamSDR.Radios.RtlSdr
         public static extern int SetSampleRate(IntPtr dev, uint rate);
 
         /// <summary>
+        /// Gets the sample rate the device is operating at.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>The sample rate in Hertz.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_sample_rate")]
+        public static extern uint GetSampleRate(IntPtr dev);
+
+        /// <summary>
         /// Sets the centre frequency that the device is tuned in to.
         /// </summary>
         /// <param name="dev">The device handle.</param>
@@ -129,5 +137,13 @@ namespace StreamSDR.Radios.RtlSdr
         /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_center_freq")]
         public static extern int SetCenterFreq(IntPtr dev, uint freq);
+
+        /// <summary>
+        /// Gets the centre frequency that the device is tuned in to.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>The frequency in Hertz.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_center_freq")]
+        public static extern uint GetCenterFreq(IntPtr dev);
     }
 }
