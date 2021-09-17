@@ -125,40 +125,53 @@ namespace StreamSDR.Radios.RtlSdr
             // Log that the radio is starting
             _logger.LogInformation("Starting the rtl-sdr radio");
 
-            // Check if a rtl-sdr device is available
-            if (Interop.GetDeviceCount() < 1)
+            try
             {
-                _logger.LogCritical("No rtl-sdr devices could be found");
+                // Check if a rtl-sdr device is available
+                if (Interop.GetDeviceCount() < 1)
+                {
+                    _logger.LogCritical("No rtl-sdr devices could be found");
+                    _applicationLifetime.StopApplication();
+                    return;
+                }
+
+                // Get the device name
+                Name = Interop.GetDeviceName(0);
+
+                // Open the device
+                if (Interop.Open(out _device, 0) != 0)
+                {
+                    _logger.LogCritical("The rtl-sdr device could not be opened");
+                    _applicationLifetime.StopApplication();
+                    return;
+                }
+
+                // Set the initial state
+                if (Interop.SetCenterFreq(_device, (uint)Frequency) > 0)
+                {
+                    _logger.LogError($"Unable to set the centre frequency to {Frequency}");
+                }
+                if (Interop.SetSampleRate(_device, SampleRate) > 0)
+                {
+                    _logger.LogError($"Unable to set the sample rate to {SampleRate}");
+                }
+                 
+                // Start the receiver thread
+                _receiverThread.Start();
+
+                // Log that the radio has started
+                _logger.LogInformation($"Started the radio: {Name}");
+            }
+            catch (DllNotFoundException)
+            {
+                _logger.LogCritical("Unable to find the rtlsdr library");
                 _applicationLifetime.StopApplication();
-                return;
             }
-
-            // Get the device name
-            Name = Interop.GetDeviceName(0);
-
-            // Open the device
-            if (Interop.Open(out _device, 0) != 0)
+            catch (BadImageFormatException)
             {
-                _logger.LogCritical("The rtl-sdr device could not be opened");
+                _logger.LogCritical("The rtlsdr library or one of its dependencies has been built for the wrong system architecture");
                 _applicationLifetime.StopApplication();
-                return;
             }
-
-            // Set the initial state
-            if (Interop.SetCenterFreq(_device, (uint)Frequency) > 0)
-            {
-                _logger.LogError($"Unable to set the centre frequency to {Frequency}");
-            }
-            if (Interop.SetSampleRate(_device, SampleRate) > 0)
-            {
-                _logger.LogError($"Unable to set the sample rate to {SampleRate}");
-            }
-
-            // Start the receiver thread
-            _receiverThread.Start();
-
-            // Log that the radio has started
-            _logger.LogInformation($"Started the radio: {Name}");
         }
 
         /// <inheritdoc/>
