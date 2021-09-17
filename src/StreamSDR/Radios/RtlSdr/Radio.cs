@@ -62,6 +62,12 @@ namespace StreamSDR.Radios.RtlSdr
         #region Properties
         /// <inheritdoc/>
         public string Name { get; private set; } = string.Empty;
+
+        /// <inheritdoc/>
+        public uint SampleRate { get; } = 2048000;
+
+        /// <inheritdoc/>
+        public ulong Frequency { get; } = 107000000;
         #endregion
 
         #region Events
@@ -138,6 +144,16 @@ namespace StreamSDR.Radios.RtlSdr
                 return;
             }
 
+            // Set the initial state
+            if (Interop.SetCenterFreq(_device, (uint)Frequency) > 0)
+            {
+                _logger.LogError($"Unable to set the centre frequency to {Frequency}");
+            }
+            if (Interop.SetSampleRate(_device, SampleRate) > 0)
+            {
+                _logger.LogError($"Unable to set the sample rate to {SampleRate}");
+            }
+
             // Start the receiver thread
             _receiverThread.Start();
 
@@ -177,7 +193,14 @@ namespace StreamSDR.Radios.RtlSdr
         /// <summary>
         /// Worker for the receiver thead. Starts the read functionality provided by the rtl-sdr library.
         /// </summary>
-        private void ReceiverWorker() => Interop.ReadAsync(_device, _readCallback, IntPtr.Zero, 0, 0);
+        private void ReceiverWorker()
+        {
+            // Reset the device sample buffer
+            Interop.ResetBuffer(_device);
+            
+            // Start reading samples
+            Interop.ReadAsync(_device, _readCallback, IntPtr.Zero, 0, 0);
+        }
 
         /// <summary>
         /// The callback method called by the rtl-sdr library to provide received samples.

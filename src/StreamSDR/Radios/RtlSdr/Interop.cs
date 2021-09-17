@@ -102,5 +102,32 @@ namespace StreamSDR.Radios.RtlSdr
         /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_cancel_async")]
         public static extern int CancelAsync(IntPtr dev);
+
+        /// <summary>
+        /// Resets the device sample buffer.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_reset_buffer")]
+        public static extern int ResetBuffer(IntPtr dev);
+
+        /// <summary>
+        /// Set the sample rate for the device. Also selects the baseband filters according to the requested sample rate
+        /// on tuners that provide this functionality.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="rate">The desired sample rate in Hertz.</param>
+        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_sample_rate")]
+        public static extern int SetSampleRate(IntPtr dev, uint rate);
+
+        /// <summary>
+        /// Sets the centre frequency that the device is tuned in to.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="freq">The desired frequency in Hertz.</param>
+        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_center_freq")]
+        public static extern int SetCenterFreq(IntPtr dev, uint freq);
     }
 }
