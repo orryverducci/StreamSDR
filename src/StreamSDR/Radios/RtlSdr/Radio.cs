@@ -69,7 +69,11 @@ namespace StreamSDR.Radios.RtlSdr
             get => _device != IntPtr.Zero ? Interop.GetSampleRate(_device) : 0;
             set
             {
-                if (Interop.SetSampleRate(_device, value) > 0)
+                if (Interop.SetSampleRate(_device, value) == 0)
+                {
+                    _logger.LogInformation($"Setting the sample rate to {value}");
+                }
+                else
                 {
                     _logger.LogError($"Unable to set the sample rate to {value}");
                 }
@@ -82,7 +86,11 @@ namespace StreamSDR.Radios.RtlSdr
             get => _device != IntPtr.Zero ? Interop.GetCenterFreq(_device) : 0;
             set
             {
-                if (Interop.SetCenterFreq(_device, (uint)value) > 0)
+                if (Interop.SetCenterFreq(_device, (uint)value) == 0)
+                {
+                    _logger.LogInformation($"Setting the frequency to {value}");
+                }
+                else
                 {
                     _logger.LogError($"Unable to set the centre frequency to {value}");
                 }
