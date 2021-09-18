@@ -74,6 +74,11 @@ namespace StreamSDR.Server
 
         #region Events
         /// <summary>
+        /// Fired when the client sends a command to the server.
+        /// </summary>
+        public event EventHandler<RtlTcpCommand>? CommandReceived;
+
+        /// <summary>
         /// Fired when the client disconnects from the server.
         /// </summary>
         public event EventHandler? Disconnected;
@@ -159,6 +164,25 @@ namespace StreamSDR.Server
 
                     // Write the buffer to the network stream
                     _tcpClient.GetStream().Write(buffer, 0, buffer.Length);
+
+                    // Check if any commands have been received, and send them to the server
+                    while (_tcpClient.GetStream().DataAvailable)
+                    {
+                        Span<byte> commandData = new(new byte[5]);
+                        _tcpClient.GetStream().Read(commandData);
+
+                        // Split the data and convert the values from big endian (network order) to little endian if required
+                        RtlTcpCommand command = new();
+                        command.Type = (RtlTcpCommandType)commandData[0];
+                        Span<byte> valueSpan = commandData.Slice(1);
+                        if (BitConverter.IsLittleEndian)
+                        {
+                            valueSpan.Reverse();
+                        }
+                        command.Value = BitConverter.ToUInt32(valueSpan);
+
+                        CommandReceived?.Invoke(this, command);
+                    }
                 }
                 catch (Exception ex)
                 {

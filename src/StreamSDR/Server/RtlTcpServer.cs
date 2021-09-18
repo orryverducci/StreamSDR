@@ -165,6 +165,7 @@ namespace StreamSDR.Server
 
                     // Create a new connection instance to handle communication to the client, and add it to the list of connections
                     RtlTcpConnection connection = new(client);
+                    connection.CommandReceived += CommandReceived;
                     connection.Disconnected += ClientDisconnected;
                     lock (_connectionsLock)
                     {
@@ -182,6 +183,24 @@ namespace StreamSDR.Server
                         _logger.LogError(ex, "The TCP listener encountered an error");
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Event handler for commands received from clients.
+        /// </summary>
+        /// <param name="sender">The sending object.</param>
+        /// <param name="command">A command received as a tuple containing the command type and the value.</param>
+        private void CommandReceived(object? sender, RtlTcpCommand command)
+        {
+            switch (command.Type)
+            {
+                case RtlTcpCommandType.Tune:
+                    _radio.Frequency = command.Value;
+                    break; 
+                case RtlTcpCommandType.SampleRate:
+                    _radio.SampleRate = command.Value;
+                    break;
             }
         }
 
