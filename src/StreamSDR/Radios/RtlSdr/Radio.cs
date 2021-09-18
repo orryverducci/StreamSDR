@@ -236,7 +236,7 @@ namespace StreamSDR.Radios.RtlSdr
         {
             // Reset the device sample buffer
             Interop.ResetBuffer(_device);
-            
+
             // Start reading samples
             Interop.ReadAsync(_device, _readCallback, IntPtr.Zero, 0, 0);
         }

@@ -197,7 +197,7 @@ namespace StreamSDR.Server
             {
                 case RtlTcpCommandType.Tune:
                     _radio.Frequency = command.Value;
-                    break; 
+                    break;
                 case RtlTcpCommandType.SampleRate:
                     _radio.SampleRate = command.Value;
                     break;
