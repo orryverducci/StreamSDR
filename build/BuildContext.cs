@@ -16,8 +16,8 @@
  */
 
 using System;
-using Cake.Core;
 using Cake.Common;
+using Cake.Core;
 using Cake.Frosting;
 
 namespace StreamSDR.Build
