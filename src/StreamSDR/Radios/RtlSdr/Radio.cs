@@ -58,6 +58,11 @@ namespace StreamSDR.Radios.RtlSdr
         /// The callback used to process the samples that have been read.
         /// </summary>
         private readonly Interop.ReadDelegate _readCallback;
+
+        /// <summary>
+        /// The mode in which the radio's gain is operating.
+        /// </summary>
+        private GainMode _gainMode = GainMode.Automatic;
         #endregion
 
         #region Properties
@@ -98,6 +103,69 @@ namespace StreamSDR.Radios.RtlSdr
                 {
                     _logger.LogError($"Unable to set the centre frequency to {value.ToString("N0", numberFormat)} Hz");
                 }
+            }
+        }
+
+        /// <inheritdoc/>
+        public float Gain
+        {
+            get => _device != IntPtr.Zero ? Interop.GetTunerGain(_device) / 10f : 0f;
+            set
+            {
+                int gain = (int)MathF.Floor(value * 10);
+
+                if (Interop.SetTunerGain(_device, gain) == 0)
+                {
+                    _logger.LogInformation($"Setting the gain to {value} dB");
+                }
+                else
+                {
+                    _logger.LogError($"Unable to set the gain to {value} dB");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public GainMode GainMode
+        {
+            get => _gainMode;
+            set
+            {
+                int gainMode = value == GainMode.Manual ? 1 : 0;
+
+                if (Interop.SetTunerGainMode(_device, gainMode) == 0)
+                {
+                    _gainMode = value;
+                    _logger.LogInformation($"Setting the gain mode to {value}");
+                }
+                else
+                {
+                    _logger.LogError($"Unable to set the gain mode to {value}");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public float[] GainLevelsSupported
+        {
+            get
+            {
+                // Get the number of gains supported by the tuner
+                int numberOfGains = Interop.GetTunerGains(_device, null);
+
+                // If the number of gains is 0 or negative, return an error
+                if (numberOfGains < 1)
+                {
+                    _logger.LogError($"Unable to get the levels of gain supported by the tuner");
+                    return Array.Empty<float>();
+                }
+
+                // Get the supported gains
+                int[] gains = new int[numberOfGains];
+                Interop.GetTunerGains(_device, gains);
+
+                // Convert to floats and return
+                return Array.ConvertAll(gains, item => item / 10f);
             }
         }
         #endregion

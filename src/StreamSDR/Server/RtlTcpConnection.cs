@@ -89,7 +89,8 @@ namespace StreamSDR.Server
         /// Initialises a new instance of the <see cref="RtlTcpConnection"/> class.
         /// </summary>
         /// <param name="tcpClient">The <see cref="TcpClient"/> that is created when the connection is accepted.</param>
-        public RtlTcpConnection(TcpClient tcpClient)
+        /// <param name="tunerGainLevels">The number of levels of gain supported by the radio tuner.</param>
+        public RtlTcpConnection(TcpClient tcpClient, uint tunerGainLevels)
         {
             // Store a reference to the TCP client and its network stream
             _tcpClient = tcpClient;
@@ -101,7 +102,7 @@ namespace StreamSDR.Server
             };
 
             // Add the dongle information header to the buffer
-            SendDongleInfoHeader();
+            SendDongleInfoHeader(tunerGainLevels);
 
             // Start the client communication worker thread
             _communicationThread.Start();
@@ -197,7 +198,8 @@ namespace StreamSDR.Server
         /// <summary>
         /// Send the dongle information header to the client.
         /// </summary>
-        private void SendDongleInfoHeader()
+        /// <param name="tunerGainLevels">The number of levels of gain supported by the radio tuner.</param>
+        private void SendDongleInfoHeader(uint tunerGainLevels)
         {
             // Create an array of 12 bytes representing the dongle information
             byte[] header = new byte[12];
@@ -216,11 +218,10 @@ namespace StreamSDR.Server
             header[7] = (byte)(tunerType & 0x0F);
 
             // Fill the final 4 bytes with the number of gain levels
-            uint tunerGainCount = 0;
-            header[8] = (byte)((tunerGainCount & 0xF000) >> 24);
-            header[9] = (byte)((tunerGainCount & 0x0F00) >> 16);
-            header[10] = (byte)((tunerGainCount & 0xF0) >> 8);
-            header[11] = (byte)(tunerGainCount & 0x0F);
+            header[8] = (byte)((tunerGainLevels & 0xF000) >> 24);
+            header[9] = (byte)((tunerGainLevels & 0x0F00) >> 16);
+            header[10] = (byte)((tunerGainLevels & 0xF0) >> 8);
+            header[11] = (byte)(tunerGainLevels & 0x0F);
 
             // Add the array of bytes to the buffer
             _buffers.Add(header);

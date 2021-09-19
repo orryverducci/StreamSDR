@@ -40,6 +40,21 @@ namespace StreamSDR.Radios
         public ulong Frequency { get; set; }
 
         /// <summary>
+        /// The gain of the tuner in dB.
+        /// </summary>
+        public float Gain { get; set; }
+
+        /// <summary>
+        /// The mode in which the radio's gain is operating.
+        /// </summary>
+        public GainMode GainMode { get; set; }
+
+        /// <summary>
+        /// An array of the levels of gains that are supported by the tuner.
+        /// </summary>
+        public float[] GainLevelsSupported { get; }
+
+        /// <summary>
         /// Event fired when samples have been received from the device, provided as an array of bytes containing interleaved IQ samples.
         /// </summary>
         public event EventHandler<byte[]>? SamplesAvailable;

@@ -164,7 +164,7 @@ namespace StreamSDR.Server
                     TcpClient client = _listener!.AcceptTcpClient();
 
                     // Create a new connection instance to handle communication to the client, and add it to the list of connections
-                    RtlTcpConnection connection = new(client);
+                    RtlTcpConnection connection = new(client, (uint)_radio.GainLevelsSupported.Length);
                     connection.CommandReceived += CommandReceived;
                     connection.Disconnected += ClientDisconnected;
                     lock (_connectionsLock)
@@ -200,6 +200,19 @@ namespace StreamSDR.Server
                     break;
                 case RtlTcpCommandType.SampleRate:
                     _radio.SampleRate = command.Value;
+                    break;
+                case RtlTcpCommandType.GainMode:
+                    _radio.GainMode = command.Value == 1 ? Radios.GainMode.Manual : Radios.GainMode.Automatic;
+                    break;
+                case RtlTcpCommandType.TunerGain:
+                    _radio.Gain = unchecked((int)command.Value) / 10f;
+                    break;
+                case RtlTcpCommandType.TunerGainByIndex:
+                    float[] gains = _radio.GainLevelsSupported;
+                    if (command.Value < gains.Length)
+                    {
+                        _radio.Gain = gains[command.Value];
+                    }
                     break;
             }
         }

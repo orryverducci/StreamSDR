@@ -145,5 +145,40 @@ namespace StreamSDR.Radios.RtlSdr
         /// <returns>The frequency in Hertz.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_center_freq")]
         public static extern uint GetCenterFreq(IntPtr dev);
+
+        /// <summary>
+        /// Sets the gain of the tuner. Manual gain mode must be enabled for this to work.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="gain">The desired gain as a tenth of a dB (e.g. 115 for 11.5dB).</param>
+        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_tuner_gain")]
+        public static extern int SetTunerGain(IntPtr dev, int gain);
+
+        /// <summary>
+        /// Gets the gain of the tuner.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>The gain as a tenth of a dB (e.g. 115 for 11.5dB).</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_tuner_gain")]
+        public static extern int GetTunerGain(IntPtr dev);
+
+        /// <summary>
+        /// Sets the mode in which the radio's gain is operating. Manual gain must be enabled for <see cref="SetTunerGain"/> to work.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="manual">An integer representing the desired game mode. 0 for automatic or 1 for manual.</param>
+        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_tuner_gain_mode")]
+        public static extern int SetTunerGainMode(IntPtr dev, int manual);
+
+        /// <summary>
+        /// Gets the list of gains supported by the tuner.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="gains">An array to be populated with the list of gains, or <see langword="null"/> to just get the number of supported gains.</param>
+        /// <returns>The number of gains supported, or 0 if an error occured.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_tuner_gains")]
+        public static extern int GetTunerGains(IntPtr dev, int[]? gains);
     }
 }
