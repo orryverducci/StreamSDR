@@ -25,37 +25,37 @@ namespace StreamSDR.Radios
     internal interface IRadio : IDisposable
     {
         /// <summary>
-        /// The device name.
+        /// Gets the device name.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// The sample rate the device is operating at in Hertz.
+        /// Gets or sets the sample rate the device is operating at in Hertz.
         /// </summary>
         public uint SampleRate { get; set; }
 
         /// <summary>
-        /// The centre frequency the device is tuned to in Hertz.
+        /// Gets or sets the centre frequency the device is tuned to in Hertz.
         /// </summary>
         public ulong Frequency { get; set; }
 
         /// <summary>
-        /// The tuner frequency correction in parts per million (PPM).
+        /// Gets or sets the tuner frequency correction in parts per million (PPM).
         /// </summary>
         public int FrequencyCorrection { get; set; }
 
         /// <summary>
-        /// The gain of the tuner in dB.
+        /// Gets or sets the gain of the tuner in dB.
         /// </summary>
         public float Gain { get; set; }
 
         /// <summary>
-        /// The mode in which the radio's gain is operating.
+        /// Gets or sets the mode in which the radio's gain is operating.
         /// </summary>
         public GainMode GainMode { get; set; }
 
         /// <summary>
-        /// An array of the levels of gains that are supported by the tuner.
+        /// Gets an array of the levels of gains that are supported by the tuner.
         /// </summary>
         public float[] GainLevelsSupported { get; }
 
