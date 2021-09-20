@@ -71,7 +71,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// </summary>
         /// <param name="dev"><see cref="IntPtr"/> to output the device handle to.</param>
         /// <param name="index">The index of the device to open.</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_open")]
         public static extern int Open(out IntPtr dev, uint index);
 
@@ -79,7 +79,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// Closes a rtl-sdr device.
         /// </summary>
         /// <param name="dev">The device handle.</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_close")]
         public static extern int Close(IntPtr dev);
 
@@ -91,7 +91,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// <param name="ctx">A user specific context to pass to the callback function.</param>
         /// <param name="bufNum">The number of buffers to return in the callback function. Set to 0 for default buffer count (15).</param>
         /// <param name="bufLen">The buffer length. Must be a multiple of 512 and should be a multiple of 16384 (URB size). Set to 0 for default buffer count.</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_read_async")]
         public static extern int ReadAsync(IntPtr dev, ReadDelegate cb, IntPtr ctx, uint bufNum, uint bufLen);
 
@@ -99,7 +99,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// Cancel all pending asynchronous operations on the device.
         /// </summary>
         /// <param name="dev">The device handle.</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_cancel_async")]
         public static extern int CancelAsync(IntPtr dev);
 
@@ -107,7 +107,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// Resets the device sample buffer.
         /// </summary>
         /// <param name="dev">The device handle.</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_reset_buffer")]
         public static extern int ResetBuffer(IntPtr dev);
 
@@ -117,7 +117,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// </summary>
         /// <param name="dev">The device handle.</param>
         /// <param name="rate">The desired sample rate in Hertz.</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_sample_rate")]
         public static extern int SetSampleRate(IntPtr dev, uint rate);
 
@@ -134,7 +134,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// </summary>
         /// <param name="dev">The device handle.</param>
         /// <param name="freq">The desired frequency in Hertz.</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_center_freq")]
         public static extern int SetCenterFreq(IntPtr dev, uint freq);
 
@@ -151,7 +151,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// </summary>
         /// <param name="dev">The device handle.</param>
         /// <param name="ppm">The desired frequency correction in parts per million (PPM).</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_freq_correction")]
         public static extern int SetFreqCorrection(IntPtr dev, int ppm);
 
@@ -168,7 +168,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// </summary>
         /// <param name="dev">The device handle.</param>
         /// <param name="gain">The desired gain as a tenth of a dB (e.g. 115 for 11.5dB).</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_tuner_gain")]
         public static extern int SetTunerGain(IntPtr dev, int gain);
 
@@ -185,7 +185,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// </summary>
         /// <param name="dev">The device handle.</param>
         /// <param name="manual">An integer representing the desired game mode. 0 for automatic or 1 for manual.</param>
-        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_tuner_gain_mode")]
         public static extern int SetTunerGainMode(IntPtr dev, int manual);
 
@@ -194,7 +194,7 @@ namespace StreamSDR.Radios.RtlSdr
         /// </summary>
         /// <param name="dev">The device handle.</param>
         /// <param name="gains">An array to be populated with the list of gains, or <see langword="null"/> to just get the number of supported gains.</param>
-        /// <returns>The number of gains supported, or 0 if an error occured.</returns>
+        /// <returns>The number of gains supported, or 0 if an error occurred.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_tuner_gains")]
         public static extern int GetTunerGains(IntPtr dev, int[]? gains);
     }
