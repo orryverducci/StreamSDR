@@ -28,6 +28,18 @@ namespace StreamSDR.Radios.RtlSdr
     /// </summary>
     internal class Radio : IRadio
     {
+        #region Constants
+        /// <summary>
+        /// The default frequency (100 MHz)
+        /// </summary>
+        private const uint DefaultFrequency = 100000000;
+
+        /// <summary>
+        /// The default sample rate (2.048 MHz)
+        /// </summary>
+        private const uint DefaultSampleRate = 2048000;
+        #endregion
+
         #region Private fields
         /// <summary>
         /// <see langword="true"/> if Dispose() has been called, <see langword="false"/> otherwise.
@@ -297,8 +309,8 @@ namespace StreamSDR.Radios.RtlSdr
                 }
 
                 // Set the initial state
-                Frequency = 100000000;
-                SampleRate = 2048000;
+                Frequency = DefaultFrequency;
+                SampleRate = DefaultSampleRate;
 
                 // Start the receiver thread
                 _receiverThread.Start();
