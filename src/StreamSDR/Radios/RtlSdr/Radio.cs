@@ -75,7 +75,7 @@ namespace StreamSDR.Radios.RtlSdr
             get => _device != IntPtr.Zero ? Interop.GetSampleRate(_device) : 0;
             set
             {
-                if (Interop.SetSampleRate(_device, value) == 0)
+                if (_device != IntPtr.Zero && Interop.SetSampleRate(_device, value) == 0)
                 {
                     _logger.LogInformation($"Setting the sample rate to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz");
                 }
@@ -95,7 +95,7 @@ namespace StreamSDR.Radios.RtlSdr
                 NumberFormatInfo numberFormat = new NumberFormatInfo();
                 numberFormat.NumberGroupSeparator = ".";
 
-                if (Interop.SetCenterFreq(_device, (uint)value) == 0)
+                if (_device != IntPtr.Zero && Interop.SetCenterFreq(_device, (uint)value) == 0)
                 {
                     _logger.LogInformation($"Setting the frequency to {value.ToString("N0", numberFormat)} Hz");
                 }
@@ -112,7 +112,7 @@ namespace StreamSDR.Radios.RtlSdr
             get => _device != IntPtr.Zero ? Interop.GetFreqCorrection(_device) : 0;
             set
             {
-                if (Interop.SetFreqCorrection(_device, value) == 0)
+                if (_device != IntPtr.Zero && Interop.SetFreqCorrection(_device, value) == 0)
                 {
                     _logger.LogInformation($"Setting the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
                 }
@@ -131,7 +131,7 @@ namespace StreamSDR.Radios.RtlSdr
             {
                 int gain = (int)MathF.Floor(value * 10);
 
-                if (Interop.SetTunerGain(_device, gain) == 0)
+                if (_device != IntPtr.Zero && Interop.SetTunerGain(_device, gain) == 0)
                 {
                     _logger.LogInformation($"Setting the gain to {value} dB");
                 }
@@ -150,7 +150,7 @@ namespace StreamSDR.Radios.RtlSdr
             {
                 int gainMode = value == GainMode.Manual ? 1 : 0;
 
-                if (Interop.SetTunerGainMode(_device, gainMode) == 0)
+                if (_device != IntPtr.Zero && Interop.SetTunerGainMode(_device, gainMode) == 0)
                 {
                     _gainMode = value;
                     _logger.LogInformation($"Setting the gain mode to {value}");
@@ -167,6 +167,12 @@ namespace StreamSDR.Radios.RtlSdr
         {
             get
             {
+                if (_device == IntPtr.Zero)
+                {
+                    _logger.LogError($"Unable to get the levels of gain supported by the tuner");
+                    return Array.Empty<float>();
+                }
+
                 // Get the number of gains supported by the tuner
                 int numberOfGains = Interop.GetTunerGains(_device, null);
 
