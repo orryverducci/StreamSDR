@@ -196,6 +196,6 @@ namespace StreamSDR.Radios.RtlSdr
         /// <param name="gains">An array to be populated with the list of gains, or <see langword="null"/> to just get the number of supported gains.</param>
         /// <returns>The number of gains supported, or 0 if an error occurred.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_tuner_gains")]
-        public static extern int GetTunerGains(IntPtr dev, int[]? gains);
+        public static extern int GetTunerGains(IntPtr dev, [In, Out] int[]? gains);
     }
 }
