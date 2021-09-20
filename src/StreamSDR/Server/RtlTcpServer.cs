@@ -217,6 +217,9 @@ namespace StreamSDR.Server
                         _radio.Gain = gains[command.Value];
                     }
                     break;
+                default:
+                    _logger.LogWarning($"The rtp_tcp client has sent an unsupported command (command 0x{command.Type.ToString("X2")}, value {command.Value})");
+                    break;
             }
         }
 
