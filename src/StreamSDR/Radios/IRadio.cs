@@ -40,6 +40,11 @@ namespace StreamSDR.Radios
         public ulong Frequency { get; set; }
 
         /// <summary>
+        /// The tuner frequency correction in parts per million (PPM).
+        /// </summary>
+        public int FrequencyCorrection { get; set; }
+
+        /// <summary>
         /// The gain of the tuner in dB.
         /// </summary>
         public float Gain { get; set; }

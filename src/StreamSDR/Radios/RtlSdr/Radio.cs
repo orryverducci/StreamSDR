@@ -107,6 +107,23 @@ namespace StreamSDR.Radios.RtlSdr
         }
 
         /// <inheritdoc/>
+        public int FrequencyCorrection
+        {
+            get => _device != IntPtr.Zero ? Interop.GetFreqCorrection(_device) : 0;
+            set
+            {
+                if (Interop.SetFreqCorrection(_device, value) == 0)
+                {
+                    _logger.LogInformation($"Setting the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
+                }
+                else
+                {
+                    _logger.LogError($"Unable to set the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public float Gain
         {
             get => _device != IntPtr.Zero ? Interop.GetTunerGain(_device) / 10f : 0f;

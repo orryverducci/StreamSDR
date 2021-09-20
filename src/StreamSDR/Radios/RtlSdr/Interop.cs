@@ -147,6 +147,23 @@ namespace StreamSDR.Radios.RtlSdr
         public static extern uint GetCenterFreq(IntPtr dev);
 
         /// <summary>
+        /// Sets the tuner frequency correction.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="ppm">The desired frequency correction in parts per million (PPM).</param>
+        /// <returns>An integer indicating an error if one occured. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_freq_correction")]
+        public static extern int SetFreqCorrection(IntPtr dev, int ppm);
+
+        /// <summary>
+        /// Gets the the tuner frequency correction.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>The frequency correction in parts per million (PPM).</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_freq_correction")]
+        public static extern int GetFreqCorrection(IntPtr dev);
+
+        /// <summary>
         /// Sets the gain of the tuner. Manual gain mode must be enabled for this to work.
         /// </summary>
         /// <param name="dev">The device handle.</param>
