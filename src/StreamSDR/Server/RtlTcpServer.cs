@@ -210,6 +210,9 @@ namespace StreamSDR.Server
                 case RtlTcpCommandType.FrequencyCorrection:
                     _radio.FrequencyCorrection = unchecked((int)command.Value);
                     break;
+                case RtlTcpCommandType.GainCorrection:
+                    _radio.AutomaticGainCorrection = command.Value == 1 ? true : false;
+                    break;
                 case RtlTcpCommandType.TunerGainByIndex:
                     float[] gains = _radio.GainLevelsSupported;
                     if (command.Value < gains.Length)

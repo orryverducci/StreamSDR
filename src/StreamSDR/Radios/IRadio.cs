@@ -60,6 +60,11 @@ namespace StreamSDR.Radios
         public float[] GainLevelsSupported { get; }
 
         /// <summary>
+        /// Gets or sets if automatic gain correction is enabled.
+        /// </summary>
+        public bool AutomaticGainCorrection { get; set; }
+
+        /// <summary>
         /// Event fired when samples have been received from the device, provided as an array of bytes containing interleaved IQ samples.
         /// </summary>
         public event EventHandler<byte[]>? SamplesAvailable;

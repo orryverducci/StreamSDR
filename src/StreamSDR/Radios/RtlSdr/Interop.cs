@@ -197,5 +197,14 @@ namespace StreamSDR.Radios.RtlSdr
         /// <returns>The number of gains supported, or 0 if an error occurred.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_tuner_gains")]
         public static extern int GetTunerGains(IntPtr dev, [In, Out] int[]? gains);
+
+        /// <summary>
+        /// Sets if the digital automatic gain correction of the RTL2832 is enabled.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="on">An integer representing the the AGC shoudl be enabled. 0 to disable or 1 to enable.</param>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_agc_mode")]
+        public static extern int SetAGCMode(IntPtr dev, int on);
     }
 }

@@ -63,6 +63,11 @@ namespace StreamSDR.Radios.RtlSdr
         /// The mode in which the radio's gain is operating.
         /// </summary>
         private GainMode _gainMode = GainMode.Automatic;
+
+        /// <summary>
+        /// If the digital AGC of the RTL2832 is enabled.
+        /// </summary>
+        private bool _rtlAgc = false;
         #endregion
 
         #region Properties
@@ -189,6 +194,28 @@ namespace StreamSDR.Radios.RtlSdr
 
                 // Convert to floats and return
                 return Array.ConvertAll(gains, item => item / 10f);
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool AutomaticGainCorrection
+        {
+            get => _rtlAgc;
+            set
+            {
+                int rtlAgc = value == true ? 1 : 0;
+                string state = value == true ? "on" : "off";
+
+                if (_device != IntPtr.Zero && Interop.SetAGCMode(_device, rtlAgc) == 0)
+                {
+                    _rtlAgc = value;
+                    
+                    _logger.LogInformation($"Setting the RTL AGC to {state}");
+                }
+                else
+                {
+                    _logger.LogError($"Unable to set the RTL AGC to {state}");
+                }
             }
         }
         #endregion
