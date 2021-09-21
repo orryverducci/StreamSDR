@@ -50,6 +50,11 @@ namespace StreamSDR.Radios
         public bool OffsetTuning { get; set; }
 
         /// <summary>
+        /// Gets or sets the direct sampling mode.
+        /// </summary>
+        public DirectSamplingMode DirectSampling { get; set; }
+
+        /// <summary>
         /// Gets or sets the gain of the tuner in dB.
         /// </summary>
         public float Gain { get; set; }

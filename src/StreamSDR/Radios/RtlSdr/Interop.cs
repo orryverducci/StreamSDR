@@ -181,6 +181,23 @@ namespace StreamSDR.Radios.RtlSdr
         public static extern int GetOffsetTuning(IntPtr dev);
 
         /// <summary>
+        /// Sets the direct sampling mode.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="on">An integer representing the direct sampling mode. 0 to disable, 1 for I branch and 2 for Q branch.</param>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_direct_sampling")]
+        public static extern int SetDirectSampling(IntPtr dev, int on);
+
+        /// <summary>
+        /// Gets the direct sampling mode.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>An integer representing the direct sampling mode. Returns 0 if disabled, 1 for I branch, 2 for Q branch and -1 if an error occurs.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_direct_sampling")]
+        public static extern int GetDirectSampling(IntPtr dev);
+
+        /// <summary>
         /// Sets the gain of the tuner. Manual gain mode must be enabled for this to work.
         /// </summary>
         /// <param name="dev">The device handle.</param>

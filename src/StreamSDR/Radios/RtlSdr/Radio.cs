@@ -176,6 +176,63 @@ namespace StreamSDR.Radios.RtlSdr
         }
 
         /// <inheritdoc/>
+        public DirectSamplingMode DirectSamplingMode
+        {
+            get
+            {
+                if (_device != IntPtr.Zero)
+                {
+                    DirectSamplingMode mode;
+
+                    switch (Interop.GetDirectSampling(_device))
+                    {
+                        case 1:
+                            mode = DirectSamplingMode.IBranch;
+                            break;
+                        case 2:
+                            mode = DirectSamplingMode.QBranch;
+                            break;
+                        default:
+                            mode = DirectSamplingMode.Off;
+                            break;
+                    }
+
+                    return mode;
+                }
+                else
+                {
+                    return DirectSamplingMode.Off;
+                }
+            }
+            set
+            {
+                int directSampling;
+
+                switch (value)
+                {
+                    case DirectSamplingMode.IBranch:
+                        directSampling = 1;
+                        break;
+                    case DirectSamplingMode.QBranch:
+                        directSampling = 2;
+                        break;
+                    default:
+                        directSampling = 0;
+                        break;
+                }
+
+                if (_device != IntPtr.Zero && Interop.SetDirectSampling(_device, directSampling) == 0)
+                {
+                    _logger.LogInformation($"Setting direct sampling to {value}");
+                }
+                else
+                {
+                    _logger.LogError($"Unable to set direct sampling to {value}");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public float Gain
         {
             get => _device != IntPtr.Zero ? Interop.GetTunerGain(_device) / 10f : 0f;

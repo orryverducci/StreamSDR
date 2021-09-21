@@ -213,6 +213,20 @@ namespace StreamSDR.Server
                 case RtlTcpCommandType.GainCorrection:
                     _radio.AutomaticGainCorrection = command.Value == 1;
                     break;
+                case RtlTcpCommandType.DirectSampling:
+                    switch (command.Value)
+                    {
+                        case 1:
+                            _radio.DirectSampling = Radios.DirectSamplingMode.IBranch;
+                            break;
+                        case 2:
+                            _radio.DirectSampling = Radios.DirectSamplingMode.QBranch;
+                            break;
+                        default:
+                            _radio.DirectSampling = Radios.DirectSamplingMode.Off;
+                            break;
+                    }
+                    break;
                 case RtlTcpCommandType.OffsetTuning:
                     _radio.OffsetTuning = command.Value == 1;
                     break;
