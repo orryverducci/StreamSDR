@@ -164,6 +164,23 @@ namespace StreamSDR.Radios.RtlSdr
         public static extern int GetFreqCorrection(IntPtr dev);
 
         /// <summary>
+        /// Sets if offset tuning for zero IF devices has been enabled.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="on">An integer representing if offset tuning should be enabled. 0 to disable or 1 to enable.</param>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_offset_tuning")]
+        public static extern int SetOffsetTuning(IntPtr dev, int on);
+
+        /// <summary>
+        /// Gets if offset tuning for zero IF devices has been enabled.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>An integer representing if offset has been enabled. Returns 0 if disabled, 1 if enabled, and -1 if an error occurs.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_offset_tuning")]
+        public static extern int GetOffsetTuning(IntPtr dev);
+
+        /// <summary>
         /// Sets the gain of the tuner. Manual gain mode must be enabled for this to work.
         /// </summary>
         /// <param name="dev">The device handle.</param>

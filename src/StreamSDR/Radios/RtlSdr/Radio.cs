@@ -141,6 +141,36 @@ namespace StreamSDR.Radios.RtlSdr
         }
 
         /// <inheritdoc/>
+        public bool OffsetTuning
+        {
+            get
+            {
+                if (_device != IntPtr.Zero)
+                {
+                    return Interop.GetOffsetTuning(_device) == 1 ? true : false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            set
+            {
+                int offsetTuning = value == true ? 1 : 0;
+                string state = value == true ? "on" : "off";
+
+                if (_device != IntPtr.Zero && Interop.SetAGCMode(_device, offsetTuning) == 0)
+                {
+                    _logger.LogInformation($"Turning {state} offset tuning");
+                }
+                else
+                {
+                    _logger.LogError($"Unable to turn {state} offset tuning");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public float Gain
         {
             get => _device != IntPtr.Zero ? Interop.GetTunerGain(_device) / 10f : 0f;

@@ -45,6 +45,11 @@ namespace StreamSDR.Radios
         public int FrequencyCorrection { get; set; }
 
         /// <summary>
+        /// Gets or sets if offset tuning is enabled for zero IF tuners.
+        /// </summary>
+        public bool OffsetTuning { get; set; }
+
+        /// <summary>
         /// Gets or sets the gain of the tuner in dB.
         /// </summary>
         public float Gain { get; set; }
