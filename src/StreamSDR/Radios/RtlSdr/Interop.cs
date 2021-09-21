@@ -223,5 +223,14 @@ namespace StreamSDR.Radios.RtlSdr
         /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
         [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_agc_mode")]
         public static extern int SetAGCMode(IntPtr dev, int on);
+
+        /// <summary>
+        /// Sets if the bias tee (on GPIO pin 0) is enabled.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <param name="on">An integer representing if the bias tee should be enabled. 0 to disable or 1 to enable.</param>
+        /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_set_bias_tee")]
+        public static extern int SetBiasTee(IntPtr dev, int on);
     }
 }

@@ -80,6 +80,11 @@ namespace StreamSDR.Radios.RtlSdr
         /// If the digital AGC of the RTL2832 is enabled.
         /// </summary>
         private bool _rtlAgc = false;
+
+        /// <summary>
+        /// If the bias tee has been enabled.
+        /// </summary>
+        private bool _biasTee = false;
         #endregion
 
         #region Properties
@@ -257,6 +262,28 @@ namespace StreamSDR.Radios.RtlSdr
                 else
                 {
                     _logger.LogError($"Unable to set the RTL AGC to {state}");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool BiasTee
+        {
+            get => _biasTee;
+            set
+            {
+                int biasTee = value ? 1 : 0;
+                string state = value ? "on" : "off";
+
+                if (_device != IntPtr.Zero && Interop.SetBiasTee(_device, biasTee) == 0)
+                {
+                    _biasTee = value;
+
+                    _logger.LogInformation($"Turning {state} the bias tee");
+                }
+                else
+                {
+                    _logger.LogError($"Unable to turn {state} the bias tee");
                 }
             }
         }

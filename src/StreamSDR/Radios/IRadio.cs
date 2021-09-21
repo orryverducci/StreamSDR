@@ -70,6 +70,11 @@ namespace StreamSDR.Radios
         public bool AutomaticGainCorrection { get; set; }
 
         /// <summary>
+        /// Gets or sets if the bias tee has been enabled.
+        /// </summary>
+        public bool BiasTee { get; set; }
+
+        /// <summary>
         /// Event fired when samples have been received from the device, provided as an array of bytes containing interleaved IQ samples.
         /// </summary>
         public event EventHandler<byte[]>? SamplesAvailable;
