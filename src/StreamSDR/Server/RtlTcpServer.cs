@@ -211,10 +211,10 @@ namespace StreamSDR.Server
                     _radio.FrequencyCorrection = unchecked((int)command.Value);
                     break;
                 case RtlTcpCommandType.GainCorrection:
-                    _radio.AutomaticGainCorrection = command.Value == 1 ? true : false;
+                    _radio.AutomaticGainCorrection = command.Value == 1;
                     break;
                 case RtlTcpCommandType.OffsetTuning:
-                    _radio.OffsetTuning = command.Value == 1 ? true : false;
+                    _radio.OffsetTuning = command.Value == 1;
                     break;
                 case RtlTcpCommandType.TunerGainByIndex:
                     float[] gains = _radio.GainLevelsSupported;

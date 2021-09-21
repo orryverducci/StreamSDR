@@ -156,8 +156,8 @@ namespace StreamSDR.Radios.RtlSdr
             }
             set
             {
-                int offsetTuning = value == true ? 1 : 0;
-                string state = value == true ? "on" : "off";
+                int offsetTuning = value ? 1 : 0;
+                string state = value ? "on" : "off";
 
                 if (_device != IntPtr.Zero && Interop.SetAGCMode(_device, offsetTuning) == 0)
                 {
@@ -245,8 +245,8 @@ namespace StreamSDR.Radios.RtlSdr
             get => _rtlAgc;
             set
             {
-                int rtlAgc = value == true ? 1 : 0;
-                string state = value == true ? "on" : "off";
+                int rtlAgc = value ? 1 : 0;
+                string state = value ? "on" : "off";
 
                 if (_device != IntPtr.Zero && Interop.SetAGCMode(_device, rtlAgc) == 0)
                 {
