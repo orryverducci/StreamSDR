@@ -164,7 +164,7 @@ namespace StreamSDR.Radios.RtlSdr
                 int offsetTuning = value ? 1 : 0;
                 string state = value ? "on" : "off";
 
-                if (_device != IntPtr.Zero && Interop.SetAGCMode(_device, offsetTuning) == 0)
+                if (_device != IntPtr.Zero && Interop.SetOffsetTuning(_device, offsetTuning) == 0)
                 {
                     _logger.LogInformation($"Turning {state} offset tuning");
                 }
