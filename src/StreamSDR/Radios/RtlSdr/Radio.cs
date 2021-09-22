@@ -176,7 +176,7 @@ namespace StreamSDR.Radios.RtlSdr
         }
 
         /// <inheritdoc/>
-        public DirectSamplingMode DirectSamplingMode
+        public DirectSamplingMode DirectSampling
         {
             get
             {
