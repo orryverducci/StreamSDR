@@ -212,16 +212,22 @@ namespace StreamSDR.Server
 
             // Fill the next 4 bytes with the tuner type (5 for R820T)
             uint tunerType = 5;
-            header[4] = (byte)((tunerType & 0xF000) >> 24);
-            header[5] = (byte)((tunerType & 0x0F00) >> 16);
-            header[6] = (byte)((tunerType & 0xF0) >> 8);
-            header[7] = (byte)(tunerType & 0x0F);
+            header[4] = (byte)((tunerType & 0xFF000000) >> 24);
+            header[5] = (byte)((tunerType & 0xFF0000) >> 16);
+            header[6] = (byte)((tunerType & 0xFF00) >> 8);
+            header[7] = (byte)(tunerType & 0xFF);
 
             // Fill the final 4 bytes with the number of gain levels
-            header[8] = (byte)((tunerGainLevels & 0xF000) >> 24);
-            header[9] = (byte)((tunerGainLevels & 0x0F00) >> 16);
-            header[10] = (byte)((tunerGainLevels & 0xF0) >> 8);
-            header[11] = (byte)(tunerGainLevels & 0x0F);
+            header[8] = (byte)((tunerGainLevels & 0xFF000000) >> 24);
+            header[9] = (byte)((tunerGainLevels & 0xFF0000) >> 16);
+            header[10] = (byte)((tunerGainLevels & 0xFF00) >> 8);
+            header[11] = (byte)(tunerGainLevels & 0xFF);
+
+            // Reverse the value bytes
+            /*if (BitConverter.IsLittleEndian)
+            {
+                header.AsSpan().Slice(8, 4).Reverse();
+            }*/
 
             // Add the array of bytes to the buffer
             _buffers.Add(header);
