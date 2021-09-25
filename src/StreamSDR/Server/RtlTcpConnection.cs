@@ -223,12 +223,6 @@ namespace StreamSDR.Server
             header[10] = (byte)((tunerGainLevels & 0xFF00) >> 8);
             header[11] = (byte)(tunerGainLevels & 0xFF);
 
-            // Reverse the value bytes
-            /*if (BitConverter.IsLittleEndian)
-            {
-                header.AsSpan().Slice(8, 4).Reverse();
-            }*/
-
             // Add the array of bytes to the buffer
             _buffers.Add(header);
         }
