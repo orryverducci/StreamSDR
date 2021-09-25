@@ -78,6 +78,7 @@ namespace StreamSDR
                             goto case "rtlsdr";
                     }
 
+                    // Add the server service
                     services.AddHostedService<Server.RtlTcpServer>();
                 });
     }
