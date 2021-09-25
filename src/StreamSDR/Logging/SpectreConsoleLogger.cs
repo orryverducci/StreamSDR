@@ -41,11 +41,17 @@ namespace StreamSDR.Logging
         public IDisposable? BeginScope<TState>(TState state) => null;
 
         /// <inheritdoc/>
-        public bool IsEnabled(LogLevel logLevel) => true;
+        public bool IsEnabled(LogLevel logLevel) => logLevel != LogLevel.None;
 
         /// <inheritdoc/>
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
+            // Check if enabled
+            if (!IsEnabled(logLevel))
+            {
+                return;
+            }
+
             string levelText = string.Empty;
             string levelColour = string.Empty;
 
