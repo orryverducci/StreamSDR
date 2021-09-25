@@ -16,6 +16,7 @@
  */
 
 using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -55,7 +56,28 @@ namespace StreamSDR
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
-                    services.AddSingleton<Radios.IRadio, Radios.RtlSdr.Radio>();
+
+                    // Create a logger
+                    ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+                    {
+                        builder.AddProvider(new Logging.SpectreConsoleLoggerProvider());
+                    });
+                    ILogger logger = loggerFactory.CreateLogger(typeof(Program));
+
+                    // Get the configured radio type
+                    string? radioType = hostContext.Configuration.GetValue<string>("radio");
+
+                    // Add the service for the desired type of radio
+                    switch (radioType)
+                    {
+                        case "rtlsdr":
+                            services.AddSingleton<Radios.IRadio, Radios.RtlSdr.Radio>();
+                            break;
+                        default:
+                            logger.LogWarning("The type of radio has not been specified, assuming rtl-sdr");
+                            goto case "rtlsdr";
+                    }
+
                     services.AddHostedService<Server.RtlTcpServer>();
                 });
     }
