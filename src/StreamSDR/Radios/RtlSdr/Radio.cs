@@ -465,8 +465,12 @@ namespace StreamSDR.Radios.RtlSdr
                 }
 
                 // Set the initial state
+                BiasTee = false;
                 Frequency = DefaultFrequency;
                 SampleRate = DefaultSampleRate;
+                DirectSampling = DirectSamplingMode.Off;
+                AutomaticGainCorrection = false;
+                GainMode = GainMode.Automatic;
 
                 // Start the receiver thread
                 _receiverThread.Start();
