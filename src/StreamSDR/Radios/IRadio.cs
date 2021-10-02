@@ -30,6 +30,11 @@ namespace StreamSDR.Radios
         public string Name { get; }
 
         /// <summary>
+        /// Gets the type of tuner in the device.
+        /// </summary>
+        public TunerType Tuner { get; }
+
+        /// <summary>
         /// Gets or sets the sample rate the device is operating at in Hertz.
         /// </summary>
         public uint SampleRate { get; set; }

@@ -109,6 +109,38 @@ namespace StreamSDR.Radios.RtlSdr
         }
 
         /// <inheritdoc/>
+        public TunerType Tuner
+        {
+            get
+            {
+                if (_device != IntPtr.Zero)
+                {
+                    switch (Interop.GetTunerType(_device))
+                    {
+                        case RtlSdr.Tuner.E4000:
+                            return TunerType.E4000;
+                        case RtlSdr.Tuner.FC0012:
+                            return TunerType.FC0012;
+                        case RtlSdr.Tuner.FC0013:
+                            return TunerType.FC0013;
+                        case RtlSdr.Tuner.FC2580:
+                            return TunerType.FC2580;
+                        case RtlSdr.Tuner.R820T:
+                            return TunerType.R820T;
+                        case RtlSdr.Tuner.R828D:
+                            return TunerType.R828D;
+                        default:
+                            return TunerType.Unknown;
+                    }
+                }
+                else
+                {
+                    return TunerType.Unknown;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public ulong Frequency
         {
             get => _device != IntPtr.Zero ? Interop.GetCenterFreq(_device) : 0;

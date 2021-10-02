@@ -198,6 +198,14 @@ namespace StreamSDR.Radios.RtlSdr
         public static extern int GetDirectSampling(IntPtr dev);
 
         /// <summary>
+        /// Gets the type of tuner in the device.
+        /// </summary>
+        /// <param name="dev">The device handle.</param>
+        /// <returns>A <see cref="Tuner"/> struct indicating the type of tuner in the device. Returns <see cref="Tuner.Unknown"/> if an error occurs.</returns>
+        [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_tuner_type")]
+        public static extern Tuner GetTunerType(IntPtr dev);
+
+        /// <summary>
         /// Sets the gain of the tuner. Manual gain mode must be enabled for this to work.
         /// </summary>
         /// <param name="dev">The device handle.</param>

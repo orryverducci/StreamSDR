@@ -89,8 +89,9 @@ namespace StreamSDR.Server
         /// Initialises a new instance of the <see cref="RtlTcpConnection"/> class.
         /// </summary>
         /// <param name="tcpClient">The <see cref="TcpClient"/> that is created when the connection is accepted.</param>
+        /// <param name="tuner">The type of tuner in the radio.</param>
         /// <param name="tunerGainLevels">The number of levels of gain supported by the radio tuner.</param>
-        public RtlTcpConnection(TcpClient tcpClient, uint tunerGainLevels)
+        public RtlTcpConnection(TcpClient tcpClient, Radios.TunerType tuner, uint tunerGainLevels)
         {
             // Store a reference to the TCP client and its network stream
             _tcpClient = tcpClient;
@@ -102,7 +103,7 @@ namespace StreamSDR.Server
             };
 
             // Add the dongle information header to the buffer
-            SendDongleInfoHeader(tunerGainLevels);
+            SendDongleInfoHeader(tuner, tunerGainLevels);
 
             // Start the client communication worker thread
             _communicationThread.Start();
@@ -198,11 +199,39 @@ namespace StreamSDR.Server
         /// <summary>
         /// Send the dongle information header to the client.
         /// </summary>
+        /// <param name="tuner">The type of tuner in the radio.</param>
         /// <param name="tunerGainLevels">The number of levels of gain supported by the radio tuner.</param>
-        private void SendDongleInfoHeader(uint tunerGainLevels)
+        private void SendDongleInfoHeader(Radios.TunerType tuner, uint tunerGainLevels)
         {
             // Create an array of 12 bytes representing the dongle information
             byte[] header = new byte[12];
+
+            // Convert the tuner type to one of the rtl-sdr tuner values. If the tuner is not one found in an rtl-sdr, return R820T
+            uint tunerType;
+            switch (tuner)
+            {
+                case Radios.TunerType.Unknown:
+                    tunerType = 0;
+                    break;
+                case Radios.TunerType.E4000:
+                    tunerType = 1;
+                    break;
+                case Radios.TunerType.FC0012:
+                    tunerType = 2;
+                    break;
+                case Radios.TunerType.FC0013:
+                    tunerType = 3;
+                    break;
+                case Radios.TunerType.FC2580:
+                    tunerType = 4;
+                    break;
+                case Radios.TunerType.R828D:
+                    tunerType = 6;
+                    break;
+                default:
+                    tunerType = 5;
+                    break;
+            }
 
             // Fill the first 4 bytes with 'RTL0'
             header[0] = 82;
@@ -211,7 +240,6 @@ namespace StreamSDR.Server
             header[3] = 48;
 
             // Fill the next 4 bytes with the tuner type (5 for R820T)
-            uint tunerType = 5;
             header[4] = (byte)((tunerType & 0xFF000000) >> 24);
             header[5] = (byte)((tunerType & 0xFF0000) >> 16);
             header[6] = (byte)((tunerType & 0xFF00) >> 8);
