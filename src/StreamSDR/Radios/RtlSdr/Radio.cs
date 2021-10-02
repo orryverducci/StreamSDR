@@ -196,13 +196,23 @@ namespace StreamSDR.Radios.RtlSdr
                 int offsetTuning = value ? 1 : 0;
                 string state = value ? "on" : "off";
 
-                if (_device != IntPtr.Zero && Interop.SetOffsetTuning(_device, offsetTuning) == 0)
+                if (_device != IntPtr.Zero)
                 {
-                    _logger.LogInformation($"Turning {state} offset tuning");
-                }
-                else
-                {
-                    _logger.LogError($"Unable to turn {state} offset tuning");
+                    TunerType tunerType = Tuner;
+                    if (tunerType == TunerType.R820T || tunerType == TunerType.R828D)
+                    {
+                        _logger.LogError($"Unable to set offset tuning as it is not supported by this type of tuner");
+                        return;
+                    }
+
+                    if (Interop.SetOffsetTuning(_device, offsetTuning) == 0)
+                    {
+                        _logger.LogInformation($"Turning {state} offset tuning");
+                    }
+                    else
+                    {
+                        _logger.LogError($"Unable to turn {state} offset tuning");
+                    }
                 }
             }
         }
