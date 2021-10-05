@@ -220,22 +220,15 @@ namespace StreamSDR.Radios.RtlSdr
             {
                 if (_device != IntPtr.Zero)
                 {
-                    DirectSamplingMode mode;
-
                     switch (Interop.GetDirectSampling(_device))
                     {
                         case 1:
-                            mode = DirectSamplingMode.IBranch;
-                            break;
+                            return DirectSamplingMode.IBranch;
                         case 2:
-                            mode = DirectSamplingMode.QBranch;
-                            break;
+                            return DirectSamplingMode.QBranch;
                         default:
-                            mode = DirectSamplingMode.Off;
-                            break;
+                            return DirectSamplingMode.Off;
                     }
-
-                    return mode;
                 }
                 else
                 {
