@@ -97,13 +97,11 @@ namespace StreamSDR.Radios.RtlSdr
             get => _device != IntPtr.Zero ? Interop.GetSampleRate(_device) : 0;
             set
             {
-                if (_device != IntPtr.Zero && Interop.SetSampleRate(_device, value) == 0)
+                _logger.LogInformation($"Setting the sample rate to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz");
+
+                if (_device == IntPtr.Zero || Interop.SetSampleRate(_device, value) != 0)
                 {
-                    _logger.LogInformation($"Setting the sample rate to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz");
-                }
-                else
-                {
-                    _logger.LogError($"Unable to set the sample rate to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz");
+                    _logger.LogError("Unable to set the sample rate");
                 }
             }
         }
@@ -149,13 +147,11 @@ namespace StreamSDR.Radios.RtlSdr
                 NumberFormatInfo numberFormat = new NumberFormatInfo();
                 numberFormat.NumberGroupSeparator = ".";
 
-                if (_device != IntPtr.Zero && Interop.SetCenterFreq(_device, (uint)value) == 0)
+                _logger.LogInformation($"Setting the frequency to {value.ToString("N0", numberFormat)} Hz");
+
+                if (_device == IntPtr.Zero || Interop.SetCenterFreq(_device, (uint)value) != 0)
                 {
-                    _logger.LogInformation($"Setting the frequency to {value.ToString("N0", numberFormat)} Hz");
-                }
-                else
-                {
-                    _logger.LogError($"Unable to set the centre frequency to {value.ToString("N0", numberFormat)} Hz");
+                    _logger.LogError("Unable to set the centre frequency");
                 }
             }
         }
@@ -166,13 +162,11 @@ namespace StreamSDR.Radios.RtlSdr
             get => _device != IntPtr.Zero ? Interop.GetFreqCorrection(_device) : 0;
             set
             {
-                if (_device != IntPtr.Zero && Interop.SetFreqCorrection(_device, value) == 0)
+                _logger.LogInformation($"Setting the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
+
+                if (_device == IntPtr.Zero || Interop.SetFreqCorrection(_device, value) != 0)
                 {
-                    _logger.LogInformation($"Setting the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
-                }
-                else
-                {
-                    _logger.LogError($"Unable to set the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
+                    _logger.LogError("Unable to set the frequency correction");
                 }
             }
         }
@@ -196,6 +190,8 @@ namespace StreamSDR.Radios.RtlSdr
                 int offsetTuning = value ? 1 : 0;
                 string state = value ? "on" : "off";
 
+                _logger.LogInformation($"Turning {state} offset tuning");
+
                 if (_device != IntPtr.Zero)
                 {
                     TunerType tunerType = Tuner;
@@ -207,13 +203,12 @@ namespace StreamSDR.Radios.RtlSdr
 
                     if (Interop.SetOffsetTuning(_device, offsetTuning) == 0)
                     {
-                        _logger.LogInformation($"Turning {state} offset tuning");
-                    }
-                    else
-                    {
-                        _logger.LogError($"Unable to turn {state} offset tuning");
+                        return;
                     }
                 }
+
+                // If not returned yet, there is an error
+                _logger.LogError("Unable to set offset tuning");
             }
         }
 
@@ -248,6 +243,8 @@ namespace StreamSDR.Radios.RtlSdr
             }
             set
             {
+                _logger.LogInformation($"Setting direct sampling to {value}");
+
                 int directSampling;
 
                 switch (value)
@@ -263,13 +260,9 @@ namespace StreamSDR.Radios.RtlSdr
                         break;
                 }
 
-                if (_device != IntPtr.Zero && Interop.SetDirectSampling(_device, directSampling) == 0)
+                if (_device == IntPtr.Zero || Interop.SetDirectSampling(_device, directSampling) != 0)
                 {
-                    _logger.LogInformation($"Setting direct sampling to {value}");
-                }
-                else
-                {
-                    _logger.LogError($"Unable to set direct sampling to {value}");
+                    _logger.LogError("Unable to set the direct sampling mode");
                 }
             }
         }
@@ -280,15 +273,13 @@ namespace StreamSDR.Radios.RtlSdr
             get => _device != IntPtr.Zero ? Interop.GetTunerGain(_device) / 10f : 0f;
             set
             {
+                _logger.LogInformation($"Setting the gain to {value} dB");
+
                 int gain = (int)MathF.Floor(value * 10);
 
-                if (_device != IntPtr.Zero && Interop.SetTunerGain(_device, gain) == 0)
+                if (_device == IntPtr.Zero || Interop.SetTunerGain(_device, gain) != 0)
                 {
-                    _logger.LogInformation($"Setting the gain to {value} dB");
-                }
-                else
-                {
-                    _logger.LogError($"Unable to set the gain to {value} dB");
+                    _logger.LogError("Unable to set the gain");
                 }
             }
         }
@@ -299,33 +290,32 @@ namespace StreamSDR.Radios.RtlSdr
             get => _gainMode;
             set
             {
+                _logger.LogInformation($"Setting the gain mode to {value}");
+
                 int gainMode = value == GainMode.Manual ? 1 : 0;
 
-                if (_device != IntPtr.Zero && Interop.SetTunerGainMode(_device, gainMode) == 0)
+                if (_device == IntPtr.Zero || Interop.SetTunerGainMode(_device, gainMode) != 0)
                 {
-                    _gainMode = value;
-                    _logger.LogInformation($"Setting the gain mode to {value}");
+                    _logger.LogError("Unable to set the gain mode");
+                    return;
                 }
-                else
-                {
-                    _logger.LogError($"Unable to set the gain mode to {value}");
-                }
+
+                _gainMode = value;
             }
         }
 
         /// <inheritdoc/>
-        public float[] GainLevelsSupported
+        public float[] GainLevelsSupported  //problem
         {
             get
             {
-                if (_device == IntPtr.Zero)
-                {
-                    _logger.LogError($"Unable to get the levels of gain supported by the tuner");
-                    return Array.Empty<float>();
-                }
+                int numberOfGains = 0;
 
-                // Get the number of gains supported by the tuner
-                int numberOfGains = Interop.GetTunerGains(_device, null);
+                // Get the number of gains supported by the tuner, if a device is available
+                if (_device != IntPtr.Zero)
+                {
+                    numberOfGains = Interop.GetTunerGains(_device, null);
+                }
 
                 // If the number of gains is 0 or negative, return an error
                 if (numberOfGains < 1)
@@ -352,16 +342,15 @@ namespace StreamSDR.Radios.RtlSdr
                 int rtlAgc = value ? 1 : 0;
                 string state = value ? "on" : "off";
 
-                if (_device != IntPtr.Zero && Interop.SetAGCMode(_device, rtlAgc) == 0)
+                _logger.LogInformation($"Setting the RTL AGC to {state}");
+
+                if (_device == IntPtr.Zero || Interop.SetAGCMode(_device, rtlAgc) != 0)
                 {
-                    _rtlAgc = value;
-                    
-                    _logger.LogInformation($"Setting the RTL AGC to {state}");
+                    _logger.LogError("Unable to set the RTL AGC");
+                    return;
                 }
-                else
-                {
-                    _logger.LogError($"Unable to set the RTL AGC to {state}");
-                }
+
+                _rtlAgc = value;
             }
         }
 
@@ -374,16 +363,14 @@ namespace StreamSDR.Radios.RtlSdr
                 int biasTee = value ? 1 : 0;
                 string state = value ? "on" : "off";
 
-                if (_device != IntPtr.Zero && Interop.SetBiasTee(_device, biasTee) == 0)
-                {
-                    _biasTee = value;
+                _logger.LogInformation($"Turning {state} the bias tee");
 
-                    _logger.LogInformation($"Turning {state} the bias tee");
-                }
-                else
+                if (_device == IntPtr.Zero || Interop.SetBiasTee(_device, biasTee) != 0)
                 {
-                    _logger.LogError($"Unable to turn {state} the bias tee");
+                    _logger.LogError("Unable to set bias tee");
                 }
+
+                _biasTee = value;
             }
         }
         #endregion
