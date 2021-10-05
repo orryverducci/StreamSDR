@@ -144,9 +144,10 @@ namespace StreamSDR.Radios.RtlSdr
             get => _device != IntPtr.Zero ? Interop.GetCenterFreq(_device) : 0;
             set
             {
-                NumberFormatInfo numberFormat = new NumberFormatInfo();
-                numberFormat.NumberGroupSeparator = ".";
-
+                NumberFormatInfo numberFormat = new NumberFormatInfo
+                {
+                    NumberGroupSeparator = "."
+                };
                 _logger.LogInformation($"Setting the frequency to {value.ToString("N0", numberFormat)} Hz");
 
                 if (_device == IntPtr.Zero || Interop.SetCenterFreq(_device, (uint)value) != 0)
