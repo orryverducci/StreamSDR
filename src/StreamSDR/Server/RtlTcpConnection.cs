@@ -207,31 +207,16 @@ namespace StreamSDR.Server
             byte[] header = new byte[12];
 
             // Convert the tuner type to one of the rtl-sdr tuner values. If the tuner is not one found in an rtl-sdr, return R820T
-            uint tunerType;
-            switch (tuner)
+            uint tunerType = tuner switch
             {
-                case Radios.TunerType.Unknown:
-                    tunerType = 0;
-                    break;
-                case Radios.TunerType.E4000:
-                    tunerType = 1;
-                    break;
-                case Radios.TunerType.FC0012:
-                    tunerType = 2;
-                    break;
-                case Radios.TunerType.FC0013:
-                    tunerType = 3;
-                    break;
-                case Radios.TunerType.FC2580:
-                    tunerType = 4;
-                    break;
-                case Radios.TunerType.R828D:
-                    tunerType = 6;
-                    break;
-                default:
-                    tunerType = 5;
-                    break;
-            }
+                Radios.TunerType.Unknown => 0,
+                Radios.TunerType.E4000 => 1,
+                Radios.TunerType.FC0012 => 2,
+                Radios.TunerType.FC0013 => 3,
+                Radios.TunerType.FC2580 => 4,
+                Radios.TunerType.R828D => 6,
+                _ => 5
+            };
 
             // Fill the first 4 bytes with 'RTL0'
             header[0] = 82;

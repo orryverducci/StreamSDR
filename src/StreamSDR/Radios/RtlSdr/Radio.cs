@@ -113,23 +113,16 @@ namespace StreamSDR.Radios.RtlSdr
             {
                 if (_device != IntPtr.Zero)
                 {
-                    switch (Interop.GetTunerType(_device))
+                    return Interop.GetTunerType(_device) switch
                     {
-                        case RtlSdr.Tuner.E4000:
-                            return TunerType.E4000;
-                        case RtlSdr.Tuner.FC0012:
-                            return TunerType.FC0012;
-                        case RtlSdr.Tuner.FC0013:
-                            return TunerType.FC0013;
-                        case RtlSdr.Tuner.FC2580:
-                            return TunerType.FC2580;
-                        case RtlSdr.Tuner.R820T:
-                            return TunerType.R820T;
-                        case RtlSdr.Tuner.R828D:
-                            return TunerType.R828D;
-                        default:
-                            return TunerType.Unknown;
-                    }
+                        RtlSdr.Tuner.E4000 => TunerType.E4000,
+                        RtlSdr.Tuner.FC0012 => TunerType.FC0012,
+                        RtlSdr.Tuner.FC0013 => TunerType.FC0013,
+                        RtlSdr.Tuner.FC2580 => TunerType.FC2580,
+                        RtlSdr.Tuner.R820T => TunerType.R820T,
+                        RtlSdr.Tuner.R828D => TunerType.R828D,
+                        _ => TunerType.Unknown
+                    };
                 }
                 else
                 {
@@ -220,15 +213,12 @@ namespace StreamSDR.Radios.RtlSdr
             {
                 if (_device != IntPtr.Zero)
                 {
-                    switch (Interop.GetDirectSampling(_device))
+                    return Interop.GetDirectSampling(_device) switch
                     {
-                        case 1:
-                            return DirectSamplingMode.IBranch;
-                        case 2:
-                            return DirectSamplingMode.QBranch;
-                        default:
-                            return DirectSamplingMode.Off;
-                    }
+                        1 => DirectSamplingMode.IBranch,
+                        2 => DirectSamplingMode.QBranch,
+                        _ => DirectSamplingMode.Off,
+                    };
                 }
                 else
                 {
@@ -239,20 +229,12 @@ namespace StreamSDR.Radios.RtlSdr
             {
                 _logger.LogInformation($"Setting direct sampling to {value}");
 
-                int directSampling;
-
-                switch (value)
+                int directSampling = value switch
                 {
-                    case DirectSamplingMode.IBranch:
-                        directSampling = 1;
-                        break;
-                    case DirectSamplingMode.QBranch:
-                        directSampling = 2;
-                        break;
-                    default:
-                        directSampling = 0;
-                        break;
-                }
+                    DirectSamplingMode.IBranch => 1,
+                    DirectSamplingMode.QBranch => 2,
+                    _ => 0,
+                };
 
                 if (_device == IntPtr.Zero || Interop.SetDirectSampling(_device, directSampling) != 0)
                 {
