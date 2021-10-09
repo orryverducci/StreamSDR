@@ -35,7 +35,7 @@ namespace StreamSDR
         /// <param name="args">The command line arguments the application is launched with.</param>
         public static void Main(string[] args)
         {
-            AnsiConsole.Render(new FigletText("StreamSDR").LeftAligned().Color(Color.DeepSkyBlue1));
+            AnsiConsole.Write(new FigletText("StreamSDR").LeftAligned().Color(Color.DeepSkyBlue1));
             AnsiConsole.WriteLine();
 
             CreateHostBuilder(args).Build().Run();

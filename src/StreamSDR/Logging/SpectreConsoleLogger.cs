@@ -102,7 +102,7 @@ namespace StreamSDR.Logging
             }
 
             // Render the outer table to the console
-            AnsiConsole.Render(table);
+            AnsiConsole.Write(table);
         }
     }
 }
