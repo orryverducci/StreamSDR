@@ -281,7 +281,7 @@ namespace StreamSDR.Radios.RtlSdr
         }
 
         /// <inheritdoc/>
-        public float[] GainLevelsSupported  //problem
+        public float[] GainLevelsSupported
         {
             get
             {
