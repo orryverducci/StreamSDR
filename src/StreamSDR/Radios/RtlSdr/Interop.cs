@@ -33,9 +33,9 @@ namespace StreamSDR.Radios.RtlSdr
         /// <summary>
         /// Delegate for the callback function called by the <see cref="ReadAsync"/> method.
         /// </summary>
-        /// <param name="buf"></param>
-        /// <param name="len"></param>
-        /// <param name="ctx"></param>
+        /// <param name="buf">The buffer containing the read data.</param>
+        /// <param name="len">The length of the buffer.</param>
+        /// <param name="ctx">The user specific context passed to the callback.</param>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public unsafe delegate void ReadDelegate(byte* buf, uint len, IntPtr ctx);
 
