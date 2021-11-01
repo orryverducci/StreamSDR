@@ -48,21 +48,34 @@ namespace StreamSDR
         /// <returns>The host builder.</returns>
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(builder =>
+                .ConfigureLogging((hostContext, builder) =>
                 {
+                    // Determine if debug mode should be enabled
+                    bool debug = hostContext.HostingEnvironment.IsDevelopment() || hostContext.Configuration.GetValue<bool>("debug");
+
+                    // Build the logger
                     builder.ClearProviders()
-                           .AddProvider(new Logging.SpectreConsoleLoggerProvider());
+                           .AddProvider(new Logging.SpectreConsoleLoggerProvider(debug))
+                           .SetMinimumLevel(debug ? LogLevel.Debug : LogLevel.Information);
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
+                    // Determine if debug mode should be enabled
+                    bool debug = hostContext.HostingEnvironment.IsDevelopment() || hostContext.Configuration.GetValue<bool>("debug");
+
+                    // Suppress the status messages logged by the console lifetime if not in debug mode
+                    if (!debug)
+                    {
+                        services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
+                    }
 
                     // Create a logger
                     ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
                     {
-                        builder.AddProvider(new Logging.SpectreConsoleLoggerProvider());
+                        builder.AddProvider(new Logging.SpectreConsoleLoggerProvider(debug));
                     });
                     ILogger logger = loggerFactory.CreateLogger(typeof(Program));
+                    logger.LogDebug("Test");
 
                     // Get the configured radio type
                     string? radioType = hostContext.Configuration.GetValue<string>("radio");

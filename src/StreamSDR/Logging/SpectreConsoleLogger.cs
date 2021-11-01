@@ -32,10 +32,19 @@ namespace StreamSDR.Logging
         private readonly string _categoryName;
 
         /// <summary>
+        /// If debug mode is enabled.
+        /// </summary>
+        private readonly bool _debug;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="SpectreConsoleLogger"/> class.
         /// </summary>
         /// <param name="categoryName">The name of the category the logger is for.</param>
-        public SpectreConsoleLogger(string categoryName) => _categoryName = categoryName;
+        public SpectreConsoleLogger(string categoryName, bool debug)
+        {
+            _categoryName = categoryName;
+            _debug = debug;
+        }
 
         /// <inheritdoc/>
         public IDisposable? BeginScope<TState>(TState state) => null;
@@ -93,8 +102,15 @@ namespace StreamSDR.Logging
                  .AddColumn("Message");
 
             // Add the rows to the table containing the information
-            table.AddRow($"[grey]{DateTime.Now.ToString("HH:mm:ss zzz")}[/]", $"[[[bold {levelColour}]{levelText.PadRight(5)}[/]]]", $"[bold]{_categoryName}:[/]");
-            table.AddRow(string.Empty, string.Empty, formatter(state, exception));
+            if (_debug)
+            {
+                table.AddRow($"[grey]{DateTime.Now.ToString("HH:mm:ss zzz")}[/]", $"[[[bold {levelColour}]{levelText.PadRight(5)}[/]]]", $"[bold]{_categoryName}:[/]");
+                table.AddRow(string.Empty, string.Empty, formatter(state, exception));
+            }
+            else
+            {
+                table.AddRow($"[grey]{DateTime.Now.ToString("HH:mm:ss zzz")}[/]", $"[[[bold {levelColour}]{levelText.PadRight(5)}[/]]]", formatter(state, exception));
+            }
             if (exception != null)
             {
                 ExceptionFormats exceptionFormat = ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes | ExceptionFormats.ShortenMethods;

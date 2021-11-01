@@ -27,12 +27,23 @@ namespace StreamSDR.Logging
     public class SpectreConsoleLoggerProvider : ILoggerProvider
     {
         /// <summary>
+        /// If debug mode is enabled.
+        /// </summary>
+        private readonly bool _debug;
+
+        /// <summary>
         /// The directory of loggers for each category.
         /// </summary>
         private readonly ConcurrentDictionary<string, SpectreConsoleLogger> _loggers = new();
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SpectreConsoleLoggerProvider"/> class.
+        /// </summary>
+        /// <param name="debug">If debug mode is enabled.</param>
+        public SpectreConsoleLoggerProvider(bool debug) => _debug = debug;
+
         /// <inheritdoc/>
-        public ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, new SpectreConsoleLogger(categoryName));
+        public ILogger CreateLogger(string categoryName) => _loggers.GetOrAdd(categoryName, new SpectreConsoleLogger(categoryName, _debug));
 
         /// <summary>
         /// Releases all resources used by the <see cref="SpectreConsoleLoggerProvider"/> object.
