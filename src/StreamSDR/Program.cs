@@ -75,7 +75,6 @@ namespace StreamSDR
                         builder.AddProvider(new Logging.SpectreConsoleLoggerProvider(debug));
                     });
                     ILogger logger = loggerFactory.CreateLogger(typeof(Program));
-                    logger.LogDebug("Test");
 
                     // Get the configured radio type
                     string? radioType = hostContext.Configuration.GetValue<string>("radio");
