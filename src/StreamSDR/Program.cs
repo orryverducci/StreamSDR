@@ -30,6 +30,11 @@ namespace StreamSDR
     public class Program
     {
         /// <summary>
+        /// If the application is in debug mode.
+        /// </summary>
+        public static bool DebugMode { get; private set; }
+
+        /// <summary>
         /// The entry point for the application.
         /// </summary>
         /// <param name="args">The command line arguments the application is launched with.</param>
@@ -51,20 +56,17 @@ namespace StreamSDR
                 .ConfigureLogging((hostContext, builder) =>
                 {
                     // Determine if debug mode should be enabled
-                    bool debug = hostContext.HostingEnvironment.IsDevelopment() || hostContext.Configuration.GetValue<bool>("debug");
+                    DebugMode = hostContext.HostingEnvironment.IsDevelopment() || hostContext.Configuration.GetValue<bool>("debug");
 
                     // Build the logger
                     builder.ClearProviders()
-                           .AddProvider(new Logging.SpectreConsoleLoggerProvider(debug))
-                           .SetMinimumLevel(debug ? LogLevel.Debug : LogLevel.Information);
+                           .AddProvider(new Logging.SpectreConsoleLoggerProvider())
+                           .SetMinimumLevel(DebugMode ? LogLevel.Debug : LogLevel.Information);
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    // Determine if debug mode should be enabled
-                    bool debug = hostContext.HostingEnvironment.IsDevelopment() || hostContext.Configuration.GetValue<bool>("debug");
-
                     // Suppress the status messages logged by the console lifetime if not in debug mode
-                    if (!debug)
+                    if (!DebugMode)
                     {
                         services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
                     }
@@ -72,7 +74,7 @@ namespace StreamSDR
                     // Create a logger
                     ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
                     {
-                        builder.AddProvider(new Logging.SpectreConsoleLoggerProvider(debug));
+                        builder.AddProvider(new Logging.SpectreConsoleLoggerProvider());
                     });
                     ILogger logger = loggerFactory.CreateLogger(typeof(Program));
 

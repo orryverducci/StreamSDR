@@ -32,18 +32,12 @@ namespace StreamSDR.Logging
         private readonly string _categoryName;
 
         /// <summary>
-        /// If debug mode is enabled.
-        /// </summary>
-        private readonly bool _debug;
-
-        /// <summary>
         /// Initialises a new instance of the <see cref="SpectreConsoleLogger"/> class.
         /// </summary>
         /// <param name="categoryName">The name of the category the logger is for.</param>
-        public SpectreConsoleLogger(string categoryName, bool debug)
+        public SpectreConsoleLogger(string categoryName)
         {
             _categoryName = categoryName;
-            _debug = debug;
         }
 
         /// <inheritdoc/>
@@ -102,7 +96,7 @@ namespace StreamSDR.Logging
                  .AddColumn("Message");
 
             // Add the rows to the table containing the information
-            if (_debug)
+            if (Program.DebugMode)
             {
                 table.AddRow($"[grey]{DateTime.Now.ToString("HH:mm:ss zzz")}[/]", $"[[[bold {levelColour}]{levelText.PadRight(5)}[/]]]", $"[bold]{_categoryName}:[/]");
                 table.AddRow(string.Empty, string.Empty, formatter(state, exception));
