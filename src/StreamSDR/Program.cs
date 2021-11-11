@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,6 +42,8 @@ namespace StreamSDR
         public static void Main(string[] args)
         {
             AnsiConsole.Write(new FigletText("StreamSDR").LeftAligned().Color(Color.DeepSkyBlue1));
+            string version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unavailable";
+            AnsiConsole.Write(new Rule($"[DeepSkyBlue1]Version {version}[/]").LeftAligned());
             AnsiConsole.WriteLine();
 
             CreateHostBuilder(args).Build().Run();
@@ -86,6 +89,9 @@ namespace StreamSDR
                     {
                         case "rtlsdr":
                             services.AddSingleton<Radios.IRadio, Radios.RtlSdr.Radio>();
+                            break;
+                        case "sdrplay":
+                            services.AddSingleton<Radios.IRadio, Radios.SdrPlay.Radio>();
                             break;
                         default:
                             logger.LogWarning("The type of radio has not been specified, assuming rtl-sdr");
