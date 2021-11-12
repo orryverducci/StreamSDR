@@ -358,7 +358,7 @@ namespace StreamSDR.Radios.RtlSdr
 
         #region Constructor, finaliser and lifecycle methods
         /// <summary>
-        /// Initialises a new instance of the <see cref="RtlSdrRadio"/> class.
+        /// Initialises a new instance of the <see cref="Radio"/> class.
         /// </summary>
         public unsafe Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime)
         {
