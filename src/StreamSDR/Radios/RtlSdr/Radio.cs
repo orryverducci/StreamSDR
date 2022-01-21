@@ -431,6 +431,7 @@ namespace StreamSDR.Radios.RtlSdr
                 Frequency = DefaultFrequency;
                 SampleRate = DefaultSampleRate;
                 DirectSampling = DirectSamplingMode.Off;
+                Gain = 0;
                 AutomaticGainCorrection = false;
                 GainMode = GainMode.Automatic;
 
