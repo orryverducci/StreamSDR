@@ -72,6 +72,11 @@ namespace StreamSDR.Radios.RtlSdr
         private readonly Interop.ReadDelegate _readCallback;
 
         /// <summary>
+        /// An array of the gain values in dB supported by the tuner.
+        /// </summary>
+        private int[] _gains = Array.Empty<int>();
+
+        /// <summary>
         /// The mode in which the radio's gain is operating.
         /// </summary>
         private GainMode _gainMode = GainMode.Automatic;
@@ -244,16 +249,24 @@ namespace StreamSDR.Radios.RtlSdr
         }
 
         /// <inheritdoc/>
-        public float Gain
+        public uint Gain
         {
-            get => _device != IntPtr.Zero ? Interop.GetTunerGain(_device) / 10f : 0f;
+            get
+            {
+                if (_device != IntPtr.Zero)
+                {
+                    return 0;
+                }
+
+                int i = Array.IndexOf<int>(_gains, Interop.GetTunerGain(_device));
+
+                return i >= 0 ? (uint)i : 0;
+            }
             set
             {
-                _logger.LogInformation($"Setting the gain to {value} dB");
+                _logger.LogInformation($"Setting the gain to level {value}");
 
-                int gain = (int)MathF.Floor(value * 10);
-
-                if (_device == IntPtr.Zero || Interop.SetTunerGain(_device, gain) != 0)
+                if (_device == IntPtr.Zero || value > _gains.Length || Interop.SetTunerGain(_device, _gains[value]) != 0)
                 {
                     _logger.LogError("Unable to set the gain");
                 }
@@ -281,33 +294,7 @@ namespace StreamSDR.Radios.RtlSdr
         }
 
         /// <inheritdoc/>
-        public float[] GainLevelsSupported
-        {
-            get
-            {
-                int numberOfGains = 0;
-
-                // Get the number of gains supported by the tuner, if a device is available
-                if (_device != IntPtr.Zero)
-                {
-                    numberOfGains = Interop.GetTunerGains(_device, null);
-                }
-
-                // If the number of gains is 0 or negative, return an error
-                if (numberOfGains < 1)
-                {
-                    _logger.LogError($"Unable to get the levels of gain supported by the tuner");
-                    return Array.Empty<float>();
-                }
-
-                // Get the supported gains
-                int[] gains = new int[numberOfGains];
-                Interop.GetTunerGains(_device, gains);
-
-                // Convert to floats and return
-                return Array.ConvertAll(gains, item => item / 10f);
-            }
-        }
+        public uint GainLevelsSupported => (uint)_gains.Length;
 
         /// <inheritdoc/>
         public bool AutomaticGainCorrection
@@ -425,6 +412,18 @@ namespace StreamSDR.Radios.RtlSdr
                     _logger.LogCritical("The rtl-sdr device could not be opened");
                     _applicationLifetime.StopApplication();
                     return;
+                }
+
+                // Get the gain values supported by the tuner
+                int numberOfGains = Interop.GetTunerGains(_device, null);
+                int[] gains = new int[numberOfGains];
+                if (Interop.GetTunerGains(_device, gains) == 0)
+                {
+                    _gains = gains;
+                }
+                else
+                {
+                    _logger.LogError("Unable to get the gain values supported by the tuner");
                 }
 
                 // Set the initial state

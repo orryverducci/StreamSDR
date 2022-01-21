@@ -60,9 +60,9 @@ namespace StreamSDR.Radios
         public DirectSamplingMode DirectSampling { get; set; }
 
         /// <summary>
-        /// Gets or sets the gain of the tuner in dB.
+        /// Gets or sets the current level of gain of the tuner.
         /// </summary>
-        public float Gain { get; set; }
+        public uint Gain { get; set; }
 
         /// <summary>
         /// Gets or sets the mode in which the radio's gain is operating.
@@ -70,9 +70,9 @@ namespace StreamSDR.Radios
         public GainMode GainMode { get; set; }
 
         /// <summary>
-        /// Gets an array of the levels of gains that are supported by the tuner.
+        /// Gets the number of levels of gains that are supported by the tuner.
         /// </summary>
-        public float[] GainLevelsSupported { get; }
+        public uint GainLevelsSupported { get; }
 
         /// <summary>
         /// Gets or sets if automatic gain correction is enabled.
