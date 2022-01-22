@@ -417,7 +417,7 @@ namespace StreamSDR.Radios.RtlSdr
                 // Get the gain values supported by the tuner
                 int numberOfGains = Interop.GetTunerGains(_device, null);
                 int[] gains = new int[numberOfGains];
-                if (Interop.GetTunerGains(_device, gains) == 0)
+                if (Interop.GetTunerGains(_device, gains) != 0)
                 {
                     _gains = gains;
                 }
