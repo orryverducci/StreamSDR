@@ -266,7 +266,7 @@ namespace StreamSDR.Radios.RtlSdr
             {
                 _logger.LogInformation($"Setting the gain to level {value}");
 
-                if (_device == IntPtr.Zero || value > _gains.Length || Interop.SetTunerGain(_device, _gains[value]) != 0)
+                if (_device == IntPtr.Zero || value >= _gains.Length || Interop.SetTunerGain(_device, _gains[value]) != 0)
                 {
                     _logger.LogError("Unable to set the gain");
                 }
