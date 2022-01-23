@@ -17,20 +17,14 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The available ports for AM reception.
     /// </summary>
-    internal enum TunerType
+    public enum Rsp2AmPortSelect
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        AmPort2 = 0,
+        AmPort1 = 1
     }
 }

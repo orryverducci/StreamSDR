@@ -16,21 +16,19 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for a power overload event.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PowerOverloadCbParam
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The type of power overload event that has occurred.
+        /// </summary>
+        public PowerOverloadCbEventId PowerOverloadChangeType;
     }
 }

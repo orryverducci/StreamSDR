@@ -17,20 +17,17 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The event received from the SDRPlay API.
     /// </summary>
-    internal enum TunerType
+    internal enum Event
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        GainChange = 0,
+        PowerOverloadChange = 1,
+        DeviceRemoved = 2,
+        RspDuoModeChange = 3
     }
 }
+

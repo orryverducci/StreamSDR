@@ -17,20 +17,22 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The tuner bandwidths that are available.
     /// </summary>
-    internal enum TunerType
+    public enum BwMhz
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        Undefined = 0,
+        Bw200 = 200,
+        Bw300 = 300,
+        Bw600 = 600,
+        Bw1536 = 1536,
+        Bw5000 = 5000,
+        Bw6000 = 6000,
+        Bw7000 = 7000,
+        Bw8000 = 8000
     }
 }
+

@@ -16,21 +16,24 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for the stream callback.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct StreamCbParams
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        public uint FirstSampleNum;
+
+        public int GrChanged;
+
+        public int RfChanged;
+
+        public int FsChanged;
+
+        public uint NumSamples;
     }
 }

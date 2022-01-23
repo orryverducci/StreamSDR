@@ -16,21 +16,27 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for decimation on a SDRPlay tuner.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Decimation
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The state of decimation. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
+        /// </summary>
+        [MarshalAs(UnmanagedType.U8)]
+        public bool Enable;
+
+        /// <summary>
+        /// The decimation factor. Defaults to 1.
+        /// </summary>
+        public byte DecimationFactor;
+
+        public byte WideBandSignal;
     }
 }

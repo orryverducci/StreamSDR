@@ -16,21 +16,19 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for a SDRPlay RSPdx tuner.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RspDxTunerParams
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The bandwidth HDR mode is active in.
+        /// </summary>
+        public RspDxHdrModeBw HdrBw;
     }
 }

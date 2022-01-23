@@ -16,21 +16,34 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for the control of a SDRPlay tuner.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ControlParams
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The DC offset options.
+        /// </summary>
+        public DcOffset DcOffset;
+
+        /// <summary>
+        /// The tuner decimation options.
+        /// </summary>
+        public Decimation Decimation;
+
+        /// <summary>
+        /// The tuner automatic gain control options.
+        /// </summary>
+        public Agc Agc;
+
+        /// <summary>
+        /// The mode used for ADS-B reception. Defaults to <see cref="AdsbMode.AdsbDecimation"/>
+        /// </summary>
+        public AdsbMode AdsbMode;
     }
 }

@@ -17,20 +17,16 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The available bandwidths for HDR mode.
     /// </summary>
-    internal enum TunerType
+    public enum RspDxHdrModeBw
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        HdrModeBw200 = 0,
+        HdrModeBw500 = 1,
+        HdrModeBw1200 = 2,
+        HdrModeBw1700 = 3
     }
 }

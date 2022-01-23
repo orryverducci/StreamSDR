@@ -17,20 +17,18 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The version of the SDRPlay device hardware.
     /// </summary>
-    internal enum TunerType
+    public enum HardwareVersion : byte
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        Rsp1 = 1,
+        Rsp2 = 2,
+        RspDuo = 3,
+        RspDx = 4,
+        Rsp1A = 255
     }
 }
+

@@ -16,21 +16,20 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for a SDRPlay RSP1a tuner.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Rsp1aTunerParams
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The state of the Bias T. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
+        /// </summary>
+        [MarshalAs(UnmanagedType.U8)]
+        public bool BiasTEnable;
     }
 }

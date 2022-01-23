@@ -17,20 +17,16 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The available ADS-B reception modes.
     /// </summary>
-    internal enum TunerType
+    public enum AdsbMode
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        AdsbDecimation = 0,
+        AdsbNoDecimationLowpass = 1,
+        AdsbNoDecimationBandpass2Mhz = 2,
+        AdsbNoDecimationBandpass3Mhz = 3
     }
 }

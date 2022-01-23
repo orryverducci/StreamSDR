@@ -16,21 +16,26 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for the sampling rate of a SDRPlay device.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct FsFreq
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The sample rate the device is operating at in Hertz. Defaults to 2 MHz.
+        /// </summary>
+        public double FsHz;
+
+        [MarshalAs(UnmanagedType.U8)]
+        public bool SyncUpdate;
+
+        [MarshalAs(UnmanagedType.U8)]
+        public bool ReCal;
     }
 }
+

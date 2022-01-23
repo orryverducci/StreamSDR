@@ -16,21 +16,29 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for a gain change event.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct GainCbParam
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The current RF gain reduction.
+        /// </summary>
+        public uint GRDb;
+
+        /// <summary>
+        /// The current LNA gain reduction.
+        /// </summary>
+        public uint LnaGRDb;
+
+        /// <summary>
+        /// The current system gain.
+        /// </summary>
+        public double CurrGain;
     }
 }

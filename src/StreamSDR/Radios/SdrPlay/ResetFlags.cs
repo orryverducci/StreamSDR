@@ -16,21 +16,23 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The device reset flags.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ResetFlags
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        [MarshalAs(UnmanagedType.U8)]
+        public bool ResetGainUpdate;
+
+        [MarshalAs(UnmanagedType.U8)]
+        public bool ResetRfUpdate;
+
+        [MarshalAs(UnmanagedType.U8)]
+        public bool ResetFsUpdate;
     }
 }

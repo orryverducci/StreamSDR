@@ -17,20 +17,14 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The available antennas.
     /// </summary>
-    internal enum TunerType
+    public enum Rsp2AntennaSelect
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        AntennaA = 5,
+        AntennaB = 6
     }
 }

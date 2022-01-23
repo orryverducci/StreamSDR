@@ -16,21 +16,32 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for an event that has occurred.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Explicit)]
+    public struct EventParams
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The gain change event parameters.
+        /// </summary>
+        [FieldOffset(0)]
+        public GainCbParam GainParams;
+
+        /// <summary>
+        /// The power overload event parameters.
+        /// </summary>
+        [FieldOffset(0)]
+        public PowerOverloadCbParam PowerOverloadParams;
+
+        /// <summary>
+        /// The RSPduo mode change parameters.
+        /// </summary>
+        [FieldOffset(0)]
+        public RspDuoModeCbParam RspDuoModeParams;
     }
 }

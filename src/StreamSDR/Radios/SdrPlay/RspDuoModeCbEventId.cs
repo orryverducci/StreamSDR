@@ -17,20 +17,19 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The mode change on an RSPduo.
     /// </summary>
-    internal enum TunerType
+    public enum RspDuoModeCbEventId
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        MasterInitialised = 0,
+        SlaveAttached = 1,
+        SlaveDetached = 2,
+        SlaveInitialised = 3,
+        SlaveUninitialised = 4,
+        MasterDllDisappeared = 5,
+        SlaveDllDisappeared = 6
     }
 }

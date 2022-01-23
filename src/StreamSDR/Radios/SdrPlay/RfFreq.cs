@@ -16,21 +16,22 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for a SDRPlay tuner RF frequency.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RfFreq
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The tuner RF centre frequency in Hertz. Defaults to 200000000.0 Hz (200 MHz).
+        /// </summary>
+        public double RfHz;
+
+        [MarshalAs(UnmanagedType.U8)]
+        public bool SyncUpdate;
     }
 }

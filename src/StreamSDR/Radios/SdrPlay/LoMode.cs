@@ -17,20 +17,17 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The available local oscillator frequencies.
     /// </summary>
-    internal enum TunerType
+    public enum LoMode
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        LoUndefined = 0,
+        LoAuto = 1,
+        Lo120Mhz = 2,
+        Lo144Mhz = 3,
+        Lo168Mhz = 4
     }
 }

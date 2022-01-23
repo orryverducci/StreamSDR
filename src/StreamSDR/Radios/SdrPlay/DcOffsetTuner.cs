@@ -16,21 +16,26 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for a SDRPlay tuner DC calibration.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DcOffsetTuner
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The DC calibration mode. Defaults to 3 (periodic mode).
+        /// </summary>
+        public byte DcCal;
+
+        [MarshalAs(UnmanagedType.U8)]
+        public bool SpeedUp;
+
+        public int TrackTime;
+
+        public int RefreshRateTime;
     }
 }

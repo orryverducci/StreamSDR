@@ -17,20 +17,19 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The reason for a device parameters update.
     /// </summary>
-    internal enum TunerType
+    internal enum ReasonForUpdateExtension1 : uint
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        Ext1_None = 0x00000000,
+        RspDx_HdrEnable = 0x00000001,
+        RspDx_BiasTControl = 0x00000002,
+        RspDx_AntennaControl = 0x00000004,
+        RspDx_RfNotchControl = 0x00000008,
+        RspDx_RfDabNotchControl = 0x00000010,
+        RspDx_HdrBw = 0x00000020
     }
 }

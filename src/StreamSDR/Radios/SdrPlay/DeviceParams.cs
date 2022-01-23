@@ -16,21 +16,29 @@
  */
 
 using System;
+using System.Runtime.InteropServices;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The parameters for a SDRPlay device and its tuners.
     /// </summary>
-    internal enum TunerType
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct DeviceParams
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        /// <summary>
+        /// The parameters for the device.
+        /// </summary>
+        public DevParams* DevParams;
+
+        /// <summary>
+        /// The parameters for the first tuner.
+        /// </summary>
+        public RxChannelParams* RxChannelA;
+
+        /// <summary>
+        /// The parameters for the second tuner on RSPduo devices.
+        /// </summary>
+        public RxChannelParams* RxChannelB;
     }
 }

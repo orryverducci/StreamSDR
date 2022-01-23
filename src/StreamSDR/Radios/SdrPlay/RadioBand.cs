@@ -17,20 +17,19 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The RF radio bands used to determine the gain to be applied.
     /// </summary>
-    internal enum TunerType
+    public enum RadioBand
     {
         Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        AM,
+        VHF,
+        III,
+        UHFLower,
+        UHFUpper,
+        L
     }
 }

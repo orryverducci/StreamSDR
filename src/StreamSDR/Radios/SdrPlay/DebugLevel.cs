@@ -17,20 +17,18 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The SDRPlay API debug level.
     /// </summary>
-    internal enum TunerType
+    public enum DebugLevel
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        Disable = 0,
+        Verbose = 1,
+        Warning = 2,
+        Error = 3,
+        Message = 4
     }
 }
+

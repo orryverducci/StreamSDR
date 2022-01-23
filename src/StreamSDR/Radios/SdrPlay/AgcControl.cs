@@ -17,20 +17,17 @@
 
 using System;
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios.SdrPlay
 {
     /// <summary>
-    /// Represents the type of tuner in the device.
+    /// The available AGC control schemes.
     /// </summary>
-    internal enum TunerType
+    public enum AgcControl
     {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
+        AgcDisable = 0,
+        Agc100HZ = 1,
+        Agc50HZ = 2,
+        Agc5HZ = 3,
+        AgcCtrlEn = 4
     }
 }
