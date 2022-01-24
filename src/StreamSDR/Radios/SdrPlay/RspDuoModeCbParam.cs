@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a RSPduo mode change event.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct RspDuoModeCbParam
 {
     /// <summary>
-    /// The parameters for a RSPduo mode change event.
+    /// The mode change on an RSPduo.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RspDuoModeCbParam
-    {
-        /// <summary>
-        /// The mode change on an RSPduo.
-        /// </summary>
-        public RspDuoModeCbEventId ModeChangeType;
-    }
+    public RspDuoModeCbEventId ModeChangeType;
 }

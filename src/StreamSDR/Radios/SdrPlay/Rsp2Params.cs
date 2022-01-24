@@ -15,18 +15,17 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a RSP2 device.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct Rsp2Params
 {
     /// <summary>
-    /// The parameters for a RSP2 device.
+    /// The state of the external reference output. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Rsp2Params
-    {
-        /// <summary>
-        /// The state of the external reference output. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool ExtRefOutputEn;
-    }
+    [MarshalAs(UnmanagedType.U8)]
+    public bool ExtRefOutputEn;
 }

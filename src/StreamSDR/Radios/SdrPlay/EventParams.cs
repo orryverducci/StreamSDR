@@ -15,30 +15,29 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for an event that has occurred.
+/// </summary>
+[StructLayout(LayoutKind.Explicit)]
+public struct EventParams
 {
     /// <summary>
-    /// The parameters for an event that has occurred.
+    /// The gain change event parameters.
     /// </summary>
-    [StructLayout(LayoutKind.Explicit)]
-    public struct EventParams
-    {
-        /// <summary>
-        /// The gain change event parameters.
-        /// </summary>
-        [FieldOffset(0)]
-        public GainCbParam GainParams;
+    [FieldOffset(0)]
+    public GainCbParam GainParams;
 
-        /// <summary>
-        /// The power overload event parameters.
-        /// </summary>
-        [FieldOffset(0)]
-        public PowerOverloadCbParam PowerOverloadParams;
+    /// <summary>
+    /// The power overload event parameters.
+    /// </summary>
+    [FieldOffset(0)]
+    public PowerOverloadCbParam PowerOverloadParams;
 
-        /// <summary>
-        /// The RSPduo mode change parameters.
-        /// </summary>
-        [FieldOffset(0)]
-        public RspDuoModeCbParam RspDuoModeParams;
-    }
+    /// <summary>
+    /// The RSPduo mode change parameters.
+    /// </summary>
+    [FieldOffset(0)]
+    public RspDuoModeCbParam RspDuoModeParams;
 }

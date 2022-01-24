@@ -15,15 +15,14 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios;
+
+/// <summary>
+/// Represents the direct sampling mode.
+/// </summary>
+internal enum DirectSamplingMode
 {
-    /// <summary>
-    /// Represents the direct sampling mode.
-    /// </summary>
-    internal enum DirectSamplingMode
-    {
-        Off,
-        IBranch,
-        QBranch
-    }
+    Off,
+    IBranch,
+    QBranch
 }

@@ -15,45 +15,44 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for the automatic gain control on a SDRPlay tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct Agc
 {
     /// <summary>
-    /// The parameters for the automatic gain control on a SDRPlay tuner.
+    /// The state of the AGC and the control scheme it is using.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Agc
-    {
-        /// <summary>
-        /// The state of the AGC and the control scheme it is using.
-        /// </summary>
-        public AgcControl Enable; // default: sdrplay_api_AGC_50HZ
+    public AgcControl Enable; // default: sdrplay_api_AGC_50HZ
 
-        /// <summary>
-        /// The AGC setpoint in dBFS. Defaults to -60 dBFS.
-        /// </summary>
-        public int SetPointDbfs;
+    /// <summary>
+    /// The AGC setpoint in dBFS. Defaults to -60 dBFS.
+    /// </summary>
+    public int SetPointDbfs;
 
-        /// <summary>
-        /// The AGC attack period in milliseconds. Defaults to 0.
-        /// </summary>
-        public ushort AttackMs;
+    /// <summary>
+    /// The AGC attack period in milliseconds. Defaults to 0.
+    /// </summary>
+    public ushort AttackMs;
 
-        /// <summary>
-        /// The AGC decay period in milliseconds. Defaults to 0.
-        /// </summary>
-        public ushort DecayMs;
+    /// <summary>
+    /// The AGC decay period in milliseconds. Defaults to 0.
+    /// </summary>
+    public ushort DecayMs;
 
-        /// <summary>
-        /// The delay before the AGC decay in milliseconds. Defaults to 0.
-        /// </summary>
-        public ushort DecayDelayMs;
+    /// <summary>
+    /// The delay before the AGC decay in milliseconds. Defaults to 0.
+    /// </summary>
+    public ushort DecayDelayMs;
 
-        /// <summary>
-        /// The AGC decay threshold in dB. Defaults to 0 dB.
-        /// </summary>
-        public ushort DecayThresholdDb;
+    /// <summary>
+    /// The AGC decay threshold in dB. Defaults to 0 dB.
+    /// </summary>
+    public ushort DecayThresholdDb;
 
-        [MarshalAs(UnmanagedType.I8)]
-        public int SyncUpdate;
-    }
+    [MarshalAs(UnmanagedType.I8)]
+    public int SyncUpdate;
 }

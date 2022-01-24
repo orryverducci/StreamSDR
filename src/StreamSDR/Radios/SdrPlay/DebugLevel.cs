@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The SDRPlay API debug level.
+/// </summary>
+public enum DebugLevel
 {
-    /// <summary>
-    /// The SDRPlay API debug level.
-    /// </summary>
-    public enum DebugLevel
-    {
-        Disable = 0,
-        Verbose = 1,
-        Warning = 2,
-        Error = 3,
-        Message = 4
-    }
+    Disable = 0,
+    Verbose = 1,
+    Warning = 2,
+    Error = 3,
+    Message = 4
 }

@@ -15,23 +15,22 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for the sampling rate of a SDRPlay device.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct FsFreq
 {
     /// <summary>
-    /// The parameters for the sampling rate of a SDRPlay device.
+    /// The sample rate the device is operating at in Hertz. Defaults to 2 MHz.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct FsFreq
-    {
-        /// <summary>
-        /// The sample rate the device is operating at in Hertz. Defaults to 2 MHz.
-        /// </summary>
-        public double FsHz;
+    public double FsHz;
 
-        [MarshalAs(UnmanagedType.U8)]
-        public bool SyncUpdate;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool SyncUpdate;
 
-        [MarshalAs(UnmanagedType.U8)]
-        public bool ReCal;
-    }
+    [MarshalAs(UnmanagedType.U8)]
+    public bool ReCal;
 }

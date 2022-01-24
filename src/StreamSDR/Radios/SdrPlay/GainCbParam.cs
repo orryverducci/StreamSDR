@@ -15,27 +15,26 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a gain change event.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct GainCbParam
 {
     /// <summary>
-    /// The parameters for a gain change event.
+    /// The current RF gain reduction.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct GainCbParam
-    {
-        /// <summary>
-        /// The current RF gain reduction.
-        /// </summary>
-        public uint GRDb;
+    public uint GRDb;
 
-        /// <summary>
-        /// The current LNA gain reduction.
-        /// </summary>
-        public uint LnaGRDb;
+    /// <summary>
+    /// The current LNA gain reduction.
+    /// </summary>
+    public uint LnaGRDb;
 
-        /// <summary>
-        /// The current system gain.
-        /// </summary>
-        public double CurrGain;
-    }
+    /// <summary>
+    /// The current system gain.
+    /// </summary>
+    public double CurrGain;
 }

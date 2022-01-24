@@ -15,62 +15,61 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay device.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct DevParams
 {
     /// <summary>
-    /// The parameters for a SDRPlay device.
+    /// The tuner frequency correction in parts per million (PPM). Defaults to 0.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DevParams
-    {
-        /// <summary>
-        /// The tuner frequency correction in parts per million (PPM). Defaults to 0.
-        /// </summary>
-        public double Ppm;
+    public double Ppm;
 
-        /// <summary>
-        /// The device sampling rate parameters.
-        /// </summary>
-        public FsFreq FsFreq;
+    /// <summary>
+    /// The device sampling rate parameters.
+    /// </summary>
+    public FsFreq FsFreq;
 
-        /// <summary>
-        /// The device synchronous update parameters.
-        /// </summary>
-        public SyncUpdate SyncUpdate;
+    /// <summary>
+    /// The device synchronous update parameters.
+    /// </summary>
+    public SyncUpdate SyncUpdate;
 
-        /// <summary>
-        /// The device reset flags.
-        /// </summary>
-        public ResetFlags ResetFlags;
+    /// <summary>
+    /// The device reset flags.
+    /// </summary>
+    public ResetFlags ResetFlags;
 
-        /// <summary>
-        /// The device transfer mode. Defaults to isochronous.
-        /// </summary>
-        public TransferMode Mode;
+    /// <summary>
+    /// The device transfer mode. Defaults to isochronous.
+    /// </summary>
+    public TransferMode Mode;
 
-        /// <summary>
-        /// The number of samples per packet. Defaults to 0, indicating it should be set automatically by the device.
-        /// </summary>
-        public uint SamplesPerPkt;
+    /// <summary>
+    /// The number of samples per packet. Defaults to 0, indicating it should be set automatically by the device.
+    /// </summary>
+    public uint SamplesPerPkt;
 
-        /// <summary>
-        /// The parameters for a RSP1A device.
-        /// </summary>
-        public Rsp1aParams Rsp1aParams;
+    /// <summary>
+    /// The parameters for a RSP1A device.
+    /// </summary>
+    public Rsp1aParams Rsp1aParams;
 
-        /// <summary>
-        /// The parameters for a RSP2 device.
-        /// </summary>
-        public Rsp2Params Rsp2Params;
+    /// <summary>
+    /// The parameters for a RSP2 device.
+    /// </summary>
+    public Rsp2Params Rsp2Params;
 
-        /// <summary>
-        /// The parameters for a RSPduo device.
-        /// </summary>
-        public RspDuoParams RspDuoParams;
+    /// <summary>
+    /// The parameters for a RSPduo device.
+    /// </summary>
+    public RspDuoParams RspDuoParams;
 
-        /// <summary>
-        /// The parameters for a RSPdx device.
-        /// </summary>
-        public RspDxParams RspDxParams;
-    }
+    /// <summary>
+    /// The parameters for a RSPdx device.
+    /// </summary>
+    public RspDxParams RspDxParams;
 }

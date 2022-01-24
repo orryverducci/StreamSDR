@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The available tuner intermediate frequencies.
+/// </summary>
+public enum IfKhz
 {
-    /// <summary>
-    /// The available tuner intermediate frequencies.
-    /// </summary>
-    public enum IfKhz
-    {
-        Undefined = -1,
-        IfZero = 0,
-        If450 = 450,
-        If1620 = 1620,
-        If2048 = 2048
-    }
+    Undefined = -1,
+    IfZero = 0,
+    If450 = 450,
+    If1620 = 1620,
+    If2048 = 2048
 }

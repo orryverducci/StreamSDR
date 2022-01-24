@@ -15,16 +15,15 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The tuners that are available on the device.
+/// </summary>
+internal enum TunerSelect
 {
-    /// <summary>
-    /// The tuners that are available on the device.
-    /// </summary>
-    internal enum TunerSelect
-    {
-        Neither = 0,
-        A = 1,
-        B = 2,
-        Both = 3
-    }
+    Neither = 0,
+    A = 1,
+    B = 2,
+    Both = 3
 }

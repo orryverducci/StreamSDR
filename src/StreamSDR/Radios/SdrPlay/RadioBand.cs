@@ -15,19 +15,18 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The RF radio bands used to determine the gain to be applied.
+/// </summary>
+public enum RadioBand
 {
-    /// <summary>
-    /// The RF radio bands used to determine the gain to be applied.
-    /// </summary>
-    public enum RadioBand
-    {
-        Unknown,
-        AM,
-        VHF,
-        III,
-        UHFLower,
-        UHFUpper,
-        L
-    }
+    Unknown,
+    AM,
+    VHF,
+    III,
+    UHFLower,
+    UHFUpper,
+    L
 }

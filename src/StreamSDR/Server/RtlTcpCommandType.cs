@@ -15,24 +15,23 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Server
+namespace StreamSDR.Server;
+
+/// <summary>
+/// Represents the type of command received from an rtl_tcp client.
+/// </summary>
+internal enum RtlTcpCommandType
 {
-    /// <summary>
-    /// Represents the type of command received from an rtl_tcp client.
-    /// </summary>
-    internal enum RtlTcpCommandType
-    {
-        Tune = 1,
-        SampleRate = 2,
-        GainMode = 3,
-        TunerGain = 4,
-        FrequencyCorrection = 5,
-        IfGain = 6,
-        TestMode = 7,
-        GainCorrection = 8,
-        DirectSampling = 9,
-        OffsetTuning = 10,
-        TunerGainByIndex = 13,
-        BiasTee = 14
-    }
+    Tune = 1,
+    SampleRate = 2,
+    GainMode = 3,
+    TunerGain = 4,
+    FrequencyCorrection = 5,
+    IfGain = 6,
+    TestMode = 7,
+    GainCorrection = 8,
+    DirectSampling = 9,
+    OffsetTuning = 10,
+    TunerGainByIndex = 13,
+    BiasTee = 14
 }

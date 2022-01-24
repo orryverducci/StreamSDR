@@ -15,42 +15,41 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct RxChannelParams
 {
     /// <summary>
-    /// The parameters for a SDRPlay tuner.
+    /// The parameters for the device tuner that are available on all SDRPlay devices.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RxChannelParams
-    {
-        /// <summary>
-        /// The parameters for the device tuner that are available on all SDRPlay devices.
-        /// </summary>
-        public TunerParams TunerParams;
+    public TunerParams TunerParams;
 
-        /// <summary>
-        /// The tuner control parameters.
-        /// </summary>
-        public ControlParams CtrlParams;
+    /// <summary>
+    /// The tuner control parameters.
+    /// </summary>
+    public ControlParams CtrlParams;
 
-        /// <summary>
-        /// The parameters for a RSP1A device tuner.
-        /// </summary>
-        public Rsp1aTunerParams Rsp1aTunerParams;
+    /// <summary>
+    /// The parameters for a RSP1A device tuner.
+    /// </summary>
+    public Rsp1aTunerParams Rsp1aTunerParams;
 
-        /// <summary>
-        /// The parameters for a RSP2 device tuner.
-        /// </summary>
-        public Rsp2TunerParams Rsp2TunerParams;
+    /// <summary>
+    /// The parameters for a RSP2 device tuner.
+    /// </summary>
+    public Rsp2TunerParams Rsp2TunerParams;
 
-        /// <summary>
-        /// The parameters for a RSPduo device tuner.
-        /// </summary>
-        public RspDuoTunerParams RspDuoTunerParams;
+    /// <summary>
+    /// The parameters for a RSPduo device tuner.
+    /// </summary>
+    public RspDuoTunerParams RspDuoTunerParams;
 
-        /// <summary>
-        /// The parameters for a RSPdx device tuner.
-        /// </summary>
-        public RspDxTunerParams RspDxTunerParams;
-    }
+    /// <summary>
+    /// The parameters for a RSPdx device tuner.
+    /// </summary>
+    public RspDxTunerParams RspDxTunerParams;
 }

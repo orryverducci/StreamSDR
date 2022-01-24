@@ -15,22 +15,21 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for the stream callback.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct StreamCbParams
 {
-    /// <summary>
-    /// The parameters for the stream callback.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct StreamCbParams
-    {
-        public uint FirstSampleNum;
+    public uint FirstSampleNum;
 
-        public int GrChanged;
+    public int GrChanged;
 
-        public int RfChanged;
+    public int RfChanged;
 
-        public int FsChanged;
+    public int FsChanged;
 
-        public uint NumSamples;
-    }
+    public uint NumSamples;
 }

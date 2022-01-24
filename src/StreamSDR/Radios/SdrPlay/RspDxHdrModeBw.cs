@@ -15,16 +15,15 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The available bandwidths for HDR mode.
+/// </summary>
+public enum RspDxHdrModeBw
 {
-    /// <summary>
-    /// The available bandwidths for HDR mode.
-    /// </summary>
-    public enum RspDxHdrModeBw
-    {
-        HdrModeBw200 = 0,
-        HdrModeBw500 = 1,
-        HdrModeBw1200 = 2,
-        HdrModeBw1700 = 3
-    }
+    HdrModeBw200 = 0,
+    HdrModeBw500 = 1,
+    HdrModeBw1200 = 2,
+    HdrModeBw1700 = 3
 }

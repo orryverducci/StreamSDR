@@ -15,16 +15,15 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The available ADS-B reception modes.
+/// </summary>
+public enum AdsbMode
 {
-    /// <summary>
-    /// The available ADS-B reception modes.
-    /// </summary>
-    public enum AdsbMode
-    {
-        AdsbDecimation = 0,
-        AdsbNoDecimationLowpass = 1,
-        AdsbNoDecimationBandpass2Mhz = 2,
-        AdsbNoDecimationBandpass3Mhz = 3
-    }
+    AdsbDecimation = 0,
+    AdsbNoDecimationLowpass = 1,
+    AdsbNoDecimationBandpass2Mhz = 2,
+    AdsbNoDecimationBandpass3Mhz = 3
 }

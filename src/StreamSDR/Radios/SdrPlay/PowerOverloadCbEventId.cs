@@ -15,14 +15,13 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The type of power overload event that has occurred.
+/// </summary>
+public enum PowerOverloadCbEventId
 {
-    /// <summary>
-    /// The type of power overload event that has occurred.
-    /// </summary>
-    public enum PowerOverloadCbEventId
-    {
-        OverloadDetected = 0,
-        OverloadCorrected = 1
-    }
+    OverloadDetected = 0,
+    OverloadCorrected = 1
 }

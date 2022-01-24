@@ -15,18 +15,17 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
-{
-    /// <summary>
-    /// The parameters for a SDRPlay tuner's DC offset control.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DcOffset
-    {
-        [MarshalAs(UnmanagedType.U8)]
-        public bool DcEnable;
+namespace StreamSDR.Radios.SdrPlay;
 
-        [MarshalAs(UnmanagedType.U8)]
-        public bool IqEnable;
-    }
+/// <summary>
+/// The parameters for a SDRPlay tuner's DC offset control.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct DcOffset
+{
+    [MarshalAs(UnmanagedType.U8)]
+    public bool DcEnable;
+
+    [MarshalAs(UnmanagedType.U8)]
+    public bool IqEnable;
 }

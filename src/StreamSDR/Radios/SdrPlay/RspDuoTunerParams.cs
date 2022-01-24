@@ -15,41 +15,40 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay RSP2 tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct RspDuoTunerParams
 {
     /// <summary>
-    /// The parameters for a SDRPlay RSP2 tuner.
+    /// The state of the Bias T. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RspDuoTunerParams
-    {
-        /// <summary>
-        /// The state of the Bias T. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool BiasTEnable;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool BiasTEnable;
 
-        /// <summary>
-        /// The port that should be used for AM reception. Defaults to <see cref="Rsp2AmPortSelect.AmPort2"/>.
-        /// </summary>
-        public RspDuoAmPortSelect AmPortSel;
+    /// <summary>
+    /// The port that should be used for AM reception. Defaults to <see cref="Rsp2AmPortSelect.AmPort2"/>.
+    /// </summary>
+    public RspDuoAmPortSelect AmPortSel;
 
-        // <summary>
-        /// The state of the MW broadcast band notch filter on the high impedance port. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool Tuner1AmNotchEnable;
+    // <summary>
+    /// The state of the MW broadcast band notch filter on the high impedance port. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
+    /// </summary>
+    [MarshalAs(UnmanagedType.U8)]
+    public bool Tuner1AmNotchEnable;
 
-        /// <summary>
-        /// The state of the AM/FM broadcast band notch. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool RfNotchEnable;
+    /// <summary>
+    /// The state of the AM/FM broadcast band notch. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
+    /// </summary>
+    [MarshalAs(UnmanagedType.U8)]
+    public bool RfNotchEnable;
 
-        // <summary>
-        /// The state of the DAB band notch. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool RfDabNotchEnable;
-    }
+    // <summary>
+    /// The state of the DAB band notch. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
+    /// </summary>
+    [MarshalAs(UnmanagedType.U8)]
+    public bool RfDabNotchEnable;
 }

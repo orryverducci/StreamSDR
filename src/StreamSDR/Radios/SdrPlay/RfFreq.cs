@@ -15,20 +15,19 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay tuner RF frequency.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct RfFreq
 {
     /// <summary>
-    /// The parameters for a SDRPlay tuner RF frequency.
+    /// The tuner RF centre frequency in Hertz. Defaults to 200000000.0 Hz (200 MHz).
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RfFreq
-    {
-        /// <summary>
-        /// The tuner RF centre frequency in Hertz. Defaults to 200000000.0 Hz (200 MHz).
-        /// </summary>
-        public double RfHz;
+    public double RfHz;
 
-        [MarshalAs(UnmanagedType.U8)]
-        public bool SyncUpdate;
-    }
+    [MarshalAs(UnmanagedType.U8)]
+    public bool SyncUpdate;
 }

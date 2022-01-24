@@ -15,18 +15,17 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay RSP1a tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct Rsp1aTunerParams
 {
     /// <summary>
-    /// The parameters for a SDRPlay RSP1a tuner.
+    /// The state of the Bias T. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Rsp1aTunerParams
-    {
-        /// <summary>
-        /// The state of the Bias T. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool BiasTEnable;
-    }
+    [MarshalAs(UnmanagedType.U8)]
+    public bool BiasTEnable;
 }

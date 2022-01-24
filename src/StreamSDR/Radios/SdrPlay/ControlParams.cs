@@ -15,32 +15,31 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for the control of a SDRPlay tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct ControlParams
 {
     /// <summary>
-    /// The parameters for the control of a SDRPlay tuner.
+    /// The DC offset options.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ControlParams
-    {
-        /// <summary>
-        /// The DC offset options.
-        /// </summary>
-        public DcOffset DcOffset;
+    public DcOffset DcOffset;
 
-        /// <summary>
-        /// The tuner decimation options.
-        /// </summary>
-        public Decimation Decimation;
+    /// <summary>
+    /// The tuner decimation options.
+    /// </summary>
+    public Decimation Decimation;
 
-        /// <summary>
-        /// The tuner automatic gain control options.
-        /// </summary>
-        public Agc Agc;
+    /// <summary>
+    /// The tuner automatic gain control options.
+    /// </summary>
+    public Agc Agc;
 
-        /// <summary>
-        /// The mode used for ADS-B reception. Defaults to <see cref="AdsbMode.AdsbDecimation"/>
-        /// </summary>
-        public AdsbMode AdsbMode;
-    }
+    /// <summary>
+    /// The mode used for ADS-B reception. Defaults to <see cref="AdsbMode.AdsbDecimation"/>
+    /// </summary>
+    public AdsbMode AdsbMode;
 }

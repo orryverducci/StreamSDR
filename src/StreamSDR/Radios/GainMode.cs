@@ -15,14 +15,13 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios;
+
+/// <summary>
+/// Represents the mode in which the radio's gain is operating.
+/// </summary>
+internal enum GainMode
 {
-    /// <summary>
-    /// Represents the mode in which the radio's gain is operating.
-    /// </summary>
-    internal enum GainMode
-    {
-        Automatic,
-        Manual
-    }
+    Automatic,
+    Manual
 }

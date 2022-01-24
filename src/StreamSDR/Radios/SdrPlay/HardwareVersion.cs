@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The version of the SDRPlay device hardware.
+/// </summary>
+public enum HardwareVersion : byte
 {
-    /// <summary>
-    /// The version of the SDRPlay device hardware.
-    /// </summary>
-    public enum HardwareVersion : byte
-    {
-        Rsp1 = 1,
-        Rsp2 = 2,
-        RspDuo = 3,
-        RspDx = 4,
-        Rsp1A = 255
-    }
+    Rsp1 = 1,
+    Rsp2 = 2,
+    RspDuo = 3,
+    RspDx = 4,
+    Rsp1A = 255
 }

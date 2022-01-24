@@ -15,34 +15,33 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay RSP2 tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct Rsp2TunerParams
 {
     /// <summary>
-    /// The parameters for a SDRPlay RSP2 tuner.
+    /// The state of the Bias T. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Rsp2TunerParams
-    {
-        /// <summary>
-        /// The state of the Bias T. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool BiasTEnable;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool BiasTEnable;
 
-        /// <summary>
-        /// The port that should be used for AM reception. Defaults to <see cref="Rsp2AmPortSelect.AmPort2"/>.
-        /// </summary>
-        public Rsp2AmPortSelect AmPortSel;
+    /// <summary>
+    /// The port that should be used for AM reception. Defaults to <see cref="Rsp2AmPortSelect.AmPort2"/>.
+    /// </summary>
+    public Rsp2AmPortSelect AmPortSel;
 
-        /// <summary>
-        /// The antenna that should be used for reception. Defaults to <see cref="Rsp2AntennaSelect.AntennaA"/>.
-        /// </summary>
-        public Rsp2AntennaSelect AntennaSel;
+    /// <summary>
+    /// The antenna that should be used for reception. Defaults to <see cref="Rsp2AntennaSelect.AntennaA"/>.
+    /// </summary>
+    public Rsp2AntennaSelect AntennaSel;
 
-        /// <summary>
-        /// The state of the AM/FM broadcast band notch. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool RfNotchEnable;
-    }
+    /// <summary>
+    /// The state of the AM/FM broadcast band notch. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
+    /// </summary>
+    [MarshalAs(UnmanagedType.U8)]
+    public bool RfNotchEnable;
 }

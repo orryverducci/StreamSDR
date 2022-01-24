@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The available local oscillator frequencies.
+/// </summary>
+public enum LoMode
 {
-    /// <summary>
-    /// The available local oscillator frequencies.
-    /// </summary>
-    public enum LoMode
-    {
-        LoUndefined = 0,
-        LoAuto = 1,
-        Lo120Mhz = 2,
-        Lo144Mhz = 3,
-        Lo168Mhz = 4
-    }
+    LoUndefined = 0,
+    LoAuto = 1,
+    Lo120Mhz = 2,
+    Lo144Mhz = 3,
+    Lo168Mhz = 4
 }

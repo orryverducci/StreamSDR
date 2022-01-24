@@ -15,16 +15,15 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
-{
-    /// <summary>
-    /// The parameters for synchronous updates.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SyncUpdate
-    {
-        public uint SampleNum;
+namespace StreamSDR.Radios.SdrPlay;
 
-        public uint Period;
-    }
+/// <summary>
+/// The parameters for synchronous updates.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct SyncUpdate
+{
+    public uint SampleNum;
+
+    public uint Period;
 }

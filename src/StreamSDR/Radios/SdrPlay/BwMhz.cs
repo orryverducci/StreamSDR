@@ -15,21 +15,20 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The tuner bandwidths that are available.
+/// </summary>
+public enum BwMhz
 {
-    /// <summary>
-    /// The tuner bandwidths that are available.
-    /// </summary>
-    public enum BwMhz
-    {
-        Undefined = 0,
-        Bw200 = 200,
-        Bw300 = 300,
-        Bw600 = 600,
-        Bw1536 = 1536,
-        Bw5000 = 5000,
-        Bw6000 = 6000,
-        Bw7000 = 7000,
-        Bw8000 = 8000
-    }
+    Undefined = 0,
+    Bw200 = 200,
+    Bw300 = 300,
+    Bw600 = 600,
+    Bw1536 = 1536,
+    Bw5000 = 5000,
+    Bw6000 = 6000,
+    Bw7000 = 7000,
+    Bw8000 = 8000
 }

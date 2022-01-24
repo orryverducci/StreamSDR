@@ -15,19 +15,18 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The mode change on an RSPduo.
+/// </summary>
+public enum RspDuoModeCbEventId
 {
-    /// <summary>
-    /// The mode change on an RSPduo.
-    /// </summary>
-    public enum RspDuoModeCbEventId
-    {
-        MasterInitialised = 0,
-        SlaveAttached = 1,
-        SlaveDetached = 2,
-        SlaveInitialised = 3,
-        SlaveUninitialised = 4,
-        MasterDllDisappeared = 5,
-        SlaveDllDisappeared = 6
-    }
+    MasterInitialised = 0,
+    SlaveAttached = 1,
+    SlaveDetached = 2,
+    SlaveInitialised = 3,
+    SlaveUninitialised = 4,
+    MasterDllDisappeared = 5,
+    SlaveDllDisappeared = 6
 }

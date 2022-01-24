@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The available AGC control schemes.
+/// </summary>
+public enum AgcControl
 {
-    /// <summary>
-    /// The available AGC control schemes.
-    /// </summary>
-    public enum AgcControl
-    {
-        AgcDisable = 0,
-        Agc100HZ = 1,
-        Agc50HZ = 2,
-        Agc5HZ = 3,
-        AgcCtrlEn = 4
-    }
+    AgcDisable = 0,
+    Agc100HZ = 1,
+    Agc50HZ = 2,
+    Agc5HZ = 3,
+    AgcCtrlEn = 4
 }

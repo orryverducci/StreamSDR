@@ -15,27 +15,26 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay device and its tuners.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public unsafe struct DeviceParams
 {
     /// <summary>
-    /// The parameters for a SDRPlay device and its tuners.
+    /// The parameters for the device.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct DeviceParams
-    {
-        /// <summary>
-        /// The parameters for the device.
-        /// </summary>
-        public DevParams* DevParams;
+    public DevParams* DevParams;
 
-        /// <summary>
-        /// The parameters for the first tuner.
-        /// </summary>
-        public RxChannelParams* RxChannelA;
+    /// <summary>
+    /// The parameters for the first tuner.
+    /// </summary>
+    public RxChannelParams* RxChannelA;
 
-        /// <summary>
-        /// The parameters for the second tuner on RSPduo devices.
-        /// </summary>
-        public RxChannelParams* RxChannelB;
-    }
+    /// <summary>
+    /// The parameters for the second tuner on RSPduo devices.
+    /// </summary>
+    public RxChannelParams* RxChannelB;
 }

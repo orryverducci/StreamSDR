@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a power overload event.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct PowerOverloadCbParam
 {
     /// <summary>
-    /// The parameters for a power overload event.
+    /// The type of power overload event that has occurred.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct PowerOverloadCbParam
-    {
-        /// <summary>
-        /// The type of power overload event that has occurred.
-        /// </summary>
-        public PowerOverloadCbEventId PowerOverloadChangeType;
-    }
+    public PowerOverloadCbEventId PowerOverloadChangeType;
 }

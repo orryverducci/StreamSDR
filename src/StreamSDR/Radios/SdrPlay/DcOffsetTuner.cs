@@ -15,24 +15,23 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay tuner DC calibration.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct DcOffsetTuner
 {
     /// <summary>
-    /// The parameters for a SDRPlay tuner DC calibration.
+    /// The DC calibration mode. Defaults to 3 (periodic mode).
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DcOffsetTuner
-    {
-        /// <summary>
-        /// The DC calibration mode. Defaults to 3 (periodic mode).
-        /// </summary>
-        public byte DcCal;
+    public byte DcCal;
 
-        [MarshalAs(UnmanagedType.U8)]
-        public bool SpeedUp;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool SpeedUp;
 
-        public int TrackTime;
+    public int TrackTime;
 
-        public int RefreshRateTime;
-    }
+    public int RefreshRateTime;
 }

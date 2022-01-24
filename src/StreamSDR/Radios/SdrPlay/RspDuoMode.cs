@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The modes available on an RSPduo device.
+/// </summary>
+internal enum RspDuoMode
 {
-    /// <summary>
-    /// The modes available on an RSPduo device.
-    /// </summary>
-    internal enum RspDuoMode
-    {
-        Unknown = 0,
-        SingleTuner = 1,
-        DualTuner = 2,
-        Master = 4,
-        Slave = 8
-    }
+    Unknown = 0,
+    SingleTuner = 1,
+    DualTuner = 2,
+    Master = 4,
+    Slave = 8
 }

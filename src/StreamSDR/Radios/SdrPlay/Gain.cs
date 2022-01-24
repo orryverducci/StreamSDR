@@ -15,35 +15,34 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay tuner gain setting.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct Gain
 {
     /// <summary>
-    /// The parameters for a SDRPlay tuner gain setting.
+    /// The gain reduction in dB. Defaults to 50 dB.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Gain
-    {
-        /// <summary>
-        /// The gain reduction in dB. Defaults to 50 dB.
-        /// </summary>
-        public int GrDb;
+    public int GrDb;
 
-        /// <summary>
-        /// The state of the LNA.
-        /// </summary>
-        public byte LnaState;
+    /// <summary>
+    /// The state of the LNA.
+    /// </summary>
+    public byte LnaState;
 
-        [MarshalAs(UnmanagedType.U8)]
-        public bool SyncUpdate;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool SyncUpdate;
 
-        /// <summary>
-        /// The minimum gain reduction mode. Defaults to <see cref="MinGainReduction.NormalMinGr"/>.
-        /// </summary>
-        public MinGainReduction MinGr;
+    /// <summary>
+    /// The minimum gain reduction mode. Defaults to <see cref="MinGainReduction.NormalMinGr"/>.
+    /// </summary>
+    public MinGainReduction MinGr;
 
-        /// <summary>
-        /// The LNA gain values.
-        /// </summary>
-        public GainValues GainVals;
-    }
+    /// <summary>
+    /// The LNA gain values.
+    /// </summary>
+    public GainValues GainVals;
 }

@@ -15,21 +15,20 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Server
+namespace StreamSDR.Server;
+
+/// <summary>
+/// Represents a command received from an rtl_tcp client.
+/// </summary>
+internal record RtlTcpCommand
 {
     /// <summary>
-    /// Represents a command received from an rtl_tcp client.
+    /// The type of command.
     /// </summary>
-    internal record RtlTcpCommand
-    {
-        /// <summary>
-        /// The type of command.
-        /// </summary>
-        public RtlTcpCommandType Type { get; set; }
+    public RtlTcpCommandType Type { get; set; }
 
-        /// <summary>
-        /// The value of the command.
-        /// </summary>
-        public uint Value { get; set; }
-    }
+    /// <summary>
+    /// The value of the command.
+    /// </summary>
+    public uint Value { get; set; }
 }

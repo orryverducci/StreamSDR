@@ -15,16 +15,15 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The event received from the SDRPlay API.
+/// </summary>
+internal enum Event
 {
-    /// <summary>
-    /// The event received from the SDRPlay API.
-    /// </summary>
-    internal enum Event
-    {
-        GainChange = 0,
-        PowerOverloadChange = 1,
-        DeviceRemoved = 2,
-        RspDuoModeChange = 3
-    }
+    GainChange = 0,
+    PowerOverloadChange = 1,
+    DeviceRemoved = 2,
+    RspDuoModeChange = 3
 }

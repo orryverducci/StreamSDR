@@ -15,25 +15,24 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for decimation on a SDRPlay tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct Decimation
 {
     /// <summary>
-    /// The parameters for decimation on a SDRPlay tuner.
+    /// The state of decimation. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Decimation
-    {
-        /// <summary>
-        /// The state of decimation. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool Enable;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool Enable;
 
-        /// <summary>
-        /// The decimation factor. Defaults to 1.
-        /// </summary>
-        public byte DecimationFactor;
+    /// <summary>
+    /// The decimation factor. Defaults to 1.
+    /// </summary>
+    public byte DecimationFactor;
 
-        public byte WideBandSignal;
-    }
+    public byte WideBandSignal;
 }

@@ -15,21 +15,20 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The device reset flags.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct ResetFlags
 {
-    /// <summary>
-    /// The device reset flags.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ResetFlags
-    {
-        [MarshalAs(UnmanagedType.U8)]
-        public bool ResetGainUpdate;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool ResetGainUpdate;
 
-        [MarshalAs(UnmanagedType.U8)]
-        public bool ResetRfUpdate;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool ResetRfUpdate;
 
-        [MarshalAs(UnmanagedType.U8)]
-        public bool ResetFsUpdate;
-    }
+    [MarshalAs(UnmanagedType.U8)]
+    public bool ResetFsUpdate;
 }

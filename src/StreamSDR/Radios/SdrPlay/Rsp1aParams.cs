@@ -15,24 +15,23 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a RSP1A device.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct Rsp1aParams
 {
     /// <summary>
-    /// The parameters for a RSP1A device.
+    /// The state of the broadcast band (AM/FM) notch filter. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Rsp1aParams
-    {
-        /// <summary>
-        /// The state of the broadcast band (AM/FM) notch filter. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool RfNotchEnable;
+    [MarshalAs(UnmanagedType.U8)]
+    public bool RfNotchEnable;
 
-        /// <summary>
-        /// The state of the DAB notch filter. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
-        /// </summary>
-        [MarshalAs(UnmanagedType.U8)]
-        public bool RfDabNotchEnable;
-    }
+    /// <summary>
+    /// The state of the DAB notch filter. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
+    /// </summary>
+    [MarshalAs(UnmanagedType.U8)]
+    public bool RfDabNotchEnable;
 }

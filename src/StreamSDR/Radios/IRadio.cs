@@ -15,86 +15,85 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios;
+
+/// <summary>
+/// Provides a generic interface to control and receive samples from SDR radios.
+/// </summary>
+internal interface IRadio : IDisposable
 {
     /// <summary>
-    /// Provides a generic interface to control and receive samples from SDR radios.
+    /// Gets the device name.
     /// </summary>
-    internal interface IRadio : IDisposable
-    {
-        /// <summary>
-        /// Gets the device name.
-        /// </summary>
-        public string Name { get; }
+    public string Name { get; }
 
-        /// <summary>
-        /// Gets the type of tuner in the device.
-        /// </summary>
-        public TunerType Tuner { get; }
+    /// <summary>
+    /// Gets the type of tuner in the device.
+    /// </summary>
+    public TunerType Tuner { get; }
 
-        /// <summary>
-        /// Gets or sets the sample rate the device is operating at in Hertz.
-        /// </summary>
-        public uint SampleRate { get; set; }
+    /// <summary>
+    /// Gets or sets the sample rate the device is operating at in Hertz.
+    /// </summary>
+    public uint SampleRate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the centre frequency the device is tuned to in Hertz.
-        /// </summary>
-        public ulong Frequency { get; set; }
+    /// <summary>
+    /// Gets or sets the centre frequency the device is tuned to in Hertz.
+    /// </summary>
+    public ulong Frequency { get; set; }
 
-        /// <summary>
-        /// Gets or sets the tuner frequency correction in parts per million (PPM).
-        /// </summary>
-        public int FrequencyCorrection { get; set; }
+    /// <summary>
+    /// Gets or sets the tuner frequency correction in parts per million (PPM).
+    /// </summary>
+    public int FrequencyCorrection { get; set; }
 
-        /// <summary>
-        /// Gets or sets if offset tuning is enabled for zero IF tuners.
-        /// </summary>
-        public bool OffsetTuning { get; set; }
+    /// <summary>
+    /// Gets or sets if offset tuning is enabled for zero IF tuners.
+    /// </summary>
+    public bool OffsetTuning { get; set; }
 
-        /// <summary>
-        /// Gets or sets the direct sampling mode.
-        /// </summary>
-        public DirectSamplingMode DirectSampling { get; set; }
+    /// <summary>
+    /// Gets or sets the direct sampling mode.
+    /// </summary>
+    public DirectSamplingMode DirectSampling { get; set; }
 
-        /// <summary>
-        /// Gets or sets the current level of gain of the tuner.
-        /// </summary>
-        public uint Gain { get; set; }
+    /// <summary>
+    /// Gets or sets the current level of gain of the tuner.
+    /// </summary>
+    public uint Gain { get; set; }
 
-        /// <summary>
-        /// Gets or sets the mode in which the radio's gain is operating.
-        /// </summary>
-        public GainMode GainMode { get; set; }
+    /// <summary>
+    /// Gets or sets the mode in which the radio's gain is operating.
+    /// </summary>
+    public GainMode GainMode { get; set; }
 
-        /// <summary>
-        /// Gets the number of levels of gains that are supported by the tuner.
-        /// </summary>
-        public uint GainLevelsSupported { get; }
+    /// <summary>
+    /// Gets the number of levels of gains that are supported by the tuner.
+    /// </summary>
+    public uint GainLevelsSupported { get; }
 
-        /// <summary>
-        /// Gets or sets if automatic gain correction is enabled.
-        /// </summary>
-        public bool AutomaticGainCorrection { get; set; }
+    /// <summary>
+    /// Gets or sets if automatic gain correction is enabled.
+    /// </summary>
+    public bool AutomaticGainCorrection { get; set; }
 
-        /// <summary>
-        /// Gets or sets if the bias tee has been enabled.
-        /// </summary>
-        public bool BiasTee { get; set; }
+    /// <summary>
+    /// Gets or sets if the bias tee has been enabled.
+    /// </summary>
+    public bool BiasTee { get; set; }
 
-        /// <summary>
-        /// Event fired when samples have been received from the device, provided as an array of bytes containing interleaved IQ samples.
-        /// </summary>
-        public event EventHandler<byte[]>? SamplesAvailable;
+    /// <summary>
+    /// Event fired when samples have been received from the device, provided as an array of bytes containing interleaved IQ samples.
+    /// </summary>
+    public event EventHandler<byte[]>? SamplesAvailable;
 
-        /// <summary>
-        /// Starts the device.
-        /// </summary>
-        public void Start();
+    /// <summary>
+    /// Starts the device.
+    /// </summary>
+    public void Start();
 
-        /// <summary>
-        /// Stops the device.
-        /// </summary>
-        public void Stop();
-    }
+    /// <summary>
+    /// Stops the device.
+    /// </summary>
+    public void Stop();
 }

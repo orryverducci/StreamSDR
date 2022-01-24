@@ -15,14 +15,13 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The transfer modes available.
+/// </summary>
+public enum TransferMode
 {
-    /// <summary>
-    /// The transfer modes available.
-    /// </summary>
-    public enum TransferMode
-    {
-        ISOCH = 0,
-        BULK = 1
-    }
+    ISOCH = 0,
+    BULK = 1
 }

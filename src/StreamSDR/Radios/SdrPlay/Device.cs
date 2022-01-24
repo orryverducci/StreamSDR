@@ -15,48 +15,47 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// Represents an SDRPlay device.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+internal struct Device
 {
     /// <summary>
-    /// Represents an SDRPlay device.
+    /// The serial number of the device.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    internal struct Device
-    {
-        /// <summary>
-        /// The serial number of the device.
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
-        public string SerNo;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+    public string SerNo;
 
-        /// <summary>
-        /// The hardware version of the device
-        /// </summary>
-        public HardwareVersion HwVer;
+    /// <summary>
+    /// The hardware version of the device
+    /// </summary>
+    public HardwareVersion HwVer;
 
-        /// <summary>
-        /// The selected tuner, or the tuners available if the device has not yet been selected.
-        /// </summary>
-        public TunerSelect Tuner;
+    /// <summary>
+    /// The selected tuner, or the tuners available if the device has not yet been selected.
+    /// </summary>
+    public TunerSelect Tuner;
 
-        /// <summary>
-        /// The modes available on RSPduo devices.
-        /// </summary>
-        public RspDuoMode RspDuoMode;
+    /// <summary>
+    /// The modes available on RSPduo devices.
+    /// </summary>
+    public RspDuoMode RspDuoMode;
 
-        /// <summary>
-        /// Indicator representing if the device is available for use.
-        /// </summary>
-        //public char Valid;
+    /// <summary>
+    /// Indicator representing if the device is available for use.
+    /// </summary>
+    //public char Valid;
 
-        /// <summary>
-        /// The sample rate of the RSPduo slave.
-        /// </summary>
-        public double RspDuoSampleFreq;
+    /// <summary>
+    /// The sample rate of the RSPduo slave.
+    /// </summary>
+    public double RspDuoSampleFreq;
 
-        /// <summary>
-        /// The device handle.
-        /// </summary>
-        public IntPtr Dev;
-    }
+    /// <summary>
+    /// The device handle.
+    /// </summary>
+    public IntPtr Dev;
 }

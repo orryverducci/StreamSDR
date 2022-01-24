@@ -15,42 +15,41 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct TunerParams
 {
     /// <summary>
-    /// The parameters for a SDRPlay tuner.
+    /// The tuner bandwidth. Defaults to <see cref="BwMhz.Bw200"/> (200 kHz).
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct TunerParams
-    {
-        /// <summary>
-        /// The tuner bandwidth. Defaults to <see cref="BwMhz.Bw200"/> (200 kHz).
-        /// </summary>
-        public BwMhz BwType;
+    public BwMhz BwType;
 
-        /// <summary>
-        /// The tuner intermediate frequency. Defaults to <see cref="IfKhz.IfZero"/> (zero IF mode).
-        /// </summary>
-        public IfKhz IfType;
+    /// <summary>
+    /// The tuner intermediate frequency. Defaults to <see cref="IfKhz.IfZero"/> (zero IF mode).
+    /// </summary>
+    public IfKhz IfType;
 
-        /// <summary>
-        /// The first local oscillator frequency of the tuner. Defaults to <see cref="LoMode.LoAuto"/>.
-        /// </summary>
-        public LoMode LoMode;
+    /// <summary>
+    /// The first local oscillator frequency of the tuner. Defaults to <see cref="LoMode.LoAuto"/>.
+    /// </summary>
+    public LoMode LoMode;
 
-        /// <summary>
-        /// The tuner gain setting parameters.
-        /// </summary>
-        public Gain Gain;
+    /// <summary>
+    /// The tuner gain setting parameters.
+    /// </summary>
+    public Gain Gain;
 
-        /// <summary>
-        /// The tuner RF frequency parameters.
-        /// </summary>
-        public RfFreq RfFreq;
+    /// <summary>
+    /// The tuner RF frequency parameters.
+    /// </summary>
+    public RfFreq RfFreq;
 
-        /// <summary>
-        /// The tuner DC calibration parameters.
-        /// </summary>
-        public DcOffsetTuner DcOffsetTuner;
-    }
+    /// <summary>
+    /// The tuner DC calibration parameters.
+    /// </summary>
+    public DcOffsetTuner DcOffsetTuner;
 }

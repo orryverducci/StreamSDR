@@ -15,14 +15,13 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The available ports for AM reception.
+/// </summary>
+public enum RspDuoAmPortSelect
 {
-    /// <summary>
-    /// The available ports for AM reception.
-    /// </summary>
-    public enum RspDuoAmPortSelect
-    {
-        AmPort2 = 0,
-        AmPort1 = 1
-    }
+    AmPort2 = 0,
+    AmPort1 = 1
 }

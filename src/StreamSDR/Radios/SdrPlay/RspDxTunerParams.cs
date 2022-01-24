@@ -15,17 +15,16 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay RSPdx tuner.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct RspDxTunerParams
 {
     /// <summary>
-    /// The parameters for a SDRPlay RSPdx tuner.
+    /// The bandwidth HDR mode is active in.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RspDxTunerParams
-    {
-        /// <summary>
-        /// The bandwidth HDR mode is active in.
-        /// </summary>
-        public RspDxHdrModeBw HdrBw;
-    }
+    public RspDxHdrModeBw HdrBw;
 }

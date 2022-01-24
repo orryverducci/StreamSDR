@@ -15,20 +15,19 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios
+namespace StreamSDR.Radios;
+
+/// <summary>
+/// Represents the type of tuner in the device.
+/// </summary>
+internal enum TunerType
 {
-    /// <summary>
-    /// Represents the type of tuner in the device.
-    /// </summary>
-    internal enum TunerType
-    {
-        Unknown,
-        E4000,
-        FC0012,
-        FC0013,
-        FC2580,
-        R820T,
-        R828D,
-        MSi001
-    }
+    Unknown,
+    E4000,
+    FC0012,
+    FC0013,
+    FC2580,
+    R820T,
+    R828D,
+    MSi001
 }

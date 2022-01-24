@@ -15,18 +15,17 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The parameters for a SDRPlay tuner LNA gain values.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct GainValues
 {
-    /// <summary>
-    /// The parameters for a SDRPlay tuner LNA gain values.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct GainValues
-    {
-        public float Curr;
+    public float Curr;
 
-        public float Max;
+    public float Max;
 
-        public float Min;
-    }
+    public float Min;
 }

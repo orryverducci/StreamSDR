@@ -15,15 +15,14 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The antennas available on a RSPdx device.
+/// </summary>
+public enum RspDxAntennaSelect
 {
-    /// <summary>
-    /// The antennas available on a RSPdx device.
-    /// </summary>
-    public enum RspDxAntennaSelect
-    {
-        AntennaA = 0,
-        AntennaB = 1,
-        AntennaC = 2
-    }
+    AntennaA = 0,
+    AntennaB = 1,
+    AntennaC = 2
 }

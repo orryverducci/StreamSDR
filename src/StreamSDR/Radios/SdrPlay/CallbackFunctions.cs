@@ -15,28 +15,27 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// Specifies the callback delegate methods to be used when data is received.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct CallbackFunctions
 {
     /// <summary>
-    /// Specifies the callback delegate methods to be used when data is received.
+    /// The callback method for when data is read from tuner A.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct CallbackFunctions
-    {
-        /// <summary>
-        /// The callback method for when data is read from tuner A.
-        /// </summary>
-        public Interop.ReadDelegate StreamACbFn;
+    public Interop.ReadDelegate StreamACbFn;
 
-        /// <summary>
-        /// The callback method for when data is read from tuner B.
-        /// </summary>
-        public Interop.ReadDelegate StreamBCbFn;
+    /// <summary>
+    /// The callback method for when data is read from tuner B.
+    /// </summary>
+    public Interop.ReadDelegate StreamBCbFn;
 
-        /// <summary>
-        /// The callback method for when events are raised by the SDRPlay API.
-        /// </summary>
-        //public IntPtr EventCbFn;
-        public Interop.EventDelegate EventCbFn;
-    }
+    /// <summary>
+    /// The callback method for when events are raised by the SDRPlay API.
+    /// </summary>
+    //public IntPtr EventCbFn;
+    public Interop.EventDelegate EventCbFn;
 }

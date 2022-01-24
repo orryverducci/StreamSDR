@@ -15,26 +15,25 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// Provides extension methods to the <see cref="HardwareVersion"/> enum.
+/// </summary>
+public static class HardwareVersionExtension
 {
     /// <summary>
-    /// Provides extension methods to the <see cref="HardwareVersion"/> enum.
+    /// Converts the hardware version to the device model as a string.
     /// </summary>
-    public static class HardwareVersionExtension
+    /// <param name="hardwareVersion">The <see cref="HardwareVersion"/> provided by the SDRPlay API.</param>
+    /// <returns>The device model name.</returns>
+    public static string ToDeviceModel(this HardwareVersion hardwareVersion) => hardwareVersion switch
     {
-        /// <summary>
-        /// Converts the hardware version to the device model as a string.
-        /// </summary>
-        /// <param name="hardwareVersion">The <see cref="HardwareVersion"/> provided by the SDRPlay API.</param>
-        /// <returns>The device model name.</returns>
-        public static string ToDeviceModel(this HardwareVersion hardwareVersion) => hardwareVersion switch
-        {
-            HardwareVersion.Rsp1 => "RSP1",
-            HardwareVersion.Rsp1A => "RSP1A",
-            HardwareVersion.Rsp2 => "RSP2",
-            HardwareVersion.RspDuo => "RSPduo",
-            HardwareVersion.RspDx => "RSPdx",
-            _ => "Unknown"
-        };
-    }
+        HardwareVersion.Rsp1 => "RSP1",
+        HardwareVersion.Rsp1A => "RSP1A",
+        HardwareVersion.Rsp2 => "RSP2",
+        HardwareVersion.RspDuo => "RSPduo",
+        HardwareVersion.RspDx => "RSPdx",
+        _ => "Unknown"
+    };
 }

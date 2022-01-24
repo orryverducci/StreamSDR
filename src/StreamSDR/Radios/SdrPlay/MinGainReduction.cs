@@ -15,14 +15,13 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Radios.SdrPlay
+namespace StreamSDR.Radios.SdrPlay;
+
+/// <summary>
+/// The available minimum gain reduction modes.
+/// </summary>
+public enum MinGainReduction
 {
-    /// <summary>
-    /// The available minimum gain reduction modes.
-    /// </summary>
-    public enum MinGainReduction
-    {
-        ExtendedMinGr = 0,
-        NormalMinGr = 20
-    }
+    ExtendedMinGr = 0,
+    NormalMinGr = 20
 }
