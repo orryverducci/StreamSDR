@@ -35,4 +35,3 @@ namespace StreamSDR.Radios.SdrPlay
         public bool ReCal;
     }
 }
-

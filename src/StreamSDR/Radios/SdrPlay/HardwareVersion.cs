@@ -29,4 +29,3 @@ namespace StreamSDR.Radios.SdrPlay
         Rsp1A = 255
     }
 }
-

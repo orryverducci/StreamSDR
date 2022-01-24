@@ -33,4 +33,3 @@ namespace StreamSDR.Radios.SdrPlay
         Bw8000 = 8000
     }
 }
-

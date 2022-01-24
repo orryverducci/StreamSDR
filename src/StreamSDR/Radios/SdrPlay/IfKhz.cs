@@ -29,4 +29,3 @@ namespace StreamSDR.Radios.SdrPlay
         If2048 = 2048
     }
 }
-

@@ -29,4 +29,3 @@ namespace StreamSDR.Radios.SdrPlay
         Message = 4
     }
 }
-

@@ -40,4 +40,3 @@ namespace StreamSDR.Radios.SdrPlay
         public Interop.EventDelegate EventCbFn;
     }
 }
-

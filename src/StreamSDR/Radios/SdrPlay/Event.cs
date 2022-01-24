@@ -28,4 +28,3 @@ namespace StreamSDR.Radios.SdrPlay
         RspDuoModeChange = 3
     }
 }
-

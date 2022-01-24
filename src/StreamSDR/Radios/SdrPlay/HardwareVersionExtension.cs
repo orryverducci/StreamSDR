@@ -38,4 +38,3 @@ namespace StreamSDR.Radios.SdrPlay
         };
     }
 }
-
