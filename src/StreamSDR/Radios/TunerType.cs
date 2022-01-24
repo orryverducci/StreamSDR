@@ -15,8 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-
 namespace StreamSDR.Radios
 {
     /// <summary>

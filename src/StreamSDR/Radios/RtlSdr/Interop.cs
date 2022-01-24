@@ -15,9 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Runtime.InteropServices;
-
 namespace StreamSDR.Radios.RtlSdr
 {
     /// <summary>

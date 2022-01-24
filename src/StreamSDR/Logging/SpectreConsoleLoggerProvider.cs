@@ -15,7 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 

@@ -15,7 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 

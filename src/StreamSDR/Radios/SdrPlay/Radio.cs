@@ -15,10 +15,8 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Globalization;
 using System.Threading;
-using System.Runtime.InteropServices;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
