@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for an event that has occurred.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public struct EventParams
+internal struct EventParams
 {
     /// <summary>
     /// The gain change event parameters.

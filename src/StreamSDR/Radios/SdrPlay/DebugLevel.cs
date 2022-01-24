@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The SDRPlay API debug level.
 /// </summary>
-public enum DebugLevel
+internal enum DebugLevel
 {
     Disable = 0,
     Verbose = 1,

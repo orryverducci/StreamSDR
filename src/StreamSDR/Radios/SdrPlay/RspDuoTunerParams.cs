@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay RSP2 tuner.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct RspDuoTunerParams
+internal struct RspDuoTunerParams
 {
     /// <summary>
     /// The state of the Bias T. <see langword="true"/> if enabled, <see langword="false"/> otherwise.

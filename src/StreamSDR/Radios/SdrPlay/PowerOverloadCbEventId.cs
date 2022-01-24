@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The type of power overload event that has occurred.
 /// </summary>
-public enum PowerOverloadCbEventId
+internal enum PowerOverloadCbEventId
 {
     OverloadDetected = 0,
     OverloadCorrected = 1

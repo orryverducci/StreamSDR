@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// Provides extension methods to the <see cref="HardwareVersion"/> enum.
 /// </summary>
-public static class HardwareVersionExtension
+internal static class HardwareVersionExtension
 {
     /// <summary>
     /// Converts the hardware version to the device model as a string.

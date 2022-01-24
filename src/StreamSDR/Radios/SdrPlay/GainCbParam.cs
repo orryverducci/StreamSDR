@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a gain change event.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct GainCbParam
+internal struct GainCbParam
 {
     /// <summary>
     /// The current RF gain reduction.

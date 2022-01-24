@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The available ports for AM reception.
 /// </summary>
-public enum Rsp2AmPortSelect
+internal enum Rsp2AmPortSelect
 {
     AmPort2 = 0,
     AmPort1 = 1

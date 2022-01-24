@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a RSP2 device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct Rsp2Params
+internal struct Rsp2Params
 {
     /// <summary>
     /// The state of the external reference output. <see langword="true"/> if enabled, <see langword="false"/> otherwise.

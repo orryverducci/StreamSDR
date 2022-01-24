@@ -23,7 +23,7 @@ namespace StreamSDR.Logging;
 /// <summary>
 /// Provides loggers that outputs to the console using the <see cref="N:Spectre.Console"/> library.
 /// </summary>
-public class SpectreConsoleLoggerProvider : ILoggerProvider
+internal class SpectreConsoleLoggerProvider : ILoggerProvider
 {
     /// <summary>
     /// The directory of loggers for each category.

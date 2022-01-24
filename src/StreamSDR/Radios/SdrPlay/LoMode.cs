@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The available local oscillator frequencies.
 /// </summary>
-public enum LoMode
+internal enum LoMode
 {
     LoUndefined = 0,
     LoAuto = 1,

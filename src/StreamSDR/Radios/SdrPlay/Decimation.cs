@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for decimation on a SDRPlay tuner.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct Decimation
+internal struct Decimation
 {
     /// <summary>
     /// The state of decimation. <see langword="true"/> if enabled, <see langword="false"/> otherwise.

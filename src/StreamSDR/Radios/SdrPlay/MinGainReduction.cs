@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The available minimum gain reduction modes.
 /// </summary>
-public enum MinGainReduction
+internal enum MinGainReduction
 {
     ExtendedMinGr = 0,
     NormalMinGr = 20

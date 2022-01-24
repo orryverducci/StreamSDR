@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay tuner.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct TunerParams
+internal struct TunerParams
 {
     /// <summary>
     /// The tuner bandwidth. Defaults to <see cref="BwMhz.Bw200"/> (200 kHz).

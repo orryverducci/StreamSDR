@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay tuner's DC offset control.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct DcOffset
+internal struct DcOffset
 {
     [MarshalAs(UnmanagedType.U8)]
     public bool DcEnable;

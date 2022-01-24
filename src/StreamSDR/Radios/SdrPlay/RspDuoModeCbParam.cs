@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a RSPduo mode change event.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct RspDuoModeCbParam
+internal struct RspDuoModeCbParam
 {
     /// <summary>
     /// The mode change on an RSPduo.

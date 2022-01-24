@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay tuner RF frequency.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct RfFreq
+internal struct RfFreq
 {
     /// <summary>
     /// The tuner RF centre frequency in Hertz. Defaults to 200000000.0 Hz (200 MHz).

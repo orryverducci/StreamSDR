@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a RSPdx device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct RspDxParams
+internal struct RspDxParams
 {
     /// <summary>
     /// The state of HDR mode. <see langword="true"/> if enabled, <see langword="false"/> otherwise.

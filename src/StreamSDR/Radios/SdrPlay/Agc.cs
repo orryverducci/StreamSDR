@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for the automatic gain control on a SDRPlay tuner.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct Agc
+internal struct Agc
 {
     /// <summary>
     /// The state of the AGC and the control scheme it is using.

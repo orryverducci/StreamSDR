@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a RSPduo device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct RspDuoParams
+internal struct RspDuoParams
 {
     /// <summary>
     /// The state of the external reference output. <see langword="true"/> if enabled, <see langword="false"/> otherwise.

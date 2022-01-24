@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a power overload event.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct PowerOverloadCbParam
+internal struct PowerOverloadCbParam
 {
     /// <summary>
     /// The type of power overload event that has occurred.

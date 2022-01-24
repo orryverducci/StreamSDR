@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// Provides the lookup tables to translate a gain level to the LNA and IF gain settings for each device and band.
 /// </summary>
-public static class GainTables
+internal static class GainTables
 {
     #region Tables for the RSP1
     public static readonly byte[] Rsp1AmLnaStates = { 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

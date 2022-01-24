@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The RF radio bands used to determine the gain to be applied.
 /// </summary>
-public enum RadioBand
+internal enum RadioBand
 {
     Unknown,
     AM,

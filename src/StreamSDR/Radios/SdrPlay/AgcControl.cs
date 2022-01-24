@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The available AGC control schemes.
 /// </summary>
-public enum AgcControl
+internal enum AgcControl
 {
     AgcDisable = 0,
     Agc100HZ = 1,

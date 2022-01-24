@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay RSPdx tuner.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct RspDxTunerParams
+internal struct RspDxTunerParams
 {
     /// <summary>
     /// The bandwidth HDR mode is active in.

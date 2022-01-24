@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The available bandwidths for HDR mode.
 /// </summary>
-public enum RspDxHdrModeBw
+internal enum RspDxHdrModeBw
 {
     HdrModeBw200 = 0,
     HdrModeBw500 = 1,

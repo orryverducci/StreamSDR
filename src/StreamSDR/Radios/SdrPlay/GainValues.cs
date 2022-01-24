@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay tuner LNA gain values.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct GainValues
+internal struct GainValues
 {
     public float Curr;
 

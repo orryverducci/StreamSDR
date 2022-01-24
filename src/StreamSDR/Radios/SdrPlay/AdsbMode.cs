@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The available ADS-B reception modes.
 /// </summary>
-public enum AdsbMode
+internal enum AdsbMode
 {
     AdsbDecimation = 0,
     AdsbNoDecimationLowpass = 1,

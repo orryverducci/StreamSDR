@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The device reset flags.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct ResetFlags
+internal struct ResetFlags
 {
     [MarshalAs(UnmanagedType.U8)]
     public bool ResetGainUpdate;

@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a RSP1A device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct Rsp1aParams
+internal struct Rsp1aParams
 {
     /// <summary>
     /// The state of the broadcast band (AM/FM) notch filter. <see langword="true"/> if enabled, <see langword="false"/> otherwise.

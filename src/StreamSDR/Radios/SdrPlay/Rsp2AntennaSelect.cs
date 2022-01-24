@@ -19,8 +19,7 @@ namespace StreamSDR.Radios.SdrPlay;
 
 /// <summary>
 /// The available antennas.
-/// </summary>
-public enum Rsp2AntennaSelect
+internal enum Rsp2AntennaSelect
 {
     AntennaA = 5,
     AntennaB = 6

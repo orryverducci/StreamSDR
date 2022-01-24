@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The tuner bandwidths that are available.
 /// </summary>
-public enum BwMhz
+internal enum BwMhz
 {
     Undefined = 0,
     Bw200 = 200,

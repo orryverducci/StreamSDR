@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay tuner DC calibration.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct DcOffsetTuner
+internal struct DcOffsetTuner
 {
     /// <summary>
     /// The DC calibration mode. Defaults to 3 (periodic mode).

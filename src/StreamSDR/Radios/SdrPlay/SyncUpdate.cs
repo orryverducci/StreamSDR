@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for synchronous updates.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct SyncUpdate
+internal struct SyncUpdate
 {
     public uint SampleNum;
 

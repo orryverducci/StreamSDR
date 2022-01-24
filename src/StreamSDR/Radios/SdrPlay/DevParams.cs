@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct DevParams
+internal struct DevParams
 {
     /// <summary>
     /// The tuner frequency correction in parts per million (PPM). Defaults to 0.

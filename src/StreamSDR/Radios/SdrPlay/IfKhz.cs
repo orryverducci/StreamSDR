@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The available tuner intermediate frequencies.
 /// </summary>
-public enum IfKhz
+internal enum IfKhz
 {
     Undefined = -1,
     IfZero = 0,

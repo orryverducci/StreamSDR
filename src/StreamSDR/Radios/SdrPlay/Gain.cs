@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for a SDRPlay tuner gain setting.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct Gain
+internal struct Gain
 {
     /// <summary>
     /// The gain reduction in dB. Defaults to 50 dB.

@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The transfer modes available.
 /// </summary>
-public enum TransferMode
+internal enum TransferMode
 {
     ISOCH = 0,
     BULK = 1

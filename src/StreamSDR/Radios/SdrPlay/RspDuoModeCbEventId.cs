@@ -20,7 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The mode change on an RSPduo.
 /// </summary>
-public enum RspDuoModeCbEventId
+internal enum RspDuoModeCbEventId
 {
     MasterInitialised = 0,
     SlaveAttached = 1,

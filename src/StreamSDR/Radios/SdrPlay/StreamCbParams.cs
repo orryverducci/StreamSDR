@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for the stream callback.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct StreamCbParams
+internal struct StreamCbParams
 {
     public uint FirstSampleNum;
 

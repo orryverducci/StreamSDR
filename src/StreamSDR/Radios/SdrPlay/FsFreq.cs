@@ -21,7 +21,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// The parameters for the sampling rate of a SDRPlay device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct FsFreq
+internal struct FsFreq
 {
     /// <summary>
     /// The sample rate the device is operating at in Hertz. Defaults to 2 MHz.
