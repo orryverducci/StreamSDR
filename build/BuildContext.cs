@@ -28,9 +28,9 @@ namespace StreamSDR.Build
     public class BuildContext : FrostingContext
     {
         /// <summary>
-        /// The configuration to be passed to MsBuild.
+        /// The configuration to used while building the application and libraries.
         /// </summary>
-        public string MsBuildConfiguration { get; private set; }
+        public string BuildConfiguration { get; private set; }
 
         /// <summary>
         /// Initialises a new instance of the <see cref="BuildContext"/> class.
@@ -39,7 +39,7 @@ namespace StreamSDR.Build
         public BuildContext(ICakeContext context) : base(context)
         {
             // Set build properties from passed in arguments
-            MsBuildConfiguration = context.Argument("configuration", "Release");
+            BuildConfiguration = context.Argument("configuration", "Release");
         }
     }
 }

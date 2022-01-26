@@ -32,7 +32,7 @@ namespace StreamSDR.Build
         {
             context.DotNetPublish("../src/StreamSDR/StreamSDR.csproj", new DotNetPublishSettings
             {
-                Configuration = context.MsBuildConfiguration,
+                Configuration = context.BuildConfiguration,
                 OutputDirectory = "../artifacts"
             });
         }
