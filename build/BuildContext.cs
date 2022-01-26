@@ -30,7 +30,7 @@ namespace StreamSDR.Build
         /// <summary>
         /// The configuration to be passed to MsBuild.
         /// </summary>
-        public string MsBuildConfiguration { get; set; }
+        public string MsBuildConfiguration { get; private set; }
 
         /// <summary>
         /// Initialises a new instance of the <see cref="BuildContext"/> class.
