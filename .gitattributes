@@ -10,9 +10,11 @@
 *.json text
 .gitattributes text
 .gitignore text
+.gitmodules text eol=lf
 .editorconfig text
 
 # Don't export git and GitHub files
 .gitattributes export-ignore
 .gitignore export-ignore
+.gitmodules export-ignore
 /.github export-ignore
