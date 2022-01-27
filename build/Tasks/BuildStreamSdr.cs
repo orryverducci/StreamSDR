@@ -16,8 +16,8 @@
  */
 
 using System;
-using Cake.Common.Tools.DotNetCore;
-using Cake.Common.Tools.DotNetCore.Publish;
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Publish;
 using Cake.Frosting;
 
 namespace StreamSDR.Build
@@ -30,9 +30,9 @@ namespace StreamSDR.Build
     {
         public override void Run(BuildContext context)
         {
-            context.DotNetCorePublish("../src/StreamSDR/StreamSDR.csproj", new DotNetCorePublishSettings
+            context.DotNetPublish("../src/StreamSDR/StreamSDR.csproj", new DotNetPublishSettings
             {
-                Configuration = context.MsBuildConfiguration,
+                Configuration = context.BuildConfiguration,
                 OutputDirectory = "../artifacts"
             });
         }
