@@ -24,42 +24,41 @@ using Cake.Core;
 using Cake.Core.IO;
 using Cake.Frosting;
 
-namespace StreamSDR.Build
+namespace StreamSDR.Build;
+
+/// <summary>
+/// Controls the global lifetime of the Cake build.
+/// </summary>
+public class BuildLifetime : FrostingLifetime<BuildContext>
 {
     /// <summary>
-    /// Controls the global lifetime of the Cake build.
+    /// Setup executed before the build. Used to locate MSBuild on the Windows platform.
     /// </summary>
-    public class BuildLifetime : FrostingLifetime<BuildContext>
+    /// <param name="context">The build context.</param>
+    public override void Setup(BuildContext context)
     {
-        /// <summary>
-        /// Setup executed before the build. Used to locate MSBuild on the Windows platform.
-        /// </summary>
-        /// <param name="context">The build context.</param>
-        public override void Setup(BuildContext context)
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            // Find Visual Studio
+            DirectoryPath? installationPath = context.VSWhereLatest(new VSWhereLatestSettings
             {
-                // Find Visual Studio
-                DirectoryPath? installationPath = context.VSWhereLatest(new VSWhereLatestSettings
-                {
-                    IncludePrerelease = true,
-                    Requires = "Microsoft.Component.MSBuild Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64",
-                });
+                IncludePrerelease = true,
+                Requires = "Microsoft.Component.MSBuild Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64",
+            });
 
-                // Find MSBuild and check it is installed
-                FilePath? msBuildPath = installationPath?.CombineWithFilePath("./MsBuild/Current/Bin/amd64/MSBuild.exe");
-                if (msBuildPath != null && context.FileExists(msBuildPath))
-                {
-                     context.MsBuildPath = msBuildPath;
-                }
+            // Find MSBuild and check it is installed
+            FilePath? msBuildPath = installationPath?.CombineWithFilePath("./MsBuild/Current/Bin/amd64/MSBuild.exe");
+            if (msBuildPath != null && context.FileExists(msBuildPath))
+            {
+                 context.MsBuildPath = msBuildPath;
             }
         }
-
-        /// <summary>
-        /// Teardown executed after the build. Empty method required to inherit from <see cref="FrostingLifetime{TContext}"/>.
-        /// </summary>
-        /// <param name="context">The build context.</param>
-        /// <param name="info">Teardown information.</param>
-        public override void Teardown(BuildContext context, ITeardownContext info) { }
     }
+
+    /// <summary>
+    /// Teardown executed after the build. Empty method required to inherit from <see cref="FrostingLifetime{TContext}"/>.
+    /// </summary>
+    /// <param name="context">The build context.</param>
+    /// <param name="info">Teardown information.</param>
+    public override void Teardown(BuildContext context, ITeardownContext info) { }
 }

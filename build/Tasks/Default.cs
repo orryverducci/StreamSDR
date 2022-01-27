@@ -18,15 +18,14 @@
 using System;
 using Cake.Frosting;
 
-namespace StreamSDR.Build
+namespace StreamSDR.Build;
+
+/// <summary>
+/// Task to build the application.
+/// </summary>
+[TaskName("Default")]
+[IsDependentOn(typeof(BuildLibUsbTask))]
+[IsDependentOn(typeof(BuildStreamSdrTask))]
+public class DefaultTask : FrostingTask
 {
-    /// <summary>
-    /// Task to build the application.
-    /// </summary>
-    [TaskName("Default")]
-    [IsDependentOn(typeof(BuildLibUsbTask))]
-    [IsDependentOn(typeof(BuildStreamSdrTask))]
-    public class DefaultTask : FrostingTask
-    {
-    }
 }

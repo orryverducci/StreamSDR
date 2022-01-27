@@ -22,36 +22,35 @@ using Cake.Common.Tools.MSBuild;
 using Cake.Core.IO;
 using Cake.Frosting;
 
-namespace StreamSDR.Build
+namespace StreamSDR.Build;
+
+/// <summary>
+/// Task to build the libusb library.
+/// </summary>
+[TaskName("BuildLibusb")]
+public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
 {
-    /// <summary>
-    /// Task to build the libusb library.
-    /// </summary>
-    [TaskName("BuildLibusb")]
-    public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
+    public override bool ShouldRun(BuildContext context) => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+    public override void Run(BuildContext context)
     {
-        public override bool ShouldRun(BuildContext context) => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-        public override void Run(BuildContext context)
+        if (context.MsBuildPath == null)
         {
-            if (context.MsBuildPath == null)
-            {
-                throw new Exception("Unable to locate MSBuild or the Visual Studio 2019 C++ build tools");
-            }
-
-            context.MSBuild("../contrib/libusb/msvc/libusb_dll_2019.vcxproj", new MSBuildSettings
-            {
-                Configuration = context.BuildConfiguration,
-                MSBuildPlatform = MSBuildPlatform.x64,
-                ToolPath = context.MsBuildPath
-            });
-
-            if (context.FileExists("../artifacts/libusb-1.0.dll"))
-            {
-                context.DeleteFile("../artifacts/libusb-1.0.dll");
-            }
-
-            context.CopyFile("../contrib/libusb/Win32/Release/dll/libusb-1.0.dll", "../artifacts/libusb-1.0.dll");
+            throw new Exception("Unable to locate MSBuild or the Visual Studio 2019 C++ build tools");
         }
+
+        context.MSBuild("../contrib/libusb/msvc/libusb_dll_2019.vcxproj", new MSBuildSettings
+        {
+            Configuration = context.BuildConfiguration,
+            MSBuildPlatform = MSBuildPlatform.x64,
+            ToolPath = context.MsBuildPath
+        });
+
+        if (context.FileExists("../artifacts/libusb-1.0.dll"))
+        {
+            context.DeleteFile("../artifacts/libusb-1.0.dll");
+        }
+
+        context.CopyFile("../contrib/libusb/Win32/Release/dll/libusb-1.0.dll", "../artifacts/libusb-1.0.dll");
     }
 }

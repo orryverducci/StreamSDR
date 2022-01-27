@@ -20,21 +20,20 @@ using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Publish;
 using Cake.Frosting;
 
-namespace StreamSDR.Build
+namespace StreamSDR.Build;
+
+/// <summary>
+/// Task to build the StreamSDR application.
+/// </summary>
+[TaskName("BuildStreamSDR")]
+public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
 {
-    /// <summary>
-    /// Task to build the StreamSDR application.
-    /// </summary>
-    [TaskName("BuildStreamSDR")]
-    public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
+    public override void Run(BuildContext context)
     {
-        public override void Run(BuildContext context)
+        context.DotNetPublish("../src/StreamSDR.csproj", new DotNetPublishSettings
         {
-            context.DotNetPublish("../src/StreamSDR.csproj", new DotNetPublishSettings
-            {
-                Configuration = context.BuildConfiguration,
-                OutputDirectory = "../artifacts"
-            });
-        }
+            Configuration = context.BuildConfiguration,
+            OutputDirectory = "../artifacts"
+        });
     }
 }
