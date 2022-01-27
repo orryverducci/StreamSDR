@@ -15,10 +15,8 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Publish;
-using Cake.Frosting;
 
 namespace StreamSDR.Build;
 

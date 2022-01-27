@@ -15,14 +15,9 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Runtime.InteropServices;
-using Cake.Common.IO;
 using Cake.Common.Tools.VSWhere;
 using Cake.Common.Tools.VSWhere.Latest;
-using Cake.Core;
-using Cake.Core.IO;
-using Cake.Frosting;
 
 namespace StreamSDR.Build;
 

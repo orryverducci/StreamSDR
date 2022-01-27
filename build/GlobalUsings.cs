@@ -15,19 +15,9 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Build;
-
-/// <summary>
-/// Task to clean up all the artifacts left by builds.
-/// </summary>
-[TaskName("Clean")]
-public sealed class CleanTask : FrostingTask<BuildContext>
-{
-    public override void Run(BuildContext context)
-    {
-        context.CleanDirectory($"../artifacts");
-        context.CleanDirectory($"../src/bin");
-        context.CleanDirectory($"../src/obj");
-        context.CleanDirectory($"../contrib/libusb/Win32");
-    }
-}
+global using System;
+global using Cake.Frosting;
+global using Cake.Common;
+global using Cake.Common.IO;
+global using Cake.Core;
+global using Cake.Core.IO;

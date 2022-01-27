@@ -15,9 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using Cake.Frosting;
-
 namespace StreamSDR.Build;
 
 /// <summary>
