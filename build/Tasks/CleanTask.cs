@@ -30,8 +30,8 @@ namespace StreamSDR.Build
         public override void Run(BuildContext context)
         {
             context.CleanDirectory($"../artifacts");
-            context.CleanDirectory($"../src/StreamSDR/bin");
-            context.CleanDirectory($"../src/StreamSDR/obj");
+            context.CleanDirectory($"../src/bin");
+            context.CleanDirectory($"../src/obj");
             context.CleanDirectory($"../contrib/libusb/Win32");
         }
     }
