@@ -18,6 +18,7 @@
 using System;
 using Cake.Common;
 using Cake.Core;
+using Cake.Core.IO;
 using Cake.Frosting;
 
 namespace StreamSDR.Build
@@ -31,6 +32,11 @@ namespace StreamSDR.Build
         /// The configuration to used while building the application and libraries.
         /// </summary>
         public string BuildConfiguration { get; private set; }
+
+        /// <summary>
+        /// The path to the installation of MSBuild (only used on the Windows platform).
+        /// </summary>
+        public FilePath? MsBuildPath { get; set; }
 
         /// <summary>
         /// Initialises a new instance of the <see cref="BuildContext"/> class.

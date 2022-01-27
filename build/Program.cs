@@ -31,6 +31,7 @@ namespace StreamSDR.Build
         /// <param name="args">The command line arguments the application is launched with.</param>
         public static int Main(string[] args) =>
             new CakeHost().UseContext<BuildContext>()
+                          .UseLifetime<BuildLifetime>()
                           .Run(args);
     }
 }

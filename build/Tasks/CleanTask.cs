@@ -32,6 +32,7 @@ namespace StreamSDR.Build
             context.CleanDirectory($"../artifacts");
             context.CleanDirectory($"../src/StreamSDR/bin");
             context.CleanDirectory($"../src/StreamSDR/obj");
+            context.CleanDirectory($"../contrib/libusb/Win32");
         }
     }
 }
