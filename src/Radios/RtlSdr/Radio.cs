@@ -195,7 +195,7 @@ internal class Radio : IRadio
                 TunerType tunerType = Tuner;
                 if (tunerType == TunerType.R820T || tunerType == TunerType.R828D)
                 {
-                    _logger.LogError($"Unable to set offset tuning as it is not supported by this type of tuner");
+                    _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
                     return;
                 }
 
