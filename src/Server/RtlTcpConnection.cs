@@ -55,20 +55,7 @@ internal class RtlTcpConnection : IDisposable
     /// <summary>
     /// The IP address of the connected client.
     /// </summary>
-    public IPAddress? ClientIP
-    {
-        get
-        {
-            if (_tcpClient.Client.RemoteEndPoint != null)
-            {
-                return ((IPEndPoint)_tcpClient.Client.RemoteEndPoint).Address;
-            }
-            else
-            {
-                return IPAddress.Any;
-            }
-        }
-    }
+    public IPAddress ClientIP => _tcpClient.Client.RemoteEndPoint != null ? ((IPEndPoint)_tcpClient.Client.RemoteEndPoint).Address : IPAddress.Any;
     #endregion
 
     #region Events
