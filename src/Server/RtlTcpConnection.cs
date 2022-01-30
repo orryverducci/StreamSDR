@@ -26,7 +26,7 @@ internal class RtlTcpConnection : IDisposable
 {
     #region Private fields
     /// <summary>
-    /// <see langword="true"/> if Dispose() has been called, <see langword="false"/> otherwise.
+    /// <see langword="true"/> if <see cref="Dispose"/> has been called, <see langword="false"/> otherwise.
     /// </summary>
     private bool _disposed = false;
 
