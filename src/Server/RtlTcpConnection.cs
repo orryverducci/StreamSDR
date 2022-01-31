@@ -26,7 +26,7 @@ internal class RtlTcpConnection : IDisposable
 {
     #region Private fields
     /// <summary>
-    /// <see langword="true"/> if Dispose() has been called, <see langword="false"/> otherwise.
+    /// <see langword="true"/> if <see cref="Dispose"/> has been called, <see langword="false"/> otherwise.
     /// </summary>
     private bool _disposed = false;
 
@@ -55,20 +55,7 @@ internal class RtlTcpConnection : IDisposable
     /// <summary>
     /// The IP address of the connected client.
     /// </summary>
-    public IPAddress? ClientIP
-    {
-        get
-        {
-            if (_tcpClient.Client.RemoteEndPoint != null)
-            {
-                return ((IPEndPoint)_tcpClient.Client.RemoteEndPoint).Address;
-            }
-            else
-            {
-                return IPAddress.Any;
-            }
-        }
-    }
+    public IPAddress ClientIP => _tcpClient.Client.RemoteEndPoint != null ? ((IPEndPoint)_tcpClient.Client.RemoteEndPoint).Address : IPAddress.Any;
     #endregion
 
     #region Events
