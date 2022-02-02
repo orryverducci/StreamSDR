@@ -103,6 +103,7 @@ csharp_style_inlined_variable_declaration = true:warning
 
 # Code block preferences
 csharp_prefer_braces = true:warning
+csharp_style_namespace_declarations = file_scoped:warning
 
 # Unused value preferences
 csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
