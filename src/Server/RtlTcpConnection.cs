@@ -41,9 +41,24 @@ internal class RtlTcpConnection : IDisposable
     private readonly CancellationTokenSource _connectionCancellationToken = new();
 
     /// <summary>
-    /// The worker thread used to communicate with the client.
+    /// The worker thread used to transmit data to the client.
     /// </summary>
-    private readonly Thread _communicationThread;
+    private readonly Thread _dataTxThread;
+
+    /// <summary>
+    /// The worker thread used to receive commands from the client.
+    /// </summary>
+    private readonly Thread _commandRxThread;
+
+    /// <summary>
+    /// The worker thread used to process a disconnection.
+    /// </summary>
+    private readonly Thread _disconnectThread;
+
+    /// <summary>
+    /// A reset event used by the communication threads to indicate a client disconnection.
+    /// </summary>
+    private readonly ManualResetEvent _disconnectEvent = new(false);
 
     /// <summary>
     /// The queue of sample buffers waiting to be sent to the client.
@@ -55,7 +70,7 @@ internal class RtlTcpConnection : IDisposable
     /// <summary>
     /// The IP address of the connected client.
     /// </summary>
-    public IPAddress ClientIP => _tcpClient.Client.RemoteEndPoint != null ? ((IPEndPoint)_tcpClient.Client.RemoteEndPoint).Address : IPAddress.Any;
+    public IPAddress ClientIP { get; private set; }
     #endregion
 
     #region Events
@@ -79,20 +94,31 @@ internal class RtlTcpConnection : IDisposable
     /// <param name="tunerGainLevels">The number of levels of gain supported by the radio tuner.</param>
     public RtlTcpConnection(TcpClient tcpClient, Radios.TunerType tuner, uint tunerGainLevels)
     {
-        // Store a reference to the TCP client and its network stream
+        // Store a reference to the TCP client and the IP address of its end point
         _tcpClient = tcpClient;
+        ClientIP = _tcpClient.Client.RemoteEndPoint != null ? ((IPEndPoint)_tcpClient.Client.RemoteEndPoint).Address : IPAddress.Any;
 
-        // Create the client communication worker thread
-        _communicationThread = new(CommunicationWorker)
+        // Create the client communication worker threads
+        _dataTxThread = new(DataTransmissionWorker)
         {
-            Name = "ClientCommunicationThread"
+            Name = $"{ClientIP}DataTransmissionThread"
+        };
+        _commandRxThread = new(CommandWorker)
+        {
+            Name = $"{ClientIP}CommandThread"
+        };
+        _disconnectThread = new(DisconnectWorker)
+        {
+            Name = $"{ClientIP}DisconnectThread"
         };
 
         // Add the dongle information header to the buffer
         SendDongleInfoHeader(tuner, tunerGainLevels);
 
-        // Start the client communication worker thread
-        _communicationThread.Start();
+        // Start the client communication worker threads
+        _disconnectThread.Start();
+        _dataTxThread.Start();
+        _commandRxThread.Start();
     }
 
     /// <summary>
@@ -119,14 +145,18 @@ internal class RtlTcpConnection : IDisposable
         // If being disposed by the managed runtime, release all the managed resources
         if (disposing)
         {
-            // Signal to the communication thread that it should stop
+            // Signal to the communication threads that they should stop if they haven't already
             _connectionCancellationToken.Cancel();
+
+            // Unblock the disconnect thread, allowing it to terminate
+            _disconnectEvent.Set();
 
             // Dispose of the queue of sample buffers
             _buffers.Dispose();
 
-            // Wait until the communication thread stops
-            _communicationThread.Join();
+            // Wait for the communication threads to stop
+            _dataTxThread.Join();
+            _commandRxThread.Join();
         }
 
         // Dispose the tcpClient and all its resources
@@ -139,9 +169,9 @@ internal class RtlTcpConnection : IDisposable
 
     #region Communication handling methods
     /// <summary>
-    /// Worker for the communication thead. Continually sends sample buffers to the client.
+    /// Worker for the data transmission thread. Continually sends sample buffers to the client.
     /// </summary>
-    private void CommunicationWorker()
+    private void DataTransmissionWorker()
     {
         while (!_connectionCancellationToken.IsCancellationRequested)
         {
@@ -152,34 +182,89 @@ internal class RtlTcpConnection : IDisposable
 
                 // Write the buffer to the network stream
                 _tcpClient.GetStream().Write(buffer, 0, buffer.Length);
-
-                // Check if any commands have been received, and send them to the server
-                while (_tcpClient.GetStream().DataAvailable)
-                {
-                    Span<byte> commandData = new(new byte[5]);
-                    _tcpClient.GetStream().Read(commandData);
-
-                    // Split the data and convert the values from big endian (network order) to little endian if required
-                    RtlTcpCommand command = new();
-                    command.Type = (RtlTcpCommandType)commandData[0];
-                    Span<byte> valueSpan = commandData.Slice(1);
-                    if (BitConverter.IsLittleEndian)
-                    {
-                        valueSpan.Reverse();
-                    }
-                    command.Value = BitConverter.ToUInt32(valueSpan);
-
-                    CommandReceived?.Invoke(this, command);
-                }
+            }
+            catch (InvalidOperationException)
+            {
+                // Stop the connection if an exception is thrown due to the client disconnecting
+                _disconnectEvent.Set();
+                return;
             }
             catch (Exception ex)
             {
-                if (!(ex is OperationCanceledException))
+                // Rethrow the exception, unless it's for the buffer take operation being cancelled, which happens on dispose
+                if (ex is not OperationCanceledException)
                 {
-                    Disconnected?.Invoke(this, EventArgs.Empty);
+                    throw;
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Worker for the client command thread. Checks if any commands have been received and sends them to the server.
+    /// </summary>
+    private void CommandWorker()
+    {
+        while (!_connectionCancellationToken.IsCancellationRequested)
+        {
+            try
+            {
+                // Wait for a command to be received from the client
+                Span<byte> receivedData = new(new byte[5]);
+                int bytesRead = _tcpClient.GetStream().Read(receivedData);
+
+                // If nothing is returned stop the connection as the client has disconnected
+                if (bytesRead == 0)
+                {
+                    _disconnectEvent.Set();
+                    return;
+                }
+
+                // Split the data and convert the values from big endian (network order) to little endian if required
+                RtlTcpCommand command = new();
+                command.Type = (RtlTcpCommandType)receivedData[0];
+                Span<byte> value = receivedData.Slice(1);
+                if (BitConverter.IsLittleEndian)
+                {
+                    value.Reverse();
+                }
+                command.Value = BitConverter.ToUInt32(value);
+
+                // Fire the command received event
+                CommandReceived?.Invoke(this, command);
+            }
+            catch (System.IO.IOException)
+            {
+                // Stop the connection if an exception is thrown due to the client disconnecting
+                _disconnectEvent.Set();
+                return;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Worker for the disconnection thread. Handles the disconnection of a client when detected by the communication threads.
+    /// </summary>
+    private void DisconnectWorker()
+    {
+        // Wait for a disconnection
+        _disconnectEvent.WaitOne();
+
+        // Check that cancellation hasn't already been requested (e.g. by dispose)
+        if (_connectionCancellationToken.IsCancellationRequested)
+        {
+            return;
+        }
+
+        // Signal to the communication threads that they should stop if they haven't already
+        _connectionCancellationToken.Cancel();
+
+        // Wait for the communication threads to stop
+        _dataTxThread.Join();
+        _commandRxThread.Join();
+
+        // Fire the disconnected event
+        Disconnected?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>

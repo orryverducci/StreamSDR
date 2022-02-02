@@ -254,7 +254,7 @@ internal class RtlTcpServer : IHostedService
 
             // Dispose of the connection in a thread from the thread pool. This prevents the connection
             // worker thread waiting on itself to stop, which never happens
-            Task.Run(() => connection.Dispose());
+            connection.Dispose();
 
             // Log the disconnection
             _logger.LogInformation($"Disconnected from {connection.ClientIP}");
