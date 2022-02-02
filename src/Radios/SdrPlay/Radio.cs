@@ -787,11 +787,11 @@ internal unsafe class Radio : IRadio
                 Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Ctrl_OverloadMsgAck, ReasonForUpdateExtension1.Ext1_None);
 
                 if (parameters->PowerOverloadParams.PowerOverloadChangeType == PowerOverloadCbEventId.OverloadDetected)
-		        {
+                {
                     _logger.LogWarning("ADC power overload has been detected");
                 }
                 else if (parameters->PowerOverloadParams.PowerOverloadChangeType == PowerOverloadCbEventId.OverloadCorrected)
-		        {
+                {
                     _logger.LogInformation("ADC power overload has been corrected");
                 }
 

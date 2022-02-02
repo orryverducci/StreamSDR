@@ -45,7 +45,7 @@ public class BuildLifetime : FrostingLifetime<BuildContext>
             FilePath? msBuildPath = installationPath?.CombineWithFilePath("./MsBuild/Current/Bin/amd64/MSBuild.exe");
             if (msBuildPath != null && context.FileExists(msBuildPath))
             {
-                 context.MsBuildPath = msBuildPath;
+                context.MsBuildPath = msBuildPath;
             }
         }
     }
