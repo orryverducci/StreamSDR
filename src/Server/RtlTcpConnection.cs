@@ -315,6 +315,12 @@ internal class RtlTcpConnection : IDisposable
     /// Send a sample buffer to the client.
     /// </summary>
     /// <param name="buffer">The buffer to be sent to the client.</param>
-    public void SendData(byte[] buffer) => _buffers.Add(buffer);
+    public void SendData(byte[] buffer)
+    {
+        if (!_disposed)
+        {
+            _buffers.Add(buffer);
+        }
+    }
     #endregion
 }
