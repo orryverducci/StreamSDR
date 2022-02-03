@@ -213,7 +213,7 @@ internal class RtlTcpConnection : IDisposable
                 Span<byte> receivedData = new(new byte[5]);
                 int bytesRead = _tcpClient.GetStream().Read(receivedData);
 
-                // If nothing is returned stop the connection as the client has disconnected
+                // If nothing is received stop the connection as the client has disconnected
                 if (bytesRead == 0)
                 {
                     _disconnectEvent.Set();
