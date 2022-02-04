@@ -39,6 +39,7 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
         {
             Configuration = context.BuildConfiguration,
             MSBuildPlatform = MSBuildPlatform.x64,
+            PlatformTarget = PlatformTarget.x64,
             ToolPath = context.MsBuildPath
         });
 
@@ -47,6 +48,6 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
             context.DeleteFile("../artifacts/libusb-1.0.dll");
         }
 
-        context.CopyFile("../contrib/libusb/Win32/Release/dll/libusb-1.0.dll", "../artifacts/libusb-1.0.dll");
+        context.CopyFile("../contrib/libusb/x64/Release/dll/libusb-1.0.dll", "../artifacts/libusb-1.0.dll");
     }
 }

@@ -28,6 +28,6 @@ public sealed class CleanTask : FrostingTask<BuildContext>
         context.CleanDirectory($"../artifacts");
         context.CleanDirectory($"../src/bin");
         context.CleanDirectory($"../src/obj");
-        context.CleanDirectory($"../contrib/libusb/Win32");
+        context.CleanDirectory($"../contrib/libusb/x64");
     }
 }
