@@ -27,7 +27,7 @@ namespace StreamSDR.Build;
 public class BuildLifetime : FrostingLifetime<BuildContext>
 {
     /// <summary>
-    /// Setup executed before the build. Used to locate MSBuild on the Windows platform.
+    /// Setup executed before the build. Used to locate MSBuild and CMake on the Windows platform.
     /// </summary>
     /// <param name="context">The build context.</param>
     public override void Setup(BuildContext context)
@@ -38,7 +38,7 @@ public class BuildLifetime : FrostingLifetime<BuildContext>
             DirectoryPath? installationPath = context.VSWhereLatest(new VSWhereLatestSettings
             {
                 IncludePrerelease = true,
-                Requires = "Microsoft.Component.MSBuild Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64",
+                Requires = "Microsoft.Component.MSBuild Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64 Microsoft.VisualStudio.Component.VC.CMake.Project",
             });
 
             // Find MSBuild and check it is installed
@@ -46,6 +46,13 @@ public class BuildLifetime : FrostingLifetime<BuildContext>
             if (msBuildPath != null && context.FileExists(msBuildPath))
             {
                 context.MsBuildPath = msBuildPath;
+            }
+
+            // Find MSBuild and check it is installed
+            FilePath? cMakePath = installationPath?.CombineWithFilePath("./Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe");
+            if (cMakePath != null && context.FileExists(cMakePath))
+            {
+                context.CMakePath = cMakePath;
             }
         }
     }

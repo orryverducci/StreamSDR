@@ -24,6 +24,7 @@ namespace StreamSDR.Build;
 /// Task to build the StreamSDR application.
 /// </summary>
 [TaskName("BuildStreamSDR")]
+[IsDependentOn(typeof(BuildRtlSdrTask))]
 public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)

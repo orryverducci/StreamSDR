@@ -29,5 +29,6 @@ public sealed class CleanTask : FrostingTask<BuildContext>
         context.CleanDirectory($"../src/bin");
         context.CleanDirectory($"../src/obj");
         context.CleanDirectory($"../contrib/libusb/x64");
+        context.CleanDirectory($"../contrib/rtl-sdr/build");
     }
 }

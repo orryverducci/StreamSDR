@@ -1,3 +1,6 @@
 [submodule "contrib/libusb"]
 	path = contrib/libusb
 	url = https://github.com/libusb/libusb
+[submodule "contrib/rtl-sdr"]
+	path = contrib/rtl-sdr
+	url = https://github.com/osmocom/rtl-sdr

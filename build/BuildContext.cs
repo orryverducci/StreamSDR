@@ -33,6 +33,11 @@ public class BuildContext : FrostingContext
     public FilePath? MsBuildPath { get; set; }
 
     /// <summary>
+    /// The path to the installation of CMake (only used on the Windows platform).
+    /// </summary>
+    public FilePath? CMakePath { get; set; }
+
+    /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
     /// </summary>
     /// <param name="context">The Cake context.</param>
