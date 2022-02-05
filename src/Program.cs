@@ -40,6 +40,8 @@ public class Program
     /// <param name="args">The command line arguments the application is launched with.</param>
     public static void Main(string[] args)
     {
+        Console.Title = "StreamSDR";
+
         AnsiConsole.Write(new FigletText("StreamSDR").LeftAligned().Color(Color.DeepSkyBlue1));
         string version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unavailable";
         AnsiConsole.Write(new Rule($"[DeepSkyBlue1]Version {version}[/]").LeftAligned());

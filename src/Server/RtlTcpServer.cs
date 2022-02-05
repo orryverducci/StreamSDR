@@ -93,8 +93,9 @@ internal class RtlTcpServer : IHostedService
         // Log that the server is starting
         _logger.LogInformation("Starting TCP server on port 1234");
 
-        // Start the radio
+        // Start the radio and update the app title
         _radio.Start();
+        Console.Title = $"StreamSDR - {_radio.Name}";
 
         if (!cancellationToken.IsCancellationRequested)
         {
