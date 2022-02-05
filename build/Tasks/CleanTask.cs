@@ -26,9 +26,37 @@ public sealed class CleanTask : FrostingTask<BuildContext>
     public override void Run(BuildContext context)
     {
         context.CleanDirectory($"../artifacts");
-        context.CleanDirectory($"../src/bin");
-        context.CleanDirectory($"../src/obj");
-        context.CleanDirectory($"../contrib/libusb/x64");
-        context.CleanDirectory($"../contrib/rtl-sdr/build");
+
+        if (context.DirectoryExists("../src/bin"))
+        {
+            context.DeleteDirectory(context.Directory("../src/bin").Path, new DeleteDirectorySettings
+            {
+                Recursive = true
+            });
+        }
+
+        if (context.DirectoryExists("../src/obj"))
+        {
+            context.DeleteDirectory(context.Directory("../src/obj").Path, new DeleteDirectorySettings
+            {
+                Recursive = true
+            });
+        }
+
+        if (context.DirectoryExists("../contrib/libusb/x64"))
+        {
+            context.DeleteDirectory(context.Directory("../contrib/libusb/x64").Path, new DeleteDirectorySettings
+            {
+                Recursive = true
+            });
+        }
+
+        if (context.DirectoryExists("../contrib/rtl-sdr/build"))
+        {
+            context.DeleteDirectory(context.Directory("../contrib/rtl-sdr/build").Path, new DeleteDirectorySettings
+            {
+                Recursive = true
+            });
+        }
     }
 }
