@@ -162,7 +162,10 @@ internal class Radio : IRadio
         {
             _logger.LogInformation($"Setting the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
 
-            if (_device == IntPtr.Zero || Interop.SetFreqCorrection(_device, value) != 0)
+            int result = Interop.SetFreqCorrection(_device, value);
+
+            // Log error if device is not initialised or if an error is returned, ignoring -2 which indicates the correction is already set to that value
+            if (_device == IntPtr.Zero || result > 0 || result == -1 || result < -2)
             {
                 _logger.LogError("Unable to set the frequency correction");
             }
