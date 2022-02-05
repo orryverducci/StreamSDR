@@ -2,12 +2,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Launch (console)",
+            "name": "StreamSDR (RTL-SDR)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/bin/Debug/net6.0/streamsdr.dll",
-            "args": [],
+            "args": ["radio=rtlsdr"],
+            "env": {
+                "DOTNET_ENVIRONMENT": "Development"
+            },
+            "cwd": "${workspaceFolder}/src",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "StreamSDR (SDRplay)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/bin/Debug/net6.0/streamsdr.dll",
+            "args": ["radio=sdrplay"],
+            "env": {
+                "DOTNET_ENVIRONMENT": "Development"
+            },
             "cwd": "${workspaceFolder}/src",
             "console": "internalConsole",
             "stopAtEntry": false
