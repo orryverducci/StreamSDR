@@ -205,12 +205,13 @@ internal class RtlTcpConnection : IDisposable
     /// </summary>
     private void CommandWorker()
     {
+        Span<byte> receivedData = new(new byte[5]);
+
         while (!_connectionCancellationToken.IsCancellationRequested)
         {
             try
             {
                 // Wait for a command to be received from the client
-                Span<byte> receivedData = new(new byte[5]);
                 int bytesRead = _tcpClient.GetStream().Read(receivedData);
 
                 // If nothing is received stop the connection as the client has disconnected
