@@ -6,9 +6,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/StreamSDR/bin/Debug/net5.0/streamsdr.dll",
+            "program": "${workspaceFolder}/src/bin/Debug/net6.0/streamsdr.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/StreamSDR",
+            "cwd": "${workspaceFolder}/src",
             "console": "internalConsole",
             "stopAtEntry": false
         },
