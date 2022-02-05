@@ -183,17 +183,17 @@ internal class RtlTcpConnection : IDisposable
                 // Write the buffer to the network stream
                 _tcpClient.GetStream().Write(buffer, 0, buffer.Length);
             }
-            catch (InvalidOperationException)
-            {
-                // Stop the connection if an exception is thrown due to the client disconnecting
-                _disconnectEvent.Set();
-                return;
-            }
             catch (Exception ex)
             {
-                // Rethrow the exception, unless it's for the buffer take operation being cancelled, which happens on dispose
-                if (ex is not OperationCanceledException)
+                if (ex is InvalidOperationException || ex is System.IO.IOException)
                 {
+                    // Stop the connection if an exception is thrown due to the client disconnecting
+                    _disconnectEvent.Set();
+                    return;
+                }
+                else if (ex is not OperationCanceledException)
+                {
+                    // Rethrow the exception, unless it's for the buffer take operation being cancelled, which happens on dispose
                     throw;
                 }
             }
