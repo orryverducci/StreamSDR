@@ -205,26 +205,59 @@ internal class RtlTcpConnection : IDisposable
     /// </summary>
     private void CommandWorker()
     {
-        Span<byte> receivedData = new(new byte[5]);
+        Span<byte> receivedCommand = new(new byte[5]);
+        Span<byte> partialCommand = new(new byte[5]);
+        Span<byte> dataBuffer = new(new byte[5]);
+        int commandBytesWritten = 0;
+        int bufferBytesRead = 0;
+        bool commandComplete = false;
 
         while (!_connectionCancellationToken.IsCancellationRequested)
         {
             try
             {
                 // Wait for a command to be received from the client
-                int bytesRead = _tcpClient.GetStream().Read(receivedData);
+                int bytesAvailable = _tcpClient.GetStream().Read(dataBuffer);
+                bufferBytesRead = 0;
 
                 // If nothing is received stop the connection as the client has disconnected
-                if (bytesRead == 0)
+                if (bytesAvailable == 0)
                 {
                     _disconnectEvent.Set();
                     return;
                 }
 
+                // Process the data to build a full command
+                while (bytesAvailable > bufferBytesRead)
+                {
+                    int bytesToRead = Math.Min(bytesAvailable - bufferBytesRead, 5 - commandBytesWritten);
+
+                    Span<byte> dataToCopy = dataBuffer.Slice(bufferBytesRead, bytesToRead);
+                    Span<byte> dataDestination = partialCommand.Slice(commandBytesWritten, bytesToRead);
+
+                    dataToCopy.CopyTo(dataDestination);
+
+                    bufferBytesRead += bytesToRead;
+                    commandBytesWritten += bytesToRead;
+
+                    if (commandBytesWritten == 5)
+                    {
+                        partialCommand.CopyTo(receivedCommand);
+                        commandComplete = true;
+                        commandBytesWritten = 0;
+                    }
+                }
+
+                // If we don't have a full command loop back to reading data
+                if (!commandComplete)
+                {
+                    continue;
+                }
+
                 // Split the data and convert the values from big endian (network order) to little endian if required
                 RtlTcpCommand command = new();
-                command.Type = (RtlTcpCommandType)receivedData[0];
-                Span<byte> value = receivedData.Slice(1);
+                command.Type = (RtlTcpCommandType)receivedCommand[0];
+                Span<byte> value = receivedCommand.Slice(1);
                 if (BitConverter.IsLittleEndian)
                 {
                     value.Reverse();
@@ -233,6 +266,9 @@ internal class RtlTcpConnection : IDisposable
 
                 // Fire the command received event
                 CommandReceived?.Invoke(this, command);
+
+                // Reset the command status
+                commandComplete = false;
             }
             catch (System.IO.IOException)
             {
