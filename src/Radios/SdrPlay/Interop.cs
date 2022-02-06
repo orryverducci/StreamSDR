@@ -15,6 +15,8 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using StreamSDR.Radios.SdrPlay.Hardware;
+
 namespace StreamSDR.Radios.SdrPlay;
 
 /// <summary>
@@ -41,7 +43,7 @@ internal class Interop
     /// <param name="reset">Indicates if local buffers should be dropped due to an API has re-initialisation.</param>
     /// <param name="cbContext">The user specific context passed to the callback.</param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void ReadDelegate(short* xi, short* xq, StreamCbParams* parameters, uint numSamples, uint reset, IntPtr cbContext);
+    public unsafe delegate void ReadDelegate(short* xi, short* xq, Callbacks.StreamCbParams* parameters, uint numSamples, uint reset, IntPtr cbContext);
 
     /// <summary>
     /// Delegate for the event callback function called by the API after calling the <see cref="Init"/> method.
@@ -51,7 +53,7 @@ internal class Interop
     /// <param name="parameters">Pointer to the event callback parameters struct.</param>
     /// <param name="cbContext">The user specific context passed to the callback.</param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void EventDelegate(Event eventId, TunerSelect tuner, EventParams* parameters, IntPtr cbContext);
+    public unsafe delegate void EventDelegate(Callbacks.Event eventId, TunerSelect tuner, Callbacks.EventParams* parameters, IntPtr cbContext);
 
     /// <summary>
     /// Opens the SDRPlay API for use
@@ -232,7 +234,7 @@ internal class Interop
     /// <param name="deviceParams">A pointer to the device parameters.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_GetDeviceParams")]
-    public static unsafe extern ApiError GetDeviceParams(IntPtr dev, out DeviceParams* deviceParams);
+    public static unsafe extern ApiError GetDeviceParams(IntPtr dev, out Parameters.DeviceParams* deviceParams);
 
     /// <summary>
     /// Initialises the device and starts reading samples from the device.
@@ -251,13 +253,13 @@ internal class Interop
     /// <param name="callbackFns">A pointer to the struct of callback functions to be called when samples have been received or events have occurred.</param>
     /// <param name="cbContext">A user specific context to pass to the callback function.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    public static ApiError Init(IntPtr dev, CallbackFunctions callbackFns, IntPtr cbContext)
+    public static ApiError Init(IntPtr dev, Callbacks.Functions callbackFns, IntPtr cbContext)
     {
         // Allocate memory to store the callback functions
-        IntPtr callbacksPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CallbackFunctions)));
+        IntPtr callbacksPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Callbacks.Functions)));
 
         // Copy the callback functions structure
-        Marshal.StructureToPtr<CallbackFunctions>(callbackFns, callbacksPtr, false);
+        Marshal.StructureToPtr<Callbacks.Functions>(callbackFns, callbacksPtr, false);
 
         // Initialise the device
         ApiError result = InitNative(dev, callbacksPtr, cbContext);

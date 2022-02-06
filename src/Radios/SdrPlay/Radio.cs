@@ -19,6 +19,8 @@ using System.Globalization;
 using System.Threading;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using StreamSDR.Radios.SdrPlay.Callbacks;
+using StreamSDR.Radios.SdrPlay.Hardware;
 
 namespace StreamSDR.Radios.SdrPlay;
 
@@ -78,7 +80,7 @@ internal unsafe class Radio : IRadio
     /// <summary>
     /// The pointer to the device parameters.
     /// </summary>
-    private DeviceParams* _deviceParams;
+    private Parameters.DeviceParams* _deviceParams;
 
     /// <summary>
     /// <see langword="true"/> if the device has been initialised and is running, <see langword="false"/> otherwise.
@@ -133,35 +135,35 @@ internal unsafe class Radio : IRadio
 
             if (value >= 8000000)
             {
-                _deviceParams->RxChannelA->TunerParams.BwType = BwMhz.Bw8000;
+                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw8000;
             }
             else if (value >= 7000000)
             {
-                _deviceParams->RxChannelA->TunerParams.BwType = BwMhz.Bw7000;
+                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw7000;
             }
             else if (value >= 6000000)
             {
-                _deviceParams->RxChannelA->TunerParams.BwType = BwMhz.Bw6000;
+                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw6000;
             }
             else if (value >= 5000000)
             {
-                _deviceParams->RxChannelA->TunerParams.BwType = BwMhz.Bw5000;
+                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw5000;
             }
             else if (value >= 1536000)
             {
-                _deviceParams->RxChannelA->TunerParams.BwType = BwMhz.Bw1536;
+                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw1536;
             }
             else if (value >= 600000)
             {
-                _deviceParams->RxChannelA->TunerParams.BwType = BwMhz.Bw600;
+                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw600;
             }
             else if (value >= 300000)
             {
-                _deviceParams->RxChannelA->TunerParams.BwType = BwMhz.Bw300;
+                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw300;
             }
             else
             {
-                _deviceParams->RxChannelA->TunerParams.BwType = BwMhz.Bw200;
+                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw200;
             }
 
             if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Dev_Fs | ReasonForUpdate.Tuner_BwType, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success)
@@ -423,12 +425,12 @@ internal unsafe class Radio : IRadio
     /// <inheritdoc/>
     public GainMode GainMode
     {
-        get => _deviceParams != null && _deviceParams->RxChannelA->CtrlParams.Agc.Enable != AgcControl.AgcDisable ? GainMode.Automatic : GainMode.Manual;
+        get => _deviceParams != null && _deviceParams->RxChannelA->CtrlParams.Agc.Enable != Parameters.Control.AgcControl.AgcDisable ? GainMode.Automatic : GainMode.Manual;
         set
         {
             _logger.LogInformation($"Setting the gain mode to {value}");
 
-            _deviceParams->RxChannelA->CtrlParams.Agc.Enable = value == GainMode.Automatic ? AgcControl.Agc50HZ : AgcControl.AgcDisable;
+            _deviceParams->RxChannelA->CtrlParams.Agc.Enable = value == GainMode.Automatic ? Parameters.Control.AgcControl.Agc50HZ : Parameters.Control.AgcControl.AgcDisable;
 
             if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Ctrl_Agc, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success)
             {
@@ -634,7 +636,7 @@ internal unsafe class Radio : IRadio
                 {
                     device.Tuner = TunerSelect.A;
                 }
-                device.RspDuoMode = RspDuoMode.SingleTuner;
+                device.RspDuoMode = RspDuo.Mode.SingleTuner;
             }
 
             // Select the device
@@ -675,7 +677,7 @@ internal unsafe class Radio : IRadio
             GainMode = GainMode.Automatic;
 
             // Initialise the device
-            CallbackFunctions callbacks = new()
+            Functions callbacks = new()
             {
                 StreamACbFn = _readCallback,
                 StreamBCbFn = _readCallback,
