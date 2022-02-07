@@ -32,7 +32,7 @@ public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
         context.DotNetPublish("../src/StreamSDR.csproj", new DotNetPublishSettings
         {
             Configuration = context.BuildConfiguration,
-            OutputDirectory = "../artifacts",
+            OutputDirectory = context.OutputFolder,
             Runtime = $"{context.Platform}-{context.Architecture}",
             SelfContained = true
         });

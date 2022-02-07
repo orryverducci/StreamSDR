@@ -50,6 +50,11 @@ public class BuildContext : FrostingContext
     public string Architecture { get; private set; }
 
     /// <summary>
+    /// The directory to output the build artifacts to.
+    /// </summary>
+    public DirectoryPath OutputFolder { get; private set; }
+
+    /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
     /// </summary>
     /// <param name="context">The Cake context.</param>
@@ -84,5 +89,8 @@ public class BuildContext : FrostingContext
         {
             throw new PlatformNotSupportedException("This architecture is not supported");
         }
+
+        // Set the folder for the build output
+        OutputFolder = context.Directory($"../artifacts/{Platform}-{Architecture}");
     }
 }

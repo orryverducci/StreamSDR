@@ -42,11 +42,11 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
             ToolPath = context.MsBuildPath
         });
 
-        if (context.FileExists("../artifacts/libusb-1.0.dll"))
+        if (context.FileExists(context.OutputFolder.CombineWithFilePath(context.File("libusb-1.0.dll"))))
         {
-            context.DeleteFile("../artifacts/libusb-1.0.dll");
+            context.DeleteFile(context.OutputFolder.CombineWithFilePath(context.File("libusb-1.0.dll")));
         }
 
-        context.CopyFile("../contrib/libusb/x64/Release/dll/libusb-1.0.dll", "../artifacts/libusb-1.0.dll");
+        context.CopyFile("../contrib/libusb/x64/Release/dll/libusb-1.0.dll", context.OutputFolder.CombineWithFilePath(context.File("libusb-1.0.dll")));
     }
 }

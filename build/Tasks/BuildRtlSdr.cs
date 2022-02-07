@@ -65,11 +65,11 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
             ToolPath = context.MsBuildPath
         });
 
-        if (context.FileExists("../artifacts/rtlsdr.dll"))
+        if (context.FileExists(context.OutputFolder.CombineWithFilePath(context.File("rtlsdr.dll"))))
         {
-            context.DeleteFile("../artifacts/rtlsdr.dll");
+            context.DeleteFile(context.OutputFolder.CombineWithFilePath(context.File("rtlsdr.dll")));
         }
 
-        context.CopyFile("../contrib/rtl-sdr/build/src/Release/rtlsdr.dll", "../artifacts/rtlsdr.dll");
+        context.CopyFile("../contrib/rtl-sdr/build/src/Release/rtlsdr.dll", context.OutputFolder.CombineWithFilePath(context.File("rtlsdr.dll")));
     }
 }
