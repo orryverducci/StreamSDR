@@ -370,8 +370,8 @@ internal class RtlTcpConnection : IDisposable
     /// <param name="buffer">The buffer to be sent to the client.</param>
     public void SendData(byte[] buffer)
     {
-        // Check we're not disposed
-        if (_disposed)
+        // Check we're not disposed or cancelling
+        if (_disposed || _connectionCancellationToken.IsCancellationRequested)
         {
             return;
         }
