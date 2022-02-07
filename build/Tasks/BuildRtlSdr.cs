@@ -16,7 +16,6 @@
  */
 
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Cake.Common.Tools.MSBuild;
 using Cake.CMake;
 
@@ -29,7 +28,7 @@ namespace StreamSDR.Build;
 [IsDependentOn(typeof(BuildLibUsbTask))]
 public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+    public override bool ShouldRun(BuildContext context) => context.Platform == "win";
 
     public override void Run(BuildContext context)
     {

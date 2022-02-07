@@ -15,7 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Runtime.InteropServices;
 using Cake.Common.Tools.MSBuild;
 
 namespace StreamSDR.Build;
@@ -26,7 +25,7 @@ namespace StreamSDR.Build;
 [TaskName("BuildLibusb")]
 public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+    public override bool ShouldRun(BuildContext context) => context.Platform == "win";
 
     public override void Run(BuildContext context)
     {

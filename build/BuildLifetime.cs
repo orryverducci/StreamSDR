@@ -15,7 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Runtime.InteropServices;
 using Cake.Common.Tools.VSWhere;
 using Cake.Common.Tools.VSWhere.Latest;
 
@@ -32,7 +31,7 @@ public class BuildLifetime : FrostingLifetime<BuildContext>
     /// <param name="context">The build context.</param>
     public override void Setup(BuildContext context)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        if (context.Platform == "win")
         {
             // Find Visual Studio
             DirectoryPath? installationPath = context.VSWhereLatest(new VSWhereLatestSettings

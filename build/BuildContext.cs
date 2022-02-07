@@ -15,6 +15,8 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Runtime.InteropServices;
+
 namespace StreamSDR.Build;
 
 /// <summary>
@@ -38,6 +40,16 @@ public class BuildContext : FrostingContext
     public FilePath? CMakePath { get; set; }
 
     /// <summary>
+    /// The platform the application is being built for.
+    /// </summary>
+    public string Platform { get; private set; }
+
+    /// <summary>
+    /// The architecture the application is being built for.
+    /// </summary>
+    public string Architecture { get; private set; }
+
+    /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
     /// </summary>
     /// <param name="context">The Cake context.</param>
@@ -45,5 +57,32 @@ public class BuildContext : FrostingContext
     {
         // Set build properties from passed in arguments
         BuildConfiguration = context.Argument("configuration", "Release");
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            Platform = "win";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            Platform = "osx";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            Platform = "linux";
+        }
+        else
+        {
+            throw new PlatformNotSupportedException("This platform is not supported");
+        }
+
+        string? architecture = context.Argument<string?>("architecture", null);
+        if (Architecture == null)
+        {
+            Architecture = RuntimeInformation.OSArchitecture.ToString().ToLower();
+        }
+        if (Architecture != "x64" && Architecture != "arm" && Architecture != "arm64")
+        {
+            throw new PlatformNotSupportedException("This architecture is not supported");
+        }
     }
 }
