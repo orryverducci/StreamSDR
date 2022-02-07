@@ -133,31 +133,31 @@ internal unsafe class Radio : IRadio
 
             _deviceParams->DevParams->FsFreq.FsHz = value;
 
-            if (value >= 8000000)
+            if (value >= 7100000)
             {
                 _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw8000;
             }
-            else if (value >= 7000000)
+            else if (value >= 6100000)
             {
                 _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw7000;
             }
-            else if (value >= 6000000)
+            else if (value >= 5100000)
             {
                 _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw6000;
             }
-            else if (value >= 5000000)
+            else if (value >= 1600000)
             {
                 _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw5000;
             }
-            else if (value >= 1536000)
+            else if (value >= 700000)
             {
                 _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw1536;
             }
-            else if (value >= 600000)
+            else if (value >= 400000)
             {
                 _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw600;
             }
-            else if (value >= 300000)
+            else if (value >= 250000)
             {
                 _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw300;
             }
