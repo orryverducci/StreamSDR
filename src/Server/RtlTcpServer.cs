@@ -261,6 +261,20 @@ internal class RtlTcpServer : IHostedService
             _logger.LogInformation($"Disconnected from {connection.ClientIP}");
         }
     }
+
+    /// <summary>
+    /// Event handler for when a client TX buffer overflow occurs. Logs a warning about the overflow.
+    /// </summary>
+    /// <param name="sender">The sending object.</param>
+    /// <param name="e">The event arguments.</param>
+    private void BufferOverflowed(object? sender, EventArgs e)
+    {
+        if (sender != null)
+        {
+            RtlTcpConnection connection = (RtlTcpConnection)sender;
+            _logger.LogWarning($"The buffer of data to send to {connection.ClientIP} has overflowed and samples will be dropped");
+        }
+    }
     #endregion
 
     #region Radio methods

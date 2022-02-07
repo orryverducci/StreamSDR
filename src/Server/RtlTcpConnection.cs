@@ -64,6 +64,16 @@ internal class RtlTcpConnection : IDisposable
     /// The queue of sample buffers waiting to be sent to the client.
     /// </summary>
     private readonly BlockingCollection<byte[]> _buffers = new();
+
+    /// <summary>
+    /// The memory size in bytes currently being used by the buffers.
+    /// </summary>
+    private int _buffersSize = 0;
+
+    /// <summary>
+    /// If the buffer overflow event has been sent.
+    /// </summary>
+    private bool _bufferOverflowTriggered = false;
     #endregion
 
     #region Public properties
@@ -83,6 +93,11 @@ internal class RtlTcpConnection : IDisposable
     /// Fired when the client disconnects from the server.
     /// </summary>
     public event EventHandler? Disconnected;
+
+    /// <summary>
+    /// Fired when the a buffer overflow occurs.
+    /// </summary>
+    public event EventHandler? BufferOverflow;
     #endregion
 
     #region Constructor, finaliser and dispose methods
@@ -179,6 +194,7 @@ internal class RtlTcpConnection : IDisposable
             {
                 // Get a sample buffer to send to the client. This blocks if waiting for buffers.
                 byte[] buffer = _buffers.Take(_connectionCancellationToken.Token);
+                _buffersSize -= buffer.Length;
 
                 // Write the buffer to the network stream
                 _tcpClient.GetStream().Write(buffer, 0, buffer.Length);
@@ -354,10 +370,26 @@ internal class RtlTcpConnection : IDisposable
     /// <param name="buffer">The buffer to be sent to the client.</param>
     public void SendData(byte[] buffer)
     {
-        if (!_disposed)
+        // Check we're not disposed
+        if (_disposed)
         {
-            _buffers.Add(buffer);
+            return;
         }
+
+        // Check that the queue of sample buffers is not full or contains more than 1MB of data
+        if (_buffers.Count == _buffers.BoundedCapacity || _buffersSize > 1000000)
+        {
+            if (!_bufferOverflowTriggered)
+            {
+                BufferOverflow?.Invoke(this, EventArgs.Empty);
+                _bufferOverflowTriggered = true;
+            }
+            return;
+        }
+
+        // Add the buffer
+        _buffersSize += buffer.Length;
+        _buffers.Add(buffer);
     }
     #endregion
 }
