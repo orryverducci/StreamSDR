@@ -31,6 +31,8 @@ public class BuildLifetime : FrostingLifetime<BuildContext>
     /// <param name="context">The build context.</param>
     public override void Setup(BuildContext context)
     {
+        context.EnsureDirectoryExists(context.OutputFolder);
+
         if (context.Platform == "win")
         {
             // Find Visual Studio
