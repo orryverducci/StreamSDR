@@ -40,6 +40,7 @@ public class BuildLifetime : FrostingLifetime<BuildContext>
             {
                 IncludePrerelease = true,
                 Requires = "Microsoft.Component.MSBuild Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64 Microsoft.VisualStudio.Component.VC.CMake.Project",
+                Version = "17.0"
             });
 
             // Find MSBuild and check it is installed
