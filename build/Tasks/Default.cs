@@ -21,6 +21,7 @@ namespace StreamSDR.Build;
 /// Task to build the application.
 /// </summary>
 [TaskName("Default")]
+[IsDependentOn(typeof(CopySdrPlayApi))]
 [IsDependentOn(typeof(BuildStreamSdrTask))]
 public class DefaultTask : FrostingTask
 {
