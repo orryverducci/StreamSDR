@@ -44,6 +44,11 @@ internal unsafe class Radio : IRadio
     /// The default sample rate (2.048 MHz)
     /// </summary>
     private const uint DefaultSampleRate = 2048000;
+
+    /// <summary>
+    /// The maximum decimation factor that can be used for sample rates smaller than 2 MHz.
+    /// </summary>
+    private const uint MaxDecimationFactor = 64;
     #endregion
 
     #region Private fields
@@ -125,10 +130,35 @@ internal unsafe class Radio : IRadio
                 _logger.LogError("Unable to set the sample rate");
                 return;
             }
-            else if (value < 2000000 || value > 10000000)
+            else if (value < 2000000 / MaxDecimationFactor || value > 10000000)
             {
                 _logger.LogError("The sample rate is not supported");
                 return;
+            }
+
+            if (value < 2000000)
+            {
+                int decimationFactor = 2;
+                int calculatedSampleRate = 1000000;
+
+                while (calculatedSampleRate > value)
+                {
+                    decimationFactor <<= 1;
+                    calculatedSampleRate = 2000000 / decimationFactor;
+                }
+
+                if (calculatedSampleRate != value)
+                {
+                    _logger.LogWarning($"The sample rate is not supported, using {calculatedSampleRate.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz instead");
+                }
+
+                value = 2000000;
+                _deviceParams->RxChannelA->CtrlParams.Decimation.DecimationFactor = (byte)decimationFactor;
+                _deviceParams->RxChannelA->CtrlParams.Decimation.Enable = true;
+            }
+            else
+            {
+                _deviceParams->RxChannelA->CtrlParams.Decimation.Enable = false;
             }
 
             _deviceParams->DevParams->FsFreq.FsHz = value;
@@ -166,7 +196,7 @@ internal unsafe class Radio : IRadio
                 _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw200;
             }
 
-            if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Dev_Fs | ReasonForUpdate.Tuner_BwType, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success)
+            if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Dev_Fs | ReasonForUpdate.Tuner_BwType | ReasonForUpdate.Ctrl_Decimation, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success)
             {
                 _logger.LogError("Unable to set the sample rate");
             }
