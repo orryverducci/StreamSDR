@@ -17,6 +17,7 @@
 
 using System.Globalization;
 using System.Threading;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -54,6 +55,11 @@ internal class Radio : IRadio
     /// The application lifetime service.
     /// </summary>
     private readonly IHostApplicationLifetime _applicationLifetime;
+
+    /// <summary>
+    /// The application configuration.
+    /// </summary>
+    private readonly IConfiguration _config;
 
     /// <summary>
     /// The device handle.
@@ -351,13 +357,17 @@ internal class Radio : IRadio
     /// </summary>
     /// <param name="logger">The logger for the <see cref="Radio"/> class.</param>
     /// <param name="lifetime">The application lifetime service.</param>
-    public unsafe Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime)
+    /// <param name="config">The application configuration.</param>
+    public unsafe Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config)
     {
         // Store a reference to the logger
         _logger = logger;
 
         // Store a reference to the application lifetime
         _applicationLifetime = lifetime;
+
+        // Store a reference to the application config
+        _config = config;
 
         // Create the sample receiver worker thread
         _receiverThread = new(ReceiverWorker)
@@ -407,11 +417,27 @@ internal class Radio : IRadio
                 return;
             }
 
+            // Find the ID of the specified device, or use the first one if no device is specified
+            int deviceId = 0;
+            string serial = _config.GetValue<string>("serial");
+
+            if (serial != null)
+            {
+                deviceId = Interop.GetDeviceIndexBySerial(serial);
+
+                if (deviceId < 0)
+                {
+                    _logger.LogCritical($"Could not find a rtl-sdr device with the serial {serial}");
+                    _applicationLifetime.StopApplication();
+                    return;
+                }
+            }
+
             // Get the device name
-            Name = Interop.GetDeviceName(0);
+            Name = Interop.GetDeviceName((byte)deviceId);
 
             // Open the device
-            if (Interop.Open(out _device, 0) != 0)
+            if (Interop.Open(out _device, (byte)deviceId) != 0)
             {
                 _logger.LogCritical("The rtl-sdr device could not be opened");
                 _applicationLifetime.StopApplication();

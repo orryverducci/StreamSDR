@@ -63,6 +63,21 @@ internal class Interop
     }
 
     /// <summary>
+    /// Gets the index of the device with the specified serial.
+    /// </summary>
+    /// <param name="serial">The serial of the device to get the index of.</param>
+    /// <returns>The index of the rtl-sdr device, or -2 if no devices are connected, or -3 if a device with the specified serial can't be found.</returns>
+    [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_index_by_serial")]
+    public static extern int GetDeviceIndexBySerialNative(IntPtr serial);
+
+    /// <summary>
+    /// Gets the index of the device with the specified serial.
+    /// </summary>
+    /// <param name="serial">The serial of the device to get the index of.</param>
+    /// <returns>The index of the rtl-sdr device, or -2 if no devices are connected, or -3 if a device with the specified serial can't be found.</returns>
+    public static int GetDeviceIndexBySerial(string serial) => GetDeviceIndexBySerialNative(Marshal.StringToHGlobalAnsi(serial));
+
+    /// <summary>
     /// Opens a rtl-sdr dongle.
     /// </summary>
     /// <param name="dev"><see cref="IntPtr"/> to output the device handle to.</param>

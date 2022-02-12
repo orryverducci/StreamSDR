@@ -17,6 +17,7 @@
 
 using System.Globalization;
 using System.Threading;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StreamSDR.Radios.SdrPlay.Callbacks;
@@ -66,6 +67,11 @@ internal unsafe class Radio : IRadio
     /// The application lifetime service.
     /// </summary>
     private readonly IHostApplicationLifetime _applicationLifetime;
+
+    /// <summary>
+    /// The application configuration.
+    /// </summary>
+    private readonly IConfiguration _config;
 
     /// <summary>
     /// Indicates if the SDRplay API has been locked by the application.
@@ -555,13 +561,17 @@ internal unsafe class Radio : IRadio
     /// </summary>
     /// <param name="logger">The logger for the <see cref="Radio"/> class.</param>
     /// <param name="lifetime">The application lifetime service.</param>
-    public Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime)
+    /// <param name="config">The application configuration.</param>
+    public Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config)
     {
         // Store a reference to the logger
         _logger = logger;
 
         // Store a reference to the application lifetime
         _applicationLifetime = lifetime;
+
+        // Store a reference to the application config
+        _config = config;
 
         // Set the sample reading callback
         _readCallback = new Interop.ReadDelegate(ProcessSamples);
@@ -652,8 +662,24 @@ internal unsafe class Radio : IRadio
                 return;
             }
 
+            // Find the ID of the specified device, or use the first one if no device is specified
+            int deviceId = 0;
+            string serial = _config.GetValue<string>("serial");
+
+            if (serial != null)
+            {
+                deviceId = Array.FindIndex(devices, device => device.SerNo == serial);
+
+                if (deviceId < 0)
+                {
+                    _logger.LogCritical($"Could not find a SDRplay device with the serial {serial}");
+                    _applicationLifetime.StopApplication();
+                    return;
+                }
+            }
+
             // Get the first device and check if a tuner is available
-            Device device = devices[0];
+            Device device = devices[deviceId];
             if (device.Tuner == TunerSelect.Neither)
             {
                 _logger.LogCritical("No tuners are available on the SDRplay device");
