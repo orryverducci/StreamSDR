@@ -553,6 +553,8 @@ internal unsafe class Radio : IRadio
     /// <summary>
     /// Initialises a new instance of the <see cref="Radio"/> class.
     /// </summary>
+    /// <param name="logger">The logger for the <see cref="Radio"/> class.</param>
+    /// <param name="lifetime">The application lifetime service.</param>
     public Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime)
     {
         // Store a reference to the logger
