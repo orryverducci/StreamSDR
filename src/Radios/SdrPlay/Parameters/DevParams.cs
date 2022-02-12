@@ -20,7 +20,7 @@ using StreamSDR.Radios.SdrPlay.Parameters.Device;
 namespace StreamSDR.Radios.SdrPlay.Parameters;
 
 /// <summary>
-/// The parameters for a SDRPlay device.
+/// The parameters for a SDRplay device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal struct DevParams

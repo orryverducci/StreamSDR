@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay.Parameters;
 
 /// <summary>
-/// The parameters for a SDRPlay device and its tuners.
+/// The parameters for a SDRplay device and its tuners.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal unsafe struct DeviceParams

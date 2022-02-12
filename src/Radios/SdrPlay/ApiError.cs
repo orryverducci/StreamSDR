@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay;
 
 /// <summary>
-/// The error codes returned by the SDRPlay API.
+/// The error codes returned by the SDRplay API.
 /// </summary>
 internal enum ApiError
 {

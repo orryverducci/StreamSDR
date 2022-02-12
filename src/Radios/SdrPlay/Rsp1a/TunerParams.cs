@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay.Rsp1a;
 
 /// <summary>
-/// The parameters for a SDRPlay RSP1a tuner.
+/// The parameters for a SDRplay RSP1a tuner.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal struct TunerParams

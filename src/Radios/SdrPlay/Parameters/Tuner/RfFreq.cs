@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay.Parameters.Tuner;
 
 /// <summary>
-/// The parameters for a SDRPlay tuner RF frequency.
+/// The parameters for a SDRplay tuner RF frequency.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal struct RfFreq

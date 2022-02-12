@@ -20,7 +20,7 @@ using StreamSDR.Radios.SdrPlay.Hardware;
 namespace StreamSDR.Radios.SdrPlay;
 
 /// <summary>
-/// Provides access to the native methods provided by the SDRPlay API shared library.
+/// Provides access to the native methods provided by the SDRplay API shared library.
 /// </summary>
 internal class Interop
 {
@@ -56,14 +56,14 @@ internal class Interop
     public unsafe delegate void EventDelegate(Callbacks.Event eventId, TunerSelect tuner, Callbacks.EventParams* parameters, IntPtr cbContext);
 
     /// <summary>
-    /// Opens the SDRPlay API for use
+    /// Opens the SDRplay API for use
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_Open")]
     public static extern ApiError Open();
 
     /// <summary>
-    /// Closes the SDRPlay API.
+    /// Closes the SDRplay API.
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_Close")]
@@ -80,7 +80,7 @@ internal class Interop
     /// <summary>
     /// Enables debug output from the API.
     /// </summary>
-    /// <param name="dev">Pointer to the current SDRPlay device, if one has been selected.</param>
+    /// <param name="dev">Pointer to the current SDRplay device, if one has been selected.</param>
     /// <param name="dbgLvl">The desired debug level.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_DebugEnable")]
@@ -95,14 +95,14 @@ internal class Interop
     public static extern ApiError DisableHeartbeat();
 
     /// <summary>
-    /// Locks the SDRPlay API so that no other application can use it.
+    /// Locks the SDRplay API so that no other application can use it.
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_LockDeviceApi")]
     public static extern ApiError LockDeviceApi();
 
     /// <summary>
-    /// Unlocks the SDRPlay API, allowing other applications to use it.
+    /// Unlocks the SDRplay API, allowing other applications to use it.
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_UnlockDeviceApi")]
@@ -133,7 +133,7 @@ internal class Interop
             throw new ArgumentOutOfRangeException(nameof(maxDevices), "The maximum number of devices must be 1 or above");
         }
 
-        // Allocate memory for the SDRPlay API to store devices in
+        // Allocate memory for the SDRplay API to store devices in
         int deviceSize = Marshal.SizeOf(typeof(Device));
         IntPtr devicesPtr = Marshal.AllocHGlobal(deviceSize * maxDevices);
 

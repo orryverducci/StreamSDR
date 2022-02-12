@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay.Hardware;
 
 /// <summary>
-/// The version of the SDRPlay device hardware.
+/// The version of the SDRplay device hardware.
 /// </summary>
 internal enum HardwareVersion : byte
 {

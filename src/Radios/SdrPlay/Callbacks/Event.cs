@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay.Callbacks;
 
 /// <summary>
-/// The event received from the SDRPlay API.
+/// The event received from the SDRplay API.
 /// </summary>
 internal enum Event
 {

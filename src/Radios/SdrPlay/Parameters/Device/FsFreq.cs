@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay.Parameters.Device;
 
 /// <summary>
-/// The parameters for the sampling rate of a SDRPlay device.
+/// The parameters for the sampling rate of a SDRplay device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal struct FsFreq

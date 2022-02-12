@@ -25,13 +25,13 @@ using StreamSDR.Radios.SdrPlay.Hardware;
 namespace StreamSDR.Radios.SdrPlay;
 
 /// <summary>
-/// Provides access to control and receive samples from a SDRPlay radio.
+/// Provides access to control and receive samples from a SDRplay radio.
 /// </summary>
 internal unsafe class Radio : IRadio
 {
     #region Constants
     /// <summary>
-    /// The SDRPlay API version this has been developed for.
+    /// The SDRplay API version this has been developed for.
     /// </summary>
     private const float SdrPlayApiVersion = 3.07f;
 
@@ -68,7 +68,7 @@ internal unsafe class Radio : IRadio
     private readonly IHostApplicationLifetime _applicationLifetime;
 
     /// <summary>
-    /// Indicates if the SDRPlay API has been locked by the application.
+    /// Indicates if the SDRplay API has been locked by the application.
     /// </summary>
     private bool _apiLocked = false;
 
@@ -594,14 +594,14 @@ internal unsafe class Radio : IRadio
     public void Start()
     {
         // Log that the radio is starting
-        _logger.LogInformation("Starting the SDRPlay radio");
+        _logger.LogInformation("Starting the SDRplay radio");
 
         try
         {
             // Open the API
             if (Interop.Open() != ApiError.Success)
             {
-                _logger.LogCritical("Unable to open the SDRPlay API");
+                _logger.LogCritical("Unable to open the SDRplay API");
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -611,13 +611,13 @@ internal unsafe class Radio : IRadio
             ApiError apiVersionCheck = Interop.ApiVersion(ref version);
             if (apiVersionCheck != ApiError.Success)
             {
-                _logger.LogCritical($"Unable to check the SDRPlay API version {apiVersionCheck}");
+                _logger.LogCritical($"Unable to check the SDRplay API version {apiVersionCheck}");
                 _applicationLifetime.StopApplication();
                 return;
             }
             if (version != SdrPlayApiVersion)
             {
-                _logger.LogWarning($"The installed SDRPlay API is a different version to the one this application is designed for ({SdrPlayApiVersion}), which may result in compatibility issues");
+                _logger.LogWarning($"The installed SDRplay API is a different version to the one this application is designed for ({SdrPlayApiVersion}), which may result in compatibility issues");
             }
 
             // Enable debug features if debug mode is enabled
@@ -630,7 +630,7 @@ internal unsafe class Radio : IRadio
             // Lock the API
             if (Interop.LockDeviceApi() != ApiError.Success)
             {
-                _logger.LogCritical("Unable to lock the SDRPlay API");
+                _logger.LogCritical("Unable to lock the SDRplay API");
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -639,15 +639,15 @@ internal unsafe class Radio : IRadio
             // Get the list of the devices
             if (Interop.GetDevices(out Device[]? devices, out uint numberOfDevices, 8) != ApiError.Success)
             {
-                _logger.LogCritical("Unable to retrieve the list of SDRPlay devices");
+                _logger.LogCritical("Unable to retrieve the list of SDRplay devices");
                 _applicationLifetime.StopApplication();
                 return;
             }
 
-            // Check if a SDRPlay device is available
+            // Check if a SDRplay device is available
             if (numberOfDevices == 0 || devices == null || devices.Length == 0)
             {
-                _logger.LogCritical("No SDRPlay devices could be found");
+                _logger.LogCritical("No SDRplay devices could be found");
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -656,7 +656,7 @@ internal unsafe class Radio : IRadio
             Device device = devices[0];
             if (device.Tuner == TunerSelect.Neither)
             {
-                _logger.LogCritical("No tuners are available on the SDRPlay device");
+                _logger.LogCritical("No tuners are available on the SDRplay device");
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -681,7 +681,7 @@ internal unsafe class Radio : IRadio
             _device = device;
 
             // Set the device name
-            Name = $"SDRPlay {device.HwVer.ToDeviceModel()} {device.SerNo}";
+            Name = $"SDRplay {device.HwVer.ToDeviceModel()} {device.SerNo}";
 
             // Get the pointer to the device parameters
             if (Interop.GetDeviceParams(device.Dev, out _deviceParams) != ApiError.Success)
@@ -728,12 +728,12 @@ internal unsafe class Radio : IRadio
         }
         catch (DllNotFoundException)
         {
-            _logger.LogCritical("Unable to find the SDRPlay API library");
+            _logger.LogCritical("Unable to find the SDRplay API library");
             _applicationLifetime.StopApplication();
         }
         catch (BadImageFormatException)
         {
-            _logger.LogCritical("The SDRPlay API library or one of its dependencies has been built for the wrong system architecture");
+            _logger.LogCritical("The SDRplay API library or one of its dependencies has been built for the wrong system architecture");
             _applicationLifetime.StopApplication();
         }
         finally
@@ -776,7 +776,7 @@ internal unsafe class Radio : IRadio
 
     #region Sample handling methods
     /// <summary>
-    /// The callback method called by the SDRPlay API to provide received samples.
+    /// The callback method called by the SDRplay API to provide received samples.
     /// </summary>
     /// <param name="xi">The buffer containing the real samples read from the device.</param>
     /// <param name="xq">The buffer containing the imaginary samples read from the device.</param>
@@ -807,7 +807,7 @@ internal unsafe class Radio : IRadio
     }
 
     /// <summary>
-    /// The callback method called by the SDRPlay API to indicate that an event has occurred.
+    /// The callback method called by the SDRplay API to indicate that an event has occurred.
     /// </summary>
     /// <param name="eventId">Indicates the type of event that has occurred.</param>
     /// <param name="tuner">Indicates which tuner the event relates to.</param>
@@ -832,7 +832,7 @@ internal unsafe class Radio : IRadio
                 break;
 
             case Event.DeviceRemoved:
-                _logger.LogCritical("The SDRPlay device has been removed from the system");
+                _logger.LogCritical("The SDRplay device has been removed from the system");
                 _applicationLifetime.StopApplication();
                 break;
         }

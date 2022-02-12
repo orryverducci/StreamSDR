@@ -34,7 +34,7 @@ internal struct Functions
     public Interop.ReadDelegate StreamBCbFn;
 
     /// <summary>
-    /// The callback method for when events are raised by the SDRPlay API.
+    /// The callback method for when events are raised by the SDRPplay API.
     /// </summary>
     //public IntPtr EventCbFn;
     public Interop.EventDelegate EventCbFn;

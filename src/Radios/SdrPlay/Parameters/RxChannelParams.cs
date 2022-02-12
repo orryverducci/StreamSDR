@@ -18,13 +18,13 @@
 namespace StreamSDR.Radios.SdrPlay.Parameters;
 
 /// <summary>
-/// The parameters for a SDRPlay tuner.
+/// The parameters for a SDRplay tuner.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal struct RxChannelParams
 {
     /// <summary>
-    /// The parameters for the device tuner that are available on all SDRPlay devices.
+    /// The parameters for the device tuner that are available on all SDRplay devices.
     /// </summary>
     public Tuner.TunerParams TunerParams;
 

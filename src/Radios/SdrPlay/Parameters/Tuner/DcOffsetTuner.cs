@@ -17,7 +17,7 @@
 
 namespace StreamSDR.Radios.SdrPlay.Parameters.Tuner;
 /// <summary>
-/// The parameters for a SDRPlay tuner DC calibration.
+/// The parameters for a SDRplay tuner DC calibration.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal struct DcOffsetTuner

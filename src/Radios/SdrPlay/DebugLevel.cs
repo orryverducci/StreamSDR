@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay;
 
 /// <summary>
-/// The SDRPlay API debug level.
+/// The SDRplay API debug level.
 /// </summary>
 internal enum DebugLevel
 {

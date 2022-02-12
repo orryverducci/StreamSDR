@@ -18,7 +18,7 @@
 namespace StreamSDR.Radios.SdrPlay.Hardware;
 
 /// <summary>
-/// Represents an SDRPlay device.
+/// Represents an SDRplay device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 internal struct Device

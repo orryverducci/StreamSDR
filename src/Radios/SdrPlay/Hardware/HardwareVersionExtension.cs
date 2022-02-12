@@ -25,7 +25,7 @@ internal static class HardwareVersionExtension
     /// <summary>
     /// Converts the hardware version to the device model as a string.
     /// </summary>
-    /// <param name="hardwareVersion">The <see cref="HardwareVersion"/> provided by the SDRPlay API.</param>
+    /// <param name="hardwareVersion">The <see cref="HardwareVersion"/> provided by the SDRplay API.</param>
     /// <returns>The device model name.</returns>
     public static string ToDeviceModel(this HardwareVersion hardwareVersion) => hardwareVersion switch
     {
