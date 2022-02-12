@@ -49,7 +49,6 @@ internal class Interop
     /// <param name="index">The index of the device to get the name of.</param>
     /// <returns>The name of the rtl-sdr device.</returns>
     [DllImport(LibRtlSdr, CallingConvention = CallingConvention.Cdecl, EntryPoint = "rtlsdr_get_device_name")]
-    //[return: MarshalAs(UnmanagedType.LPStr)]
     public static extern IntPtr GetDeviceNameNative(uint index);
 
     /// <summary>
