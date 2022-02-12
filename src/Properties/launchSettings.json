@@ -2,14 +2,14 @@
     "profiles": {
         "StreamSDR (RTL-SDR)": {
             "commandName": "Project",
-            "commandLineArgs": "radio=rtlsdr",
+            "commandLineArgs": "--radio rtlsdr",
             "environmentVariables": {
                 "DOTNET_ENVIRONMENT": "Development"
             }
         },
         "StreamSDR (SDRplay)": {
             "commandName": "Project",
-            "commandLineArgs": "radio=sdrplay",
+            "commandLineArgs": "--radio sdrplay",
             "environmentVariables": {
                 "DOTNET_ENVIRONMENT": "Development"
             }
