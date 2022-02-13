@@ -678,7 +678,7 @@ internal sealed unsafe class Radio : IRadio
                 }
             }
 
-            // Get the first device and check if a tuner is available
+            // Get the device and check if a tuner is available
             Device device = devices[deviceId];
             if (device.Tuner == TunerSelect.Neither)
             {
