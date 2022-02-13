@@ -265,7 +265,7 @@ internal sealed unsafe class Radio : IRadio
             {
                 band = RadioBand.UHFUpper;
             }
-            else if (value <= 2000000000)
+            else
             {
                 band = RadioBand.L;
             }
