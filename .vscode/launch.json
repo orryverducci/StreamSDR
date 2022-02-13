@@ -30,6 +30,15 @@
             "stopAtEntry": false
         },
         {
+            "name": "Docker Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run",
+            "netCore": {
+                "appProject": "${workspaceFolder}/src/StreamSDR.csproj"
+            }
+        },
+        {
             "name": ".NET Attach",
             "type": "coreclr",
             "request": "attach"

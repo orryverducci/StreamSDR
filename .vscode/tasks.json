@@ -24,6 +24,35 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "docker-build",
+            "type": "docker-build",
+            "dependsOn": [
+                "build"
+            ],
+            "dockerBuild": {
+                "tag": "orryverducci/streamsdr:dev",
+                "target": "build",
+                "dockerfile": "${workspaceFolder}/Dockerfile",
+                "context": "${workspaceFolder}",
+                "pull": true
+            },
+            "netCore": {
+                "appProject": "${workspaceFolder}/src/StreamSDR.csproj"
+            }
+        },
+        {
+            "label": "docker-run",
+            "type": "docker-run",
+            "dependsOn": [
+                "docker-build"
+            ],
+            "dockerRun": {},
+            "netCore": {
+                "appProject": "${workspaceFolder}/src/StreamSDR.csproj",
+                "enableDebugging": true
+            }
         }
     ]
 }
