@@ -26,7 +26,7 @@ namespace StreamSDR.Radios.RtlSdr;
 /// <summary>
 /// Provides access to control and receive samples from a rtl-sdr radio.
 /// </summary>
-internal class Radio : IRadio
+internal sealed class Radio : IRadio
 {
     #region Constants
     /// <summary>

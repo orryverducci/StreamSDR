@@ -22,7 +22,7 @@ using System.Threading;
 
 namespace StreamSDR.Server;
 
-internal class RtlTcpConnection : IDisposable
+internal sealed class RtlTcpConnection : IDisposable
 {
     #region Private fields
     /// <summary>

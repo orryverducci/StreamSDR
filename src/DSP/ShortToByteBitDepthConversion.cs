@@ -20,7 +20,7 @@ namespace StreamSDR.DSP;
 /// <summary>
 /// Converts buffers of samples from their original bit depth, contained within a <see cref="short"/>, to a different bit depth, contained within a <see cref="byte"/>.
 /// </summary>
-internal class ShortToByteBitDepthConversion
+internal sealed class ShortToByteBitDepthConversion
 {
     /// <summary>
     /// How many bits each sample is shifted by to move its most significant bit to the 16th bit.

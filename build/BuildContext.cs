@@ -22,7 +22,7 @@ namespace StreamSDR.Build;
 /// <summary>
 /// Provides the build context for the Cake build.
 /// </summary>
-public class BuildContext : FrostingContext
+public sealed class BuildContext : FrostingContext
 {
     /// <summary>
     /// The configuration to used while building the application and libraries.

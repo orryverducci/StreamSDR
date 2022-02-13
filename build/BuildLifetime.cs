@@ -23,7 +23,7 @@ namespace StreamSDR.Build;
 /// <summary>
 /// Controls the global lifetime of the Cake build.
 /// </summary>
-public class BuildLifetime : FrostingLifetime<BuildContext>
+public sealed class BuildLifetime : FrostingLifetime<BuildContext>
 {
     /// <summary>
     /// Setup executed before the build. Used to locate MSBuild and CMake on the Windows platform.

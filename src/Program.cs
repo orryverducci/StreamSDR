@@ -27,7 +27,7 @@ namespace StreamSDR;
 /// <summary>
 /// Provides the main functionality for the application.
 /// </summary>
-public class Program
+internal static class Program
 {
     /// <summary>
     /// If the application is in debug mode.

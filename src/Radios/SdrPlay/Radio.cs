@@ -28,7 +28,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// Provides access to control and receive samples from a SDRplay radio.
 /// </summary>
-internal unsafe class Radio : IRadio
+internal sealed unsafe class Radio : IRadio
 {
     #region Constants
     /// <summary>

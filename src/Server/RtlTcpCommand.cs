@@ -20,7 +20,7 @@ namespace StreamSDR.Server;
 /// <summary>
 /// Represents a command received from an rtl_tcp client.
 /// </summary>
-internal record RtlTcpCommand
+internal sealed record RtlTcpCommand
 {
     /// <summary>
     /// The type of command.

@@ -27,7 +27,7 @@ namespace StreamSDR.Server;
 /// <summary>
 /// Provides a server for SDR client applications using the rtl_tcp protocol.
 /// </summary>
-internal class RtlTcpServer : IHostedService
+internal sealed class RtlTcpServer : IHostedService
 {
     #region Private fields
     /// <summary>
