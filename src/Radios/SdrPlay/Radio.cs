@@ -114,6 +114,11 @@ internal sealed unsafe class Radio : IRadio
     private RadioBand _currentBand = RadioBand.Unknown;
 
     /// <summary>
+    /// The tables of LNA and IF gains to be used for the available gain levels.
+    /// </summary>
+    private IGainTables? _gainLevels;
+
+    /// <summary>
     /// The current gain level.
     /// </summary>
     private uint _currentGainLevel;
@@ -322,131 +327,9 @@ internal sealed unsafe class Radio : IRadio
                 _logger.LogError("Unable to set the gain");
             }
 
-            // Get the gain tables for the current device and each band
-            byte[] amLnaStates;
-            int[] amIfGains;
-            byte[] vhfLnaStates;
-            int[] vhfIfGains;
-            byte[] band3LnaStates;
-            int[] band3IfGains;
-            byte[] uhfLowerLnaStates;
-            int[] uhfLowerIfGains;
-            byte[] uhfUpperLnaStates;
-            int[] uhfUpperIfGains;
-            byte[] lBandLnaStates;
-            int[] lBandIfGains;
-            switch (_device.HwVer)
-            {
-                case HardwareVersion.Rsp1:
-                default:
-                    amLnaStates = GainTables.Rsp1AmLnaStates;
-                    amIfGains = GainTables.Rsp1AmIfGains;
-                    vhfLnaStates = GainTables.Rsp1VhfLnaStates;
-                    vhfIfGains = GainTables.Rsp1VhfIfGains;
-                    band3LnaStates = GainTables.Rsp1Band3LnaStates;
-                    band3IfGains = GainTables.Rsp1Band3IfGains;
-                    uhfLowerLnaStates = GainTables.Rsp1UhfLowerLnaStates;
-                    uhfLowerIfGains = GainTables.Rsp1UhfLowerIfGains;
-                    uhfUpperLnaStates = GainTables.Rsp1UhfUpperLnaStates;
-                    uhfUpperIfGains = GainTables.Rsp1UhfUpperIfGains;
-                    lBandLnaStates = GainTables.Rsp1LBandLnaStates;
-                    lBandIfGains = GainTables.Rsp1LBandIfGains;
-                    break;
-
-                case HardwareVersion.Rsp1A:
-                    amLnaStates = GainTables.Rsp1aAmLnaStates;
-                    amIfGains = GainTables.Rsp1aAmIfGains;
-                    vhfLnaStates = GainTables.Rsp1aVhfLnaStates;
-                    vhfIfGains = GainTables.Rsp1aVhfIfGains;
-                    band3LnaStates = GainTables.Rsp1Band3LnaStates;
-                    band3IfGains = GainTables.Rsp1aBand3IfGains;
-                    uhfLowerLnaStates = GainTables.Rsp1aUhfLowerLnaStates;
-                    uhfLowerIfGains = GainTables.Rsp1aUhfLowerIfGains;
-                    uhfUpperLnaStates = GainTables.Rsp1aUhfUpperLnaStates;
-                    uhfUpperIfGains = GainTables.Rsp1aUhfUpperIfGains;
-                    lBandLnaStates = GainTables.Rsp1aLBandLnaStates;
-                    lBandIfGains = GainTables.Rsp1aLBandIfGains;
-                    break;
-
-                case HardwareVersion.Rsp2:
-                    amLnaStates = GainTables.Rsp2AmLnaStates;
-                    amIfGains = GainTables.Rsp2AmIfGains;
-                    vhfLnaStates = GainTables.Rsp2VhfLnaStates;
-                    vhfIfGains = GainTables.Rsp2VhfIfGains;
-                    band3LnaStates = GainTables.Rsp2Band3LnaStates;
-                    band3IfGains = GainTables.Rsp2Band3IfGains;
-                    uhfLowerLnaStates = GainTables.Rsp2UhfLowerLnaStates;
-                    uhfLowerIfGains = GainTables.Rsp2UhfLowerIfGains;
-                    uhfUpperLnaStates = GainTables.Rsp2UhfUpperLnaStates;
-                    uhfUpperIfGains = GainTables.Rsp2UhfUpperIfGains;
-                    lBandLnaStates = GainTables.Rsp2LBandLnaStates;
-                    lBandIfGains = GainTables.Rsp2LBandIfGains;
-                    break;
-
-                case HardwareVersion.RspDuo:
-                    amLnaStates = GainTables.RspDuoAmLnaStates;
-                    amIfGains = GainTables.RspDuoAmIfGains;
-                    vhfLnaStates = GainTables.RspDuoVhfLnaStates;
-                    vhfIfGains = GainTables.RspDuoVhfIfGains;
-                    band3LnaStates = GainTables.RspDuoBand3LnaStates;
-                    band3IfGains = GainTables.RspDuoBand3IfGains;
-                    uhfLowerLnaStates = GainTables.RspDuoUhfLowerLnaStates;
-                    uhfLowerIfGains = GainTables.RspDuoUhfLowerIfGains;
-                    uhfUpperLnaStates = GainTables.RspDuoUhfUpperLnaStates;
-                    uhfUpperIfGains = GainTables.RspDuoUhfUpperIfGains;
-                    lBandLnaStates = GainTables.RspDuoLBandLnaStates;
-                    lBandIfGains = GainTables.RspDuoLBandIfGains;
-                    break;
-
-                case HardwareVersion.RspDx:
-                    amLnaStates = GainTables.RspDxAmLnaStates;
-                    amIfGains = GainTables.RspDxAmIfGains;
-                    vhfLnaStates = GainTables.RspDxVhfLnaStates;
-                    vhfIfGains = GainTables.RspDxVhfIfGains;
-                    band3LnaStates = GainTables.RspDxBand3LnaStates;
-                    band3IfGains = GainTables.RspDxBand3IfGains;
-                    uhfLowerLnaStates = GainTables.RspDxUhfLowerLnaStates;
-                    uhfLowerIfGains = GainTables.RspDxUhfLowerIfGains;
-                    uhfUpperLnaStates = GainTables.RspDxUhfUpperLnaStates;
-                    uhfUpperIfGains = GainTables.RspDxUhfUpperIfGains;
-                    lBandLnaStates = GainTables.RspDxLBandLnaStates;
-                    lBandIfGains = GainTables.RspDxLBandIfGains;
-                    break;
-            }
-
             // Set the gain based on the current band
-            switch (_currentBand)
-            {
-                case RadioBand.AM:
-                    _deviceParams->RxChannelA->TunerParams.Gain.LnaState = amLnaStates[value];
-                    _deviceParams->RxChannelA->TunerParams.Gain.GrDb = amIfGains[value];
-                    break;
-
-                case RadioBand.VHF:
-                    _deviceParams->RxChannelA->TunerParams.Gain.LnaState = vhfLnaStates[value];
-                    _deviceParams->RxChannelA->TunerParams.Gain.GrDb = vhfIfGains[value];
-                    break;
-
-                case RadioBand.III:
-                    _deviceParams->RxChannelA->TunerParams.Gain.LnaState = band3LnaStates[value];
-                    _deviceParams->RxChannelA->TunerParams.Gain.GrDb = band3IfGains[value];
-                    break;
-
-                case RadioBand.UHFLower:
-                    _deviceParams->RxChannelA->TunerParams.Gain.LnaState = uhfLowerLnaStates[value];
-                    _deviceParams->RxChannelA->TunerParams.Gain.GrDb = uhfLowerIfGains[value];
-                    break;
-
-                case RadioBand.UHFUpper:
-                    _deviceParams->RxChannelA->TunerParams.Gain.LnaState = uhfUpperLnaStates[value];
-                    _deviceParams->RxChannelA->TunerParams.Gain.GrDb = uhfUpperIfGains[value];
-                    break;
-
-                case RadioBand.L:
-                    _deviceParams->RxChannelA->TunerParams.Gain.LnaState = lBandLnaStates[value];
-                    _deviceParams->RxChannelA->TunerParams.Gain.GrDb = lBandIfGains[value];
-                    break;
-            }
+            _deviceParams->RxChannelA->TunerParams.Gain.LnaState = _gainLevels!.LnaStates[_currentBand][value];
+            _deviceParams->RxChannelA->TunerParams.Gain.GrDb = _gainLevels!.IfGains[_currentBand][value];
 
             if (value > GainLevelsSupported || (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Tuner_Gr, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success))
             {
@@ -708,6 +591,16 @@ internal sealed unsafe class Radio : IRadio
 
             // Set the device name
             Name = $"SDRplay {device.HwVer.ToDeviceModel()} {device.SerNo}";
+
+            // Set the gain levels to the one for the device
+            _gainLevels = device.HwVer switch
+            {
+                HardwareVersion.Rsp1A => new Rsp1a.GainTables(),
+                HardwareVersion.Rsp2 => new Rsp2.GainTables(),
+                HardwareVersion.RspDuo => new RspDuo.GainTables(),
+                HardwareVersion.RspDx => new RspDx.GainTables(),
+                _ => new Rsp1.GainTables()
+            };
 
             // Get the pointer to the device parameters
             if (Interop.GetDeviceParams(device.Dev, out _deviceParams) != ApiError.Success)
