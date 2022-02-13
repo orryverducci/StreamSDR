@@ -35,13 +35,13 @@ internal sealed class ShortToByteBitDepthConversion
     public ShortToByteBitDepthConversion(int originalDepth, int newDepth)
     {
         // Check the original bit depth fits in a short and is above 0
-        if (originalDepth > 16 || originalDepth < 0)
+        if (originalDepth > 16 || originalDepth < 1)
         {
             throw new ArgumentException("The original bit depth must be between 1 and 16", nameof(originalDepth));
         }
 
         // Check the new bit depth fits in a byte and is above 0
-        if (newDepth > 8 || originalDepth < 0)
+        if (newDepth > 8 || originalDepth < 1)
         {
             throw new ArgumentException("The new bit depth must be between 1 and 8", nameof(newDepth));
         }
