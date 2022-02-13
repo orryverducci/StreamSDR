@@ -20,7 +20,6 @@
 # .NET Core
 project.lock.json
 project.fragment.lock.json
-artifacts/
 
 # NuGet Packages
 *.nupkg
@@ -44,6 +43,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+artifacts/
 
 # MSBuild binary and structured log
 *.binlog
