@@ -56,7 +56,7 @@ public sealed class BuildDockerImage : FrostingTask<BuildContext>
 
         context.DockerBuild(new DockerImageBuildSettings
         {
-            BuildArg =  new string[] { $"version={version.Version}" },
+            BuildArg = new string[] { $"version={version.Version}" },
             Pull = true,
             Tag = tags,
         }, "../");

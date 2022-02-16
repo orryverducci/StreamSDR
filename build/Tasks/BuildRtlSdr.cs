@@ -16,8 +16,8 @@
  */
 
 using System.Collections.Generic;
-using Cake.Common.Tools.MSBuild;
 using Cake.CMake;
+using Cake.Common.Tools.MSBuild;
 
 namespace StreamSDR.Build;
 
