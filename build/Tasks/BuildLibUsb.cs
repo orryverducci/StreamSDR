@@ -17,7 +17,7 @@
 
 using Cake.Common.Tools.MSBuild;
 
-namespace StreamSDR.Build;
+namespace StreamSDR.Build.Tasks;
 
 /// <summary>
 /// Task to build the libusb library.

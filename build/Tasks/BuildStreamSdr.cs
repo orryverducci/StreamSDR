@@ -18,7 +18,7 @@
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Publish;
 
-namespace StreamSDR.Build;
+namespace StreamSDR.Build.Tasks;
 
 /// <summary>
 /// Task to build the StreamSDR application.

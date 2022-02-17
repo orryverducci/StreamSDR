@@ -18,7 +18,7 @@
 using Cake.Docker;
 using Cake.MinVer;
 
-namespace StreamSDR.Build;
+namespace StreamSDR.Build.Tasks;
 
 /// <summary>
 /// Task to build the StreamSDR application.

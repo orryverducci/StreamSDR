@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Cake.CMake;
 using Cake.Common.Tools.MSBuild;
 
-namespace StreamSDR.Build;
+namespace StreamSDR.Build.Tasks;
 
 /// <summary>
 /// Task to build the rtl-sdr library.

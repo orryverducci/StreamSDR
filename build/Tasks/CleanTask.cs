@@ -15,7 +15,7 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Build;
+namespace StreamSDR.Build.Tasks;
 
 /// <summary>
 /// Task to clean up all the artifacts left by builds.

@@ -17,7 +17,7 @@
 
 using Cake.Common.Diagnostics;
 
-namespace StreamSDR.Build;
+namespace StreamSDR.Build.Tasks;
 
 /// <summary>
 /// Task to copy the SDRplay API library.
