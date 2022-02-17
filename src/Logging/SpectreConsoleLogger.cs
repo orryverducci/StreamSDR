@@ -34,10 +34,7 @@ internal sealed class SpectreConsoleLogger : ILogger
     /// Initialises a new instance of the <see cref="SpectreConsoleLogger"/> class.
     /// </summary>
     /// <param name="categoryName">The name of the category the logger is for.</param>
-    public SpectreConsoleLogger(string categoryName)
-    {
-        _categoryName = categoryName;
-    }
+    public SpectreConsoleLogger(string categoryName) => _categoryName = categoryName;
 
     /// <inheritdoc/>
     public IDisposable? BeginScope<TState>(TState state) => null;
