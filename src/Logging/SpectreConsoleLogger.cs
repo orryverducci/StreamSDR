@@ -37,7 +37,7 @@ internal sealed class SpectreConsoleLogger : ILogger
     public SpectreConsoleLogger(string categoryName) => _categoryName = categoryName;
 
     /// <inheritdoc/>
-    public IDisposable? BeginScope<TState>(TState state) => null;
+    public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
 
     /// <inheritdoc/>
     public bool IsEnabled(LogLevel logLevel) => logLevel != LogLevel.None;
