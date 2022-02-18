@@ -20,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 using Spectre.Console;
 
 namespace StreamSDR;
@@ -66,6 +67,12 @@ internal static class Program
                 builder.ClearProviders()
                         .AddProvider(new Logging.SpectreConsoleLoggerProvider())
                         .SetMinimumLevel(DebugMode ? LogLevel.Debug : LogLevel.Information);
+
+                // Add the debug logger if running in debug mode
+                if (DebugMode)
+                {
+                    builder.AddProvider(new DebugLoggerProvider());
+                }
             })
             .ConfigureServices((hostContext, services) =>
             {
