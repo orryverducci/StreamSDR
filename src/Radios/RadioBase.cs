@@ -410,117 +410,117 @@ internal abstract class RadioBase : IRadio
     /// Gets the sample rate the device is operating at in Hertz.
     /// </summary>
     /// <returns>The sample rate the device is operating at in Hertz, or 0 if there was an error.</returns>
-    public abstract uint GetSampleRate();
+    protected abstract uint GetSampleRate();
 
     /// <summary>
     /// Sets the sample rate the device is operating at in Hertz.
     /// </summary>
     /// <param name="sampleRate">The sample rate to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetSampleRate(uint sampleRate);
+    protected abstract int SetSampleRate(uint sampleRate);
 
     /// <summary>
     /// Gets the centre frequency the device is tuned to in Hertz.
     /// </summary>
     /// <returns>The centre frequency the device is tuned to in Hertz, or 0 if there was an error.</returns>
-    public abstract ulong GetFrequency();
+    protected abstract ulong GetFrequency();
 
     /// <summary>
     /// Sets the centre frequency the device is tuned to in Hertz.
     /// </summary>
     /// <param name="frequency">The centre frequency to tune the device to.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetFrequency(ulong frequency);
+    protected abstract int SetFrequency(ulong frequency);
 
     /// <summary>
     /// Gets the tuner frequency correction in parts per million (PPM).
     /// </summary>
     /// <returns>The tuner frequency correction in parts per million (PPM), or 0 if there was an error.</returns>
-    public abstract int GetFrequencyCorrection();
+    protected abstract int GetFrequencyCorrection();
 
     /// <summary>
     /// Sets the tuner frequency correction in parts per million (PPM).
     /// </summary>
     /// <param name="freqCorrection">The tuner frequency correction to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetFrequencyCorrection(int freqCorrection);
+    protected abstract int SetFrequencyCorrection(int freqCorrection);
 
     /// <summary>
     /// Gets if offset tuning is enabled for zero IF tuners.
     /// </summary>
     /// <returns><see langword="true"/> if offset tuning is enabled, <see langword="false"/> otherwise.</returns>
-    public abstract bool GetOffsetTuning();
+    protected abstract bool GetOffsetTuning();
 
     /// <summary>
     /// Sets if offset tuning is enabled for zero IF tuners.
     /// </summary>
     /// <param name="enabled">The offset tuning state to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetOffsetTuning(bool enabled);
+    protected abstract int SetOffsetTuning(bool enabled);
 
     /// <summary>
     /// Gets the direct sampling mode.
     /// </summary>
     /// <returns>The currently set <see cref="DirectSamplingMode"/>.</returns>
-    public abstract DirectSamplingMode GetDirectSampling();
+    protected abstract DirectSamplingMode GetDirectSampling();
 
     /// <summary>
     /// Sets the direct sampling mode.
     /// </summary>
     /// <param name="mode">The <see cref="DirectSamplingMode"/> to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetDirectSampling(DirectSamplingMode mode);
+    protected abstract int SetDirectSampling(DirectSamplingMode mode);
 
     /// <summary>
     /// Gets the current level of gain of the tuner.
     /// </summary>
     /// <returns>The level of gain the tuner is using.</returns>
-    public abstract uint GetGain();
+    protected abstract uint GetGain();
 
     /// <summary>
     /// Sets the current level of gain of the tuner.
     /// </summary>
     /// <param name="level">The tuner gain level to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetGain(uint level);
+    protected abstract int SetGain(uint level);
 
     /// <summary>
     /// Gets the mode in which the radio's gain is operating.
     /// </summary>
     /// <returns>The currently set <see cref="GainMode"/>.</returns>
-    public abstract GainMode GetGainMode();
+    protected abstract GainMode GetGainMode();
 
     /// <summary>
     /// Sets the mode in which the radio's gain is operating.
     /// </summary>
     /// <param name="mode">The <see cref="GainMode"/> to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetGainMode(GainMode mode);
+    protected abstract int SetGainMode(GainMode mode);
 
     /// <summary>
     /// Gets if automatic gain correction is enabled.
     /// </summary>
     /// <returns><see langword="true"/> if automatic gain correction, <see langword="false"/> otherwise.</returns>
-    public abstract bool GetAgc();
+    protected abstract bool GetAgc();
 
     /// <summary>
     /// Sets if automatic gain correction is enabled.
     /// </summary>
     /// <param name="enabled">The automatic gain correction state to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetAgc(bool enabled);
+    protected abstract int SetAgc(bool enabled);
 
     /// <summary>
     /// Gets if the bias tee has been enabled.
     /// </summary>
     /// <returns><see langword="true"/> if the bias tee is enabled, <see langword="false"/> otherwise.</returns>
-    public abstract bool GetBiasTee();
+    protected abstract bool GetBiasTee();
 
     /// <summary>
     /// Sets if the bias tee has been enabled.
     /// </summary>
     /// <param name="enabled">The bias tee state to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    public abstract int SetBiasTee(bool enabled);
+    protected abstract int SetBiasTee(bool enabled);
     #endregion
 }
