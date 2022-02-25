@@ -71,7 +71,7 @@ internal abstract class RadioBase : IRadio
     /// <summary>
     /// Gets the type of tuner in the device.
     /// </summary>
-    public TunerType Tuner { get; protected set; }
+    public TunerType Tuner { get; protected set; } = TunerType.Unknown;
 
     /// <summary>
     /// Gets or sets the sample rate the device is operating at in Hertz.
