@@ -15,7 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Globalization;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -26,41 +25,9 @@ namespace StreamSDR.Radios.RtlSdr;
 /// <summary>
 /// Provides access to control and receive samples from a rtl-sdr radio.
 /// </summary>
-internal sealed class Radio : IRadio
+internal sealed class Radio : RadioBase
 {
-    #region Constants
-    /// <summary>
-    /// The default frequency (100 MHz)
-    /// </summary>
-    private const uint DefaultFrequency = 100000000;
-
-    /// <summary>
-    /// The default sample rate (2.048 MHz)
-    /// </summary>
-    private const uint DefaultSampleRate = 2048000;
-    #endregion
-
     #region Private fields
-    /// <summary>
-    /// <see langword="true"/> if Dispose() has been called, <see langword="false"/> otherwise.
-    /// </summary>
-    private bool _disposed = false;
-
-    /// <summary>
-    /// The logger.
-    /// </summary>
-    private readonly ILogger _logger;
-
-    /// <summary>
-    /// The application lifetime service.
-    /// </summary>
-    private readonly IHostApplicationLifetime _applicationLifetime;
-
-    /// <summary>
-    /// The application configuration.
-    /// </summary>
-    private readonly IConfiguration _config;
-
     /// <summary>
     /// The device handle.
     /// </summary>
@@ -97,260 +64,6 @@ internal sealed class Radio : IRadio
     private bool _biasTee = false;
     #endregion
 
-    #region Properties
-    /// <inheritdoc/>
-    public string Name { get; private set; } = string.Empty;
-
-    /// <inheritdoc/>
-    public uint SampleRate
-    {
-        get => _device != IntPtr.Zero ? Interop.GetSampleRate(_device) : 0;
-        set
-        {
-            _logger.LogInformation($"Setting the sample rate to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz");
-
-            if (_device == IntPtr.Zero || Interop.SetSampleRate(_device, value) != 0)
-            {
-                _logger.LogError("Unable to set the sample rate");
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public TunerType Tuner
-    {
-        get
-        {
-            if (_device != IntPtr.Zero)
-            {
-                return Interop.GetTunerType(_device) switch
-                {
-                    RtlSdr.Tuner.E4000 => TunerType.E4000,
-                    RtlSdr.Tuner.FC0012 => TunerType.FC0012,
-                    RtlSdr.Tuner.FC0013 => TunerType.FC0013,
-                    RtlSdr.Tuner.FC2580 => TunerType.FC2580,
-                    RtlSdr.Tuner.R820T => TunerType.R820T,
-                    RtlSdr.Tuner.R828D => TunerType.R828D,
-                    _ => TunerType.Unknown
-                };
-            }
-            else
-            {
-                return TunerType.Unknown;
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public ulong Frequency
-    {
-        get => _device != IntPtr.Zero ? Interop.GetCenterFreq(_device) : 0;
-        set
-        {
-            NumberFormatInfo numberFormat = new NumberFormatInfo
-            {
-                NumberGroupSeparator = "."
-            };
-            _logger.LogInformation($"Setting the frequency to {value.ToString("N0", numberFormat)} Hz");
-
-            if (_device == IntPtr.Zero || Interop.SetCenterFreq(_device, (uint)value) != 0)
-            {
-                _logger.LogError("Unable to set the centre frequency");
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public int FrequencyCorrection
-    {
-        get => _device != IntPtr.Zero ? Interop.GetFreqCorrection(_device) : 0;
-        set
-        {
-            _logger.LogInformation($"Setting the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
-
-            int result = Interop.SetFreqCorrection(_device, value);
-
-            // Log error if device is not initialised or if an error is returned, ignoring -2 which indicates the correction is already set to that value
-            if (_device == IntPtr.Zero || result > 0 || result == -1 || result < -2)
-            {
-                _logger.LogError("Unable to set the frequency correction");
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public bool OffsetTuning
-    {
-        get
-        {
-            if (_device != IntPtr.Zero)
-            {
-                return Interop.GetOffsetTuning(_device) == 1 ? true : false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        set
-        {
-            int offsetTuning = value ? 1 : 0;
-            string state = value ? "on" : "off";
-
-            _logger.LogInformation($"Turning {state} offset tuning");
-
-            if (_device != IntPtr.Zero)
-            {
-                TunerType tunerType = Tuner;
-                if (tunerType == TunerType.R820T || tunerType == TunerType.R828D)
-                {
-                    _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
-                    return;
-                }
-
-                if (Interop.SetOffsetTuning(_device, offsetTuning) == 0)
-                {
-                    return;
-                }
-            }
-
-            // If not returned yet, there is an error
-            _logger.LogError("Unable to set offset tuning");
-        }
-    }
-
-    /// <inheritdoc/>
-    public DirectSamplingMode DirectSampling
-    {
-        get
-        {
-            if (_device != IntPtr.Zero)
-            {
-                return Interop.GetDirectSampling(_device) switch
-                {
-                    1 => DirectSamplingMode.IBranch,
-                    2 => DirectSamplingMode.QBranch,
-                    _ => DirectSamplingMode.Off,
-                };
-            }
-            else
-            {
-                return DirectSamplingMode.Off;
-            }
-        }
-        set
-        {
-            _logger.LogInformation($"Setting direct sampling to {value}");
-
-            int directSampling = value switch
-            {
-                DirectSamplingMode.IBranch => 1,
-                DirectSamplingMode.QBranch => 2,
-                _ => 0,
-            };
-
-            if (_device == IntPtr.Zero || Interop.SetDirectSampling(_device, directSampling) != 0)
-            {
-                _logger.LogError("Unable to set the direct sampling mode");
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public uint Gain
-    {
-        get
-        {
-            if (_device != IntPtr.Zero)
-            {
-                return 0;
-            }
-
-            int i = Array.IndexOf<int>(_gains, Interop.GetTunerGain(_device));
-
-            return i >= 0 ? (uint)i : 0;
-        }
-        set
-        {
-            _logger.LogInformation($"Setting the gain to level {value}");
-
-            if (_device == IntPtr.Zero || value >= _gains.Length || Interop.SetTunerGain(_device, _gains[value]) != 0)
-            {
-                _logger.LogError("Unable to set the gain");
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public GainMode GainMode
-    {
-        get => _gainMode;
-        set
-        {
-            _logger.LogInformation($"Setting the gain mode to {value}");
-
-            int gainMode = value == GainMode.Manual ? 1 : 0;
-
-            if (_device == IntPtr.Zero || Interop.SetTunerGainMode(_device, gainMode) != 0)
-            {
-                _logger.LogError("Unable to set the gain mode");
-                return;
-            }
-
-            _gainMode = value;
-        }
-    }
-
-    /// <inheritdoc/>
-    public uint GainLevelsSupported => (uint)_gains.Length;
-
-    /// <inheritdoc/>
-    public bool AutomaticGainCorrection
-    {
-        get => _rtlAgc;
-        set
-        {
-            int rtlAgc = value ? 1 : 0;
-            string state = value ? "on" : "off";
-
-            _logger.LogInformation($"Setting the RTL AGC to {state}");
-
-            if (_device == IntPtr.Zero || Interop.SetAGCMode(_device, rtlAgc) != 0)
-            {
-                _logger.LogError("Unable to set the RTL AGC");
-                return;
-            }
-
-            _rtlAgc = value;
-        }
-    }
-
-    /// <inheritdoc/>
-    public bool BiasTee
-    {
-        get => _biasTee;
-        set
-        {
-            int biasTee = value ? 1 : 0;
-            string state = value ? "on" : "off";
-
-            _logger.LogInformation($"Turning {state} the bias tee");
-
-            if (_device == IntPtr.Zero || Interop.SetBiasTee(_device, biasTee) != 0)
-            {
-                _logger.LogError("Unable to set bias tee");
-            }
-
-            _biasTee = value;
-        }
-    }
-    #endregion
-
-    #region Events
-    /// <inheritdoc/>
-    public event EventHandler<byte[]>? SamplesAvailable;
-    #endregion
-
     #region Constructor, finaliser and lifecycle methods
     /// <summary>
     /// Initialises a new instance of the <see cref="Radio"/> class.
@@ -358,17 +71,8 @@ internal sealed class Radio : IRadio
     /// <param name="logger">The logger for the <see cref="Radio"/> class.</param>
     /// <param name="lifetime">The application lifetime service.</param>
     /// <param name="config">The application configuration.</param>
-    public unsafe Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config)
+    public unsafe Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config) : base(logger, lifetime, config)
     {
-        // Store a reference to the logger
-        _logger = logger;
-
-        // Store a reference to the application lifetime
-        _applicationLifetime = lifetime;
-
-        // Store a reference to the application config
-        _config = config;
-
         // Create the sample receiver worker thread
         _receiverThread = new(ReceiverWorker)
         {
@@ -379,30 +83,8 @@ internal sealed class Radio : IRadio
         _readCallback = new Interop.ReadDelegate(ProcessSamples);
     }
 
-    /// <summary>
-    /// Finalises the instance of the <see cref="RtlSdrRadio"/> class.
-    /// </summary>
-    ~Radio() => Dispose();
-
     /// <inheritdoc/>
-    public void Dispose()
-    {
-        // Return if already disposed
-        if (_disposed)
-        {
-            return;
-        }
-
-        // Stop the device if it is running
-        Stop();
-
-        // Set that dispose has run
-        _disposed = true;
-        GC.SuppressFinalize(this);
-    }
-
-    /// <inheritdoc/>
-    public void Start()
+    public override void Start()
     {
         // Log that the radio is starting
         _logger.LogInformation("Starting the rtl-sdr radio");
@@ -444,12 +126,25 @@ internal sealed class Radio : IRadio
                 return;
             }
 
+            // Get the tuner type
+            Tuner = Interop.GetTunerType(_device) switch
+            {
+                RtlSdr.Tuner.E4000 => TunerType.E4000,
+                RtlSdr.Tuner.FC0012 => TunerType.FC0012,
+                RtlSdr.Tuner.FC0013 => TunerType.FC0013,
+                RtlSdr.Tuner.FC2580 => TunerType.FC2580,
+                RtlSdr.Tuner.R820T => TunerType.R820T,
+                RtlSdr.Tuner.R828D => TunerType.R828D,
+                _ => TunerType.Unknown
+            };
+
             // Get the gain values supported by the tuner
             int numberOfGains = Interop.GetTunerGains(_device, null);
             int[] gains = new int[numberOfGains];
             if (Interop.GetTunerGains(_device, gains) != 0)
             {
                 _gains = gains;
+                GainLevelsSupported = (uint)_gains.Length;
             }
             else
             {
@@ -484,7 +179,7 @@ internal sealed class Radio : IRadio
     }
 
     /// <inheritdoc/>
-    public void Stop()
+    public override void Stop()
     {
         // Check that the device has been started
         if (_device == IntPtr.Zero)
@@ -508,6 +203,291 @@ internal sealed class Radio : IRadio
 
         // Log that the radio has stopped
         _logger.LogInformation($"The radio has stopped");
+    }
+    #endregion
+
+    #region Radio parameter methods
+    /// <summary>
+    /// Gets the sample rate the device is operating at in Hertz.
+    /// </summary>
+    /// <returns>The sample rate the device is operating at in Hertz, or 0 if there was an error.</returns>
+    protected override uint GetSampleRate() => _device != IntPtr.Zero ? Interop.GetSampleRate(_device) : 0;
+
+    /// <summary>
+    /// Sets the sample rate the device is operating at in Hertz.
+    /// </summary>
+    /// <param name="sampleRate">The sample rate to be used.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetSampleRate(uint sampleRate)
+    {
+        if (_device != IntPtr.Zero)
+        {
+            return Interop.SetSampleRate(_device, sampleRate);
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets the centre frequency the device is tuned to in Hertz.
+    /// </summary>
+    /// <returns>The centre frequency the device is tuned to in Hertz, or 0 if there was an error.</returns>
+    protected override ulong GetFrequency() => _device != IntPtr.Zero ? Interop.GetCenterFreq(_device) : 0;
+
+    /// <summary>
+    /// Sets the centre frequency the device is tuned to in Hertz.
+    /// </summary>
+    /// <param name="frequency">The centre frequency to tune the device to.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetFrequency(ulong frequency)
+    {
+        if (_device != IntPtr.Zero)
+        {
+            return Interop.SetCenterFreq(_device, (uint)frequency);
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets the tuner frequency correction in parts per million (PPM).
+    /// </summary>
+    /// <returns>The tuner frequency correction in parts per million (PPM), or 0 if there was an error.</returns>
+    protected override int GetFrequencyCorrection() => _device != IntPtr.Zero ? Interop.GetFreqCorrection(_device) : 0;
+
+    /// <summary>
+    /// Sets the tuner frequency correction in parts per million (PPM).
+    /// </summary>
+    /// <param name="freqCorrection">The tuner frequency correction to be used.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetFrequencyCorrection(int freqCorrection)
+    {
+        if (_device != IntPtr.Zero)
+        {
+            int result = Interop.SetFreqCorrection(_device, freqCorrection);
+
+            // We ignore error -2, which indicates the correction is already set to given value, so we return 0 instead
+            return (result == 0 || result == -2) ? 0 : result;
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets if offset tuning is enabled for zero IF tuners.
+    /// </summary>
+    /// <returns><see langword="true"/> if offset tuning is enabled, <see langword="false"/> otherwise.</returns>
+    protected override bool GetOffsetTuning()
+    {
+        if (_device != IntPtr.Zero)
+        {
+            return Interop.GetOffsetTuning(_device) == 1 ? true : false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Sets if offset tuning is enabled for zero IF tuners.
+    /// </summary>
+    /// <param name="enabled">The offset tuning state to be used.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetOffsetTuning(bool enabled)
+    {
+        if (_device != IntPtr.Zero)
+        {
+            if (Tuner == TunerType.R820T || Tuner == TunerType.R828D)
+            {
+                _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
+                return 0;
+            }
+
+            int offsetTuning = enabled ? 1 : 0;
+            return Interop.SetOffsetTuning(_device, offsetTuning);
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets the direct sampling mode.
+    /// </summary>
+    /// <returns>The currently set <see cref="DirectSamplingMode"/>.</returns>
+    protected override DirectSamplingMode GetDirectSampling()
+    {
+        if (_device != IntPtr.Zero)
+        {
+            return Interop.GetDirectSampling(_device) switch
+            {
+                1 => DirectSamplingMode.IBranch,
+                2 => DirectSamplingMode.QBranch,
+                _ => DirectSamplingMode.Off,
+            };
+        }
+        else
+        {
+            return DirectSamplingMode.Off;
+        }
+    }
+
+    /// <summary>
+    /// Sets the direct sampling mode.
+    /// </summary>
+    /// <param name="mode">The <see cref="DirectSamplingMode"/> to be used.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetDirectSampling(DirectSamplingMode mode)
+    {
+        if (_device != IntPtr.Zero)
+        {
+            int directSampling = mode switch
+            {
+                DirectSamplingMode.IBranch => 1,
+                DirectSamplingMode.QBranch => 2,
+                _ => 0,
+            };
+
+            return Interop.SetDirectSampling(_device, directSampling);
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets the current level of gain of the tuner.
+    /// </summary>
+    /// <returns>The level of gain the tuner is using.</returns>
+    protected override uint GetGain()
+    {
+        if (_device == IntPtr.Zero)
+        {
+            return 0;
+        }
+
+        int i = Array.IndexOf(_gains, Interop.GetTunerGain(_device));
+
+        return i >= 0 ? (uint)i : 0;
+    }
+
+    /// <summary>
+    /// Sets the current level of gain of the tuner.
+    /// </summary>
+    /// <param name="level">The tuner gain level to be used.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetGain(uint level)
+    {
+        if (_device != IntPtr.Zero && level < _gains.Length)
+        {
+            return Interop.SetTunerGain(_device, _gains[level]);
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets the mode in which the radio's gain is operating.
+    /// </summary>
+    /// <returns>The currently set <see cref="GainMode"/>.</returns>
+    protected override GainMode GetGainMode() => _gainMode;
+
+    /// <summary>
+    /// Sets the mode in which the radio's gain is operating.
+    /// </summary>
+    /// <param name="mode">The <see cref="GainMode"/> to be used.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetGainMode(GainMode mode)
+    {
+        if (_device != IntPtr.Zero)
+        {
+            int gainMode = mode == GainMode.Manual ? 1 : 0;
+            int result = Interop.SetTunerGainMode(_device, gainMode);
+
+            if (result == 0)
+            {
+                _gainMode = mode;
+            }
+
+            return result;
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets if automatic gain correction is enabled.
+    /// </summary>
+    /// <returns><see langword="true"/> if automatic gain correction, <see langword="false"/> otherwise.</returns>
+    protected override bool GetAgc() => _rtlAgc;
+
+    /// <summary>
+    /// Sets if automatic gain correction is enabled.
+    /// </summary>
+    /// <param name="enabled">The automatic gain correction state to be used.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetAgc(bool enabled)
+    {
+        if (_device != IntPtr.Zero)
+        {
+            int rtlAgc = enabled ? 1 : 0;
+            int result = Interop.SetAGCMode(_device, rtlAgc);
+
+            if (result == 0)
+            {
+                _rtlAgc = enabled;
+            }
+
+            return result;
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    /// <summary>
+    /// Gets if the bias tee has been enabled.
+    /// </summary>
+    /// <returns><see langword="true"/> if the bias tee is enabled, <see langword="false"/> otherwise.</returns>
+    protected override bool GetBiasTee() => _biasTee;
+
+    /// <summary>
+    /// Sets if the bias tee has been enabled.
+    /// </summary>
+    /// <param name="enabled">The bias tee state to be used.</param>
+    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    protected override int SetBiasTee(bool enabled)
+    {
+        if (_device != IntPtr.Zero)
+        {
+            int biasTee = enabled ? 1 : 0;
+            int result = Interop.SetBiasTee(_device, biasTee);
+
+            if (result == 0)
+            {
+                _biasTee = enabled;
+            }
+
+            return result;
+        }
+        else
+        {
+            return int.MinValue;
+        }
     }
     #endregion
 
@@ -538,8 +518,8 @@ internal sealed class Radio : IRadio
         // Copy the buffer to a new array of bytes in managed memory
         byte[] bufferArray = buffer.ToArray();
 
-        // Fire the samples available event
-        SamplesAvailable?.Invoke(this, bufferArray);
+        // Send the samples to the clients
+        SendSamplesToClients(bufferArray);
     }
     #endregion
 }
