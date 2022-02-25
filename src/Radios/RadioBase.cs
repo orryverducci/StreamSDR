@@ -523,4 +523,12 @@ internal abstract class RadioBase : IRadio
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
     protected abstract int SetBiasTee(bool enabled);
     #endregion
+
+    #region Sample handling methods
+    /// <summary>
+    /// Sends a buffer of samples to the clients.
+    /// </summary>
+    /// <param name="buffer">An array of bytes containing the samples.</param>
+    protected void SendSamplesToClients(byte[] buffer) => SamplesAvailable?.Invoke(this, buffer);
+    #endregion
 }
