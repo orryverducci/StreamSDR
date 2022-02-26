@@ -28,7 +28,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// Provides access to control and receive samples from a SDRplay radio.
 /// </summary>
-internal sealed unsafe class Radio : IRadio
+internal sealed unsafe class Radio : RadioBase
 {
     #region Constants
     /// <summary>
@@ -37,42 +37,17 @@ internal sealed unsafe class Radio : IRadio
     private const float SdrPlayApiVersion = 3.07f;
 
     /// <summary>
-    /// The default frequency (100 MHz)
-    /// </summary>
-    private const uint DefaultFrequency = 100000000;
-
-    /// <summary>
-    /// The default sample rate (2.048 MHz)
-    /// </summary>
-    private const uint DefaultSampleRate = 2048000;
-
-    /// <summary>
     /// The maximum decimation factor that can be used for sample rates smaller than 2 MHz.
     /// </summary>
     private const uint MaxDecimationFactor = 64;
+
+    /// <summary>
+    /// The number of available gain levels.
+    /// </summary>
+    private const uint AvailableGainLevels = 29;
     #endregion
 
     #region Private fields
-    /// <summary>
-    /// <see langword="true"/> if Dispose() has been called, <see langword="false"/> otherwise.
-    /// </summary>
-    private bool _disposed = false;
-
-    /// <summary>
-    /// The logger.
-    /// </summary>
-    private readonly ILogger _logger;
-
-    /// <summary>
-    /// The application lifetime service.
-    /// </summary>
-    private readonly IHostApplicationLifetime _applicationLifetime;
-
-    /// <summary>
-    /// The application configuration.
-    /// </summary>
-    private readonly IConfiguration _config;
-
     /// <summary>
     /// Indicates if the SDRplay API has been locked by the application.
     /// </summary>
@@ -124,320 +99,6 @@ internal sealed unsafe class Radio : IRadio
     private uint _currentGainLevel;
     #endregion
 
-    #region Properties
-    /// <inheritdoc/>
-    public string Name { get; private set; } = string.Empty;
-
-    /// <inheritdoc/>
-    public uint SampleRate
-    {
-        get => _deviceParams != null ? (uint)_deviceParams->DevParams->FsFreq.FsHz : 0;
-        set
-        {
-            _logger.LogInformation($"Setting the sample rate to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz");
-
-            if (_deviceParams == null)
-            {
-                _logger.LogError("Unable to set the sample rate");
-                return;
-            }
-            else if (value < 2000000 / MaxDecimationFactor || value > 10000000)
-            {
-                _logger.LogError("The sample rate is not supported");
-                return;
-            }
-
-            if (value < 2000000)
-            {
-                int decimationFactor = 2;
-                int calculatedSampleRate = 1000000;
-
-                while (calculatedSampleRate > value)
-                {
-                    decimationFactor <<= 1;
-                    calculatedSampleRate = 2000000 / decimationFactor;
-                }
-
-                if (calculatedSampleRate != value)
-                {
-                    _logger.LogWarning($"The sample rate is not supported, using {calculatedSampleRate.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz instead");
-                }
-
-                value = 2000000;
-                _deviceParams->RxChannelA->CtrlParams.Decimation.DecimationFactor = (byte)decimationFactor;
-                _deviceParams->RxChannelA->CtrlParams.Decimation.Enable = true;
-            }
-            else
-            {
-                _deviceParams->RxChannelA->CtrlParams.Decimation.Enable = false;
-            }
-
-            _deviceParams->DevParams->FsFreq.FsHz = value;
-
-            if (value >= 7100000)
-            {
-                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw8000;
-            }
-            else if (value >= 6100000)
-            {
-                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw7000;
-            }
-            else if (value >= 5100000)
-            {
-                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw6000;
-            }
-            else if (value >= 1600000)
-            {
-                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw5000;
-            }
-            else if (value >= 700000)
-            {
-                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw1536;
-            }
-            else if (value >= 400000)
-            {
-                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw600;
-            }
-            else if (value >= 250000)
-            {
-                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw300;
-            }
-            else
-            {
-                _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw200;
-            }
-
-            if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Dev_Fs | ReasonForUpdate.Tuner_BwType | ReasonForUpdate.Ctrl_Decimation, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success)
-            {
-                _logger.LogError("Unable to set the sample rate");
-            }
-        }
-    }
-
-    public TunerType Tuner => TunerType.MSi001;
-
-    /// <inheritdoc/>
-    public ulong Frequency
-    {
-        get => _deviceParams != null ? (ulong)_deviceParams->RxChannelA->TunerParams.RfFreq.RfHz : 0;
-        set
-        {
-            NumberFormatInfo numberFormat = new NumberFormatInfo
-            {
-                NumberGroupSeparator = "."
-            };
-            _logger.LogInformation($"Setting the frequency to {value.ToString("N0", numberFormat)} Hz");
-
-            if (_deviceParams == null)
-            {
-                _logger.LogError("Unable to set the centre frequency");
-                return;
-            }
-
-            _deviceParams->RxChannelA->TunerParams.RfFreq.RfHz = value;
-
-            if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Tuner_Frf, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success)
-            {
-                _logger.LogError("Unable to set the centre frequency");
-                return;
-            }
-
-            // Determine the radio band of the frequency
-            RadioBand band = RadioBand.Unknown;
-
-            if (value < 60000000)
-            {
-                band = RadioBand.AM;
-            }
-            else if (value < 120000000)
-            {
-                band = RadioBand.VHF;
-            }
-            else if (value < 250000000)
-            {
-                band = RadioBand.III;
-            }
-            else if (value < 420000000)
-            {
-                band = RadioBand.UHFLower;
-            }
-            else if (value < 1000000000)
-            {
-                band = RadioBand.UHFUpper;
-            }
-            else
-            {
-                band = RadioBand.L;
-            }
-
-            // If the band has changed, store the new gain and reapply the current gain level if using manual gain
-            if (band != _currentBand)
-            {
-                _currentBand = band;
-
-                if (GainMode == GainMode.Manual)
-                {
-                    Gain = Gain;
-                }
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public int FrequencyCorrection
-    {
-        get => _deviceParams != null ? (int)_deviceParams->DevParams->Ppm : 0;
-        set
-        {
-            _logger.LogInformation($"Setting the frequency correction to {value.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm");
-
-            _deviceParams->DevParams->Ppm = value;
-
-            if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Dev_Ppm, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success)
-            {
-                _logger.LogError("Unable to set the frequency correction");
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public bool OffsetTuning
-    {
-        get => false;
-        set => _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
-    }
-
-    /// <inheritdoc/>
-    public DirectSamplingMode DirectSampling
-    {
-        get => DirectSamplingMode.Off;
-        set => _logger.LogInformation("A change to the direct sampling setting has been requested, but it is not supported by this radio");
-    }
-
-    /// <inheritdoc/>
-    public uint Gain
-    {
-        get => _currentGainLevel;
-        set
-        {
-            _logger.LogInformation($"Setting the gain to level {value}");
-
-            if (_deviceParams == null)
-            {
-                _logger.LogError("Unable to set the gain");
-            }
-
-            // Set the gain based on the current band
-            _deviceParams->RxChannelA->TunerParams.Gain.LnaState = _gainLevels!.LnaStates[_currentBand][value];
-            _deviceParams->RxChannelA->TunerParams.Gain.GrDb = _gainLevels!.IfGains[_currentBand][value];
-
-            if (value > GainLevelsSupported || (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Tuner_Gr, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success))
-            {
-                _logger.LogError("Unable to set the gain");
-                return;
-            }
-
-            _currentGainLevel = value;
-        }
-    }
-
-    /// <inheritdoc/>
-    public GainMode GainMode
-    {
-        get => _deviceParams != null && _deviceParams->RxChannelA->CtrlParams.Agc.Enable != Parameters.Control.AgcControl.AgcDisable ? GainMode.Automatic : GainMode.Manual;
-        set
-        {
-            _logger.LogInformation($"Setting the gain mode to {value}");
-
-            _deviceParams->RxChannelA->CtrlParams.Agc.Enable = value == GainMode.Automatic ? Parameters.Control.AgcControl.Agc50HZ : Parameters.Control.AgcControl.AgcDisable;
-
-            if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Ctrl_Agc, ReasonForUpdateExtension1.Ext1_None) != ApiError.Success)
-            {
-                _logger.LogError("Unable to set the gain mode");
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public uint GainLevelsSupported => 29;
-
-    /// <inheritdoc/>
-    public bool AutomaticGainCorrection
-    {
-        get => false;
-        set => _logger.LogInformation("A change to the automatic gain correction setting has been requested, but it is not supported by this radio");
-    }
-
-    /// <inheritdoc/>
-    public bool BiasTee
-    {
-        get
-        {
-            if (_deviceParams == null)
-            {
-                return false;
-            }
-
-            return _device.HwVer switch
-            {
-                HardwareVersion.Rsp1A => _deviceParams->RxChannelA->Rsp1aTunerParams.BiasTEnable,
-                HardwareVersion.Rsp2 => _deviceParams->RxChannelA->Rsp2TunerParams.BiasTEnable,
-                HardwareVersion.RspDuo => _deviceParams->RxChannelA->RspDuoTunerParams.BiasTEnable,
-                HardwareVersion.RspDx => _deviceParams->DevParams->RspDxParams.BiasTEnable,
-                _ => false
-            };
-        }
-        set
-        {
-            string state = value ? "on" : "off";
-
-            _logger.LogInformation($"Turning {state} the bias tee");
-
-            if (_deviceParams == null)
-            {
-                _logger.LogError("Unable to set bias tee");
-                return;
-            }
-
-            ReasonForUpdate reasonForUpdate = ReasonForUpdate.None;
-            ReasonForUpdateExtension1 extendedReasonForUpdate = ReasonForUpdateExtension1.Ext1_None;
-
-            switch (_device.HwVer)
-            {
-                case HardwareVersion.Rsp1A:
-                    _deviceParams->RxChannelA->Rsp1aTunerParams.BiasTEnable = value;
-                    reasonForUpdate = ReasonForUpdate.Rsp1a_BiasTControl;
-                    break;
-                case HardwareVersion.Rsp2:
-                    _deviceParams->RxChannelA->Rsp2TunerParams.BiasTEnable = value;
-                    reasonForUpdate = ReasonForUpdate.Rsp2_BiasTControl;
-                    break;
-                case HardwareVersion.RspDuo:
-                    _deviceParams->RxChannelA->RspDuoTunerParams.BiasTEnable = value;
-                    reasonForUpdate = ReasonForUpdate.RspDuo_BiasTControl;
-                    break;
-                case HardwareVersion.RspDx:
-                    _deviceParams->DevParams->RspDxParams.BiasTEnable = value;
-                    extendedReasonForUpdate = ReasonForUpdateExtension1.RspDx_BiasTControl;
-                    break;
-                default:
-                    _logger.LogInformation("Bias tee is not supported by this radio");
-                    return;
-            }
-
-            if (_deviceInitialised && Interop.Update(_device.Dev, _device.Tuner, reasonForUpdate, extendedReasonForUpdate) != ApiError.Success)
-            {
-                _logger.LogError("Unable to set bias tee");
-            }
-        }
-    }
-    #endregion
-
-    #region Events
-    /// <inheritdoc/>
-    public event EventHandler<byte[]>? SamplesAvailable;
-    #endregion
-
     #region Constructor, finaliser and lifecycle methods
     /// <summary>
     /// Initialises a new instance of the <see cref="Radio"/> class.
@@ -445,46 +106,15 @@ internal sealed unsafe class Radio : IRadio
     /// <param name="logger">The logger for the <see cref="Radio"/> class.</param>
     /// <param name="lifetime">The application lifetime service.</param>
     /// <param name="config">The application configuration.</param>
-    public Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config)
+    public Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config) : base(logger, lifetime, config)
     {
-        // Store a reference to the logger
-        _logger = logger;
-
-        // Store a reference to the application lifetime
-        _applicationLifetime = lifetime;
-
-        // Store a reference to the application config
-        _config = config;
-
         // Set the sample reading callback
         _readCallback = new Interop.ReadDelegate(ProcessSamples);
         _eventCallback = new Interop.EventDelegate(ProcessEvents);
     }
 
-    /// <summary>
-    /// Finalises the instance of the <see cref="RtlSdrRadio"/> class.
-    /// </summary>
-    ~Radio() => Dispose();
-
     /// <inheritdoc/>
-    public void Dispose()
-    {
-        // Return if already disposed
-        if (_disposed)
-        {
-            return;
-        }
-
-        // Stop the device if it is running
-        Stop();
-
-        // Set that dispose has run
-        _disposed = true;
-        GC.SuppressFinalize(this);
-    }
-
-    /// <inheritdoc/>
-    public void Start()
+    public override void Start()
     {
         // Log that the radio is starting
         _logger.LogInformation("Starting the SDRplay radio");
@@ -592,6 +222,9 @@ internal sealed unsafe class Radio : IRadio
             // Set the device name
             Name = $"SDRplay {device.HwVer.ToDeviceModel()} {device.SerNo}";
 
+            // Set the tuner type
+            Tuner = TunerType.MSi001;
+
             // Set the gain levels to the one for the device
             _gainLevels = device.HwVer switch
             {
@@ -601,6 +234,7 @@ internal sealed unsafe class Radio : IRadio
                 HardwareVersion.RspDx => new RspDx.GainTables(),
                 _ => new Rsp1.GainTables()
             };
+            GainLevelsSupported = AvailableGainLevels;
 
             // Get the pointer to the device parameters
             if (Interop.GetDeviceParams(device.Dev, out _deviceParams) != ApiError.Success)
@@ -667,7 +301,7 @@ internal sealed unsafe class Radio : IRadio
     }
 
     /// <inheritdoc/>
-    public void Stop()
+    public override void Stop()
     {
         // Check that the device has been started
         if (_device.Dev == IntPtr.Zero)
@@ -690,6 +324,343 @@ internal sealed unsafe class Radio : IRadio
 
         // Log that the radio has stopped
         _logger.LogInformation($"The radio has stopped");
+    }
+    #endregion
+
+    #region Radio parameter methods
+    /// <inheritdoc/>
+    protected override uint GetSampleRate() => _deviceParams != null ? (uint)_deviceParams->DevParams->FsFreq.FsHz : 0;
+
+    /// <inheritdoc/>
+    protected override int SetSampleRate(uint sampleRate)
+    {
+        if (_deviceParams == null)
+        {
+            return int.MinValue;
+        }
+
+        // Check the sample rate is in the supported range
+        if (sampleRate < 2000000 / MaxDecimationFactor || sampleRate > 10000000)
+        {
+            _logger.LogError("The sample rate is not supported");
+            return int.MinValue + 1;
+        }
+
+        // If the sample rate is less than 2 MHz enable decimation and calculate an appropriate factor
+        if (sampleRate < 2000000)
+        {
+            int decimationFactor = 2;
+            int calculatedSampleRate = 1000000;
+
+            while (calculatedSampleRate > sampleRate)
+            {
+                decimationFactor <<= 1;
+                calculatedSampleRate = 2000000 / decimationFactor;
+            }
+
+            if (calculatedSampleRate != sampleRate)
+            {
+                _logger.LogWarning($"The sample rate is not supported, using {calculatedSampleRate.ToString("N0", Thread.CurrentThread.CurrentCulture)} Hz instead");
+            }
+
+            sampleRate = 2000000;
+            _deviceParams->RxChannelA->CtrlParams.Decimation.DecimationFactor = (byte)decimationFactor;
+            _deviceParams->RxChannelA->CtrlParams.Decimation.Enable = true;
+        }
+        else
+        {
+            _deviceParams->RxChannelA->CtrlParams.Decimation.Enable = false;
+        }
+
+        // Set the sample rate
+        _deviceParams->DevParams->FsFreq.FsHz = sampleRate;
+
+        // Select the appropriate tuner bandwidth based on the chosen sample rate
+        if (sampleRate >= 7100000)
+        {
+            _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw8000;
+        }
+        else if (sampleRate >= 6100000)
+        {
+            _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw7000;
+        }
+        else if (sampleRate >= 5100000)
+        {
+            _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw6000;
+        }
+        else if (sampleRate >= 1600000)
+        {
+            _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw5000;
+        }
+        else if (sampleRate >= 700000)
+        {
+            _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw1536;
+        }
+        else if (sampleRate >= 400000)
+        {
+            _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw600;
+        }
+        else if (sampleRate >= 250000)
+        {
+            _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw300;
+        }
+        else
+        {
+            _deviceParams->RxChannelA->TunerParams.BwType = Parameters.Tuner.BwMhz.Bw200;
+        }
+
+        // Return the result of the API update if the device is initialised, otherwise return a successful result
+        if (_deviceInitialised)
+        {
+            return (int)Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Dev_Fs | ReasonForUpdate.Tuner_BwType | ReasonForUpdate.Ctrl_Decimation, ReasonForUpdateExtension1.Ext1_None);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override ulong GetFrequency() => _deviceParams != null ? (ulong)_deviceParams->RxChannelA->TunerParams.RfFreq.RfHz : 0;
+
+    /// <inheritdoc/>
+    protected override int SetFrequency(ulong frequency)
+    {
+        if (_deviceParams == null)
+        {
+            return int.MinValue;
+        }
+
+        // Set the frequency
+        _deviceParams->RxChannelA->TunerParams.RfFreq.RfHz = frequency;
+
+        // Get the result of the API update if the device is initialised, otherwise assume success
+        ApiError result = ApiError.Success;
+        if (_deviceInitialised)
+        {
+            result = Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Tuner_Frf, ReasonForUpdateExtension1.Ext1_None);
+        }
+
+        // If not successful return the result of the API update
+        if (result != ApiError.Success)
+        {
+            return (int)result;
+        }
+
+        // Determine the radio band of the new frequency
+        RadioBand band = RadioBand.Unknown;
+
+        if (frequency < 60000000)
+        {
+            band = RadioBand.AM;
+        }
+        else if (frequency < 120000000)
+        {
+            band = RadioBand.VHF;
+        }
+        else if (frequency < 250000000)
+        {
+            band = RadioBand.III;
+        }
+        else if (frequency < 420000000)
+        {
+            band = RadioBand.UHFLower;
+        }
+        else if (frequency < 1000000000)
+        {
+            band = RadioBand.UHFUpper;
+        }
+        else
+        {
+            band = RadioBand.L;
+        }
+
+        // If the band has changed, store the new band and reapply the current gain level if using manual gain
+        if (band != _currentBand)
+        {
+            _currentBand = band;
+
+            if (GainMode == GainMode.Manual)
+            {
+                _logger.LogDebug($"Radio band has changed to {band}, reapplying gain");
+                SetGain(GetGain());
+            }
+        }
+
+        // Return a successful result
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    protected override int GetFrequencyCorrection() => _deviceParams != null ? (int)_deviceParams->DevParams->Ppm : 0;
+
+    /// <inheritdoc/>
+    protected override int SetFrequencyCorrection(int freqCorrection)
+    {
+        if (_deviceParams == null)
+        {
+            return int.MinValue;
+        }
+
+        _deviceParams->DevParams->Ppm = freqCorrection;
+
+        if (_deviceInitialised)
+        {
+            return (int)Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Dev_Ppm, ReasonForUpdateExtension1.Ext1_None);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override bool GetOffsetTuning() => false;
+
+    /// <inheritdoc/>
+    protected override int SetOffsetTuning(bool enabled)
+    {
+        _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    protected override DirectSamplingMode GetDirectSampling() => DirectSamplingMode.Off;
+
+    /// <inheritdoc/>
+    protected override int SetDirectSampling(DirectSamplingMode mode)
+    {
+        _logger.LogInformation("A change to the direct sampling setting has been requested, but it is not supported by this radio");
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    protected override uint GetGain() => _currentGainLevel;
+
+    /// <inheritdoc/>
+    protected override int SetGain(uint level)
+    {
+        if (_deviceParams == null)
+        {
+            return int.MinValue;
+        }
+
+        // Set the gain based on the current band
+        _deviceParams->RxChannelA->TunerParams.Gain.LnaState = _gainLevels!.LnaStates[_currentBand][level];
+        _deviceParams->RxChannelA->TunerParams.Gain.GrDb = _gainLevels!.IfGains[_currentBand][level];
+
+        // Get the result of the API update if the device is initialised, otherwise assume success
+        ApiError result = ApiError.Success;
+        if (_deviceInitialised)
+        {
+            result = Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Tuner_Gr, ReasonForUpdateExtension1.Ext1_None);
+        }
+
+        // Store the gain level if successful and return the result
+        if (result == ApiError.Success)
+        {
+            _currentGainLevel = level;
+            return 0;
+        }
+        else
+        {
+            return (int)result;
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override GainMode GetGainMode() => _deviceParams != null && _deviceParams->RxChannelA->CtrlParams.Agc.Enable != Parameters.Control.AgcControl.AgcDisable ? GainMode.Automatic : GainMode.Manual;
+
+    /// <inheritdoc/>
+    protected override int SetGainMode(GainMode mode)
+    {
+        if (_deviceParams == null)
+        {
+            return int.MinValue;
+        }
+
+        _deviceParams->RxChannelA->CtrlParams.Agc.Enable = mode == GainMode.Automatic ? Parameters.Control.AgcControl.Agc50HZ : Parameters.Control.AgcControl.AgcDisable;
+
+        if (_deviceInitialised)
+        {
+            return (int)Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Ctrl_Agc, ReasonForUpdateExtension1.Ext1_None);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override bool GetAgc() => false;
+
+    /// <inheritdoc/>
+    protected override int SetAgc(bool enabled)
+    {
+        _logger.LogInformation("A change to the automatic gain correction setting has been requested, but it is not supported by this radio");
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    protected override bool GetBiasTee()
+    {
+        if (_deviceParams == null)
+        {
+            return false;
+        }
+
+        return _device.HwVer switch
+        {
+            HardwareVersion.Rsp1A => _deviceParams->RxChannelA->Rsp1aTunerParams.BiasTEnable,
+            HardwareVersion.Rsp2 => _deviceParams->RxChannelA->Rsp2TunerParams.BiasTEnable,
+            HardwareVersion.RspDuo => _deviceParams->RxChannelA->RspDuoTunerParams.BiasTEnable,
+            HardwareVersion.RspDx => _deviceParams->DevParams->RspDxParams.BiasTEnable,
+            _ => false
+        };
+    }
+
+    /// <inheritdoc/>
+    protected override int SetBiasTee(bool enabled)
+    {
+        if (_deviceParams == null)
+        {
+            return int.MinValue;
+        }
+
+        ReasonForUpdate reasonForUpdate = ReasonForUpdate.None;
+        ReasonForUpdateExtension1 extendedReasonForUpdate = ReasonForUpdateExtension1.Ext1_None;
+
+        switch (_device.HwVer)
+        {
+            case HardwareVersion.Rsp1A:
+                _deviceParams->RxChannelA->Rsp1aTunerParams.BiasTEnable = enabled;
+                reasonForUpdate = ReasonForUpdate.Rsp1a_BiasTControl;
+                break;
+            case HardwareVersion.Rsp2:
+                _deviceParams->RxChannelA->Rsp2TunerParams.BiasTEnable = enabled;
+                reasonForUpdate = ReasonForUpdate.Rsp2_BiasTControl;
+                break;
+            case HardwareVersion.RspDuo:
+                _deviceParams->RxChannelA->RspDuoTunerParams.BiasTEnable = enabled;
+                reasonForUpdate = ReasonForUpdate.RspDuo_BiasTControl;
+                break;
+            case HardwareVersion.RspDx:
+                _deviceParams->DevParams->RspDxParams.BiasTEnable = enabled;
+                extendedReasonForUpdate = ReasonForUpdateExtension1.RspDx_BiasTControl;
+                break;
+            default:
+                _logger.LogInformation("Bias tee is not supported by this radio");
+                return 0;
+        }
+
+        if (_deviceInitialised)
+        {
+            return (int)Interop.Update(_device.Dev, _device.Tuner, reasonForUpdate, extendedReasonForUpdate);
+        }
+        else
+        {
+            return 0;
+        }
     }
     #endregion
 
@@ -721,8 +692,8 @@ internal sealed unsafe class Radio : IRadio
         // Copy the buffer to a new array of bytes in managed memory
         byte[] bufferArray = convertedBuffer.ToArray();
 
-        // Fire the samples available event
-        SamplesAvailable?.Invoke(this, bufferArray);
+        // Send the samples to the clients
+        SendSamplesToClients(bufferArray);
     }
 
     /// <summary>
