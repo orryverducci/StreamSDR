@@ -271,7 +271,13 @@ internal sealed class Radio : RadioBase
             int result = Interop.SetFreqCorrection(_device, freqCorrection);
 
             // We ignore error -2, which indicates the correction is already set to given value, so we return 0 instead
-            return (result == 0 || result == -2) ? 0 : result;
+            if (result == -2)
+            {
+                _logger.LogDebug($"Received error -2 when setting the frequency correction, indicating it is already set to {freqCorrection.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm, so it is being ignored");
+                return 0;
+            }
+
+            return result;
         }
         else
         {
