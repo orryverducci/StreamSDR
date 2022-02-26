@@ -245,23 +245,21 @@ internal sealed class Radio : RadioBase
     /// <inheritdoc/>
     protected override int SetFrequencyCorrection(int freqCorrection)
     {
-        if (_device != IntPtr.Zero)
-        {
-            int result = Interop.SetFreqCorrection(_device, freqCorrection);
-
-            // We ignore error -2, which indicates the correction is already set to given value, so we return 0 instead
-            if (result == -2)
-            {
-                _logger.LogDebug($"Received error -2 when setting the frequency correction, indicating it is already set to {freqCorrection.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm, so it is being ignored");
-                return 0;
-            }
-
-            return result;
-        }
-        else
+        if (_device == IntPtr.Zero)
         {
             return int.MinValue;
         }
+
+        int result = Interop.SetFreqCorrection(_device, freqCorrection);
+
+        // We ignore error -2, which indicates the correction is already set to given value, so we return 0 instead
+        if (result == -2)
+        {
+            _logger.LogDebug($"Received error -2 when setting the frequency correction, indicating it is already set to {freqCorrection.ToString("N0", Thread.CurrentThread.CurrentCulture)} ppm, so it is being ignored");
+            return 0;
+        }
+
+        return result;
     }
 
     /// <inheritdoc/>
@@ -280,21 +278,19 @@ internal sealed class Radio : RadioBase
     /// <inheritdoc/>
     protected override int SetOffsetTuning(bool enabled)
     {
-        if (_device != IntPtr.Zero)
-        {
-            if (Tuner == TunerType.R820T || Tuner == TunerType.R828D)
-            {
-                _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
-                return 0;
-            }
-
-            int offsetTuning = enabled ? 1 : 0;
-            return Interop.SetOffsetTuning(_device, offsetTuning);
-        }
-        else
+        if (_device == IntPtr.Zero)
         {
             return int.MinValue;
         }
+
+        if (Tuner == TunerType.R820T || Tuner == TunerType.R828D)
+        {
+            _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
+            return 0;
+        }
+
+        int offsetTuning = enabled ? 1 : 0;
+        return Interop.SetOffsetTuning(_device, offsetTuning);
     }
 
     /// <inheritdoc/>
@@ -367,22 +363,20 @@ internal sealed class Radio : RadioBase
     /// <inheritdoc/>
     protected override int SetGainMode(GainMode mode)
     {
-        if (_device != IntPtr.Zero)
-        {
-            int gainMode = mode == GainMode.Manual ? 1 : 0;
-            int result = Interop.SetTunerGainMode(_device, gainMode);
-
-            if (result == 0)
-            {
-                _gainMode = mode;
-            }
-
-            return result;
-        }
-        else
+        if (_device == IntPtr.Zero)
         {
             return int.MinValue;
         }
+
+        int gainMode = mode == GainMode.Manual ? 1 : 0;
+        int result = Interop.SetTunerGainMode(_device, gainMode);
+
+        if (result == 0)
+        {
+            _gainMode = mode;
+        }
+
+        return result;
     }
 
     /// <inheritdoc/>
@@ -391,22 +385,20 @@ internal sealed class Radio : RadioBase
     /// <inheritdoc/>
     protected override int SetAgc(bool enabled)
     {
-        if (_device != IntPtr.Zero)
-        {
-            int rtlAgc = enabled ? 1 : 0;
-            int result = Interop.SetAGCMode(_device, rtlAgc);
-
-            if (result == 0)
-            {
-                _rtlAgc = enabled;
-            }
-
-            return result;
-        }
-        else
+        if (_device == IntPtr.Zero)
         {
             return int.MinValue;
         }
+
+        int rtlAgc = enabled ? 1 : 0;
+        int result = Interop.SetAGCMode(_device, rtlAgc);
+
+        if (result == 0)
+        {
+            _rtlAgc = enabled;
+        }
+
+        return result;
     }
 
     /// <inheritdoc/>
@@ -415,22 +407,20 @@ internal sealed class Radio : RadioBase
     /// <inheritdoc/>
     protected override int SetBiasTee(bool enabled)
     {
-        if (_device != IntPtr.Zero)
-        {
-            int biasTee = enabled ? 1 : 0;
-            int result = Interop.SetBiasTee(_device, biasTee);
-
-            if (result == 0)
-            {
-                _biasTee = enabled;
-            }
-
-            return result;
-        }
-        else
+        if (_device == IntPtr.Zero)
         {
             return int.MinValue;
         }
+
+        int biasTee = enabled ? 1 : 0;
+        int result = Interop.SetBiasTee(_device, biasTee);
+
+        if (result == 0)
+        {
+            _biasTee = enabled;
+        }
+
+        return result;
     }
     #endregion
 
