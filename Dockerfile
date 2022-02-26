@@ -28,7 +28,7 @@ ENV MINVERVERSIONOVERRIDE=${version}
 COPY ./src .
 
 # Publish the app without the app host, which is not required by the runtime docker image
-RUN dotnet publish "StreamSDR.csproj" /p:UseAppHost=false -c Release -o /app/publish
+RUN dotnet publish "StreamSDR.csproj" /p:UseAppHost=false /p:PublishSingleFile=false -c Release -o /app/publish
 
 #############
 ## APP IMAGE
