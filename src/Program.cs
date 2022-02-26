@@ -96,10 +96,10 @@ internal static class Program
                 switch (radioType)
                 {
                     case "rtlsdr":
-                        services.AddSingleton<Radios.IRadio, Radios.RtlSdr.Radio>();
+                        services.AddSingleton<Radios.RadioBase, Radios.RtlSdr.Radio>();
                         break;
                     case "sdrplay":
-                        services.AddSingleton<Radios.IRadio, Radios.SdrPlay.Radio>();
+                        services.AddSingleton<Radios.RadioBase, Radios.SdrPlay.Radio>();
                         break;
                     default:
                         logger.LogWarning("The type of radio has not been specified, assuming rtl-sdr");

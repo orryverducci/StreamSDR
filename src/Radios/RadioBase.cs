@@ -26,7 +26,7 @@ namespace StreamSDR.Radios;
 /// <summary>
 /// Provides the base class to be used by individual radio implementations.
 /// </summary>
-internal abstract class RadioBase : IRadio
+internal abstract class RadioBase : IDisposable
 {
     #region Constants
     /// <summary>

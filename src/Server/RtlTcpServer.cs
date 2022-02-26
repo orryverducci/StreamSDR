@@ -38,7 +38,7 @@ internal sealed class RtlTcpServer : IHostedService
     /// <summary>
     /// The radio service.
     /// </summary>
-    private readonly Radios.IRadio _radio;
+    private readonly Radios.RadioBase _radio;
 
     /// <summary>
     /// Cancellation token used to signal when the server should stop.
@@ -71,7 +71,7 @@ internal sealed class RtlTcpServer : IHostedService
     /// Initialises a new instance of the <see cref="RtlTcpServer"/> class.
     /// </summary>
     /// <param name="logger">The logger provided by the host.</param>
-    public RtlTcpServer(ILogger<RtlTcpServer> logger, Radios.IRadio radio)
+    public RtlTcpServer(ILogger<RtlTcpServer> logger, Radios.RadioBase radio)
     {
         // Store a reference to the logger
         _logger = logger;
