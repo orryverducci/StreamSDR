@@ -79,7 +79,7 @@ internal sealed class SpectreConsoleLogger : ILogger
                 levelColour = "red3_1";
                 break;
             case LogLevel.Critical:
-                levelText = "Crit";
+                levelText = "Fatal";
                 levelColour = "white";
                 levelBackground = " on red3_1";
                 break;
