@@ -53,6 +53,7 @@ internal sealed class SpectreConsoleLogger : ILogger
 
         string levelText = string.Empty;
         string levelColour = string.Empty;
+        string levelBackground = string.Empty;
 
         // Set the log level text and colour
         switch (logLevel)
@@ -63,7 +64,7 @@ internal sealed class SpectreConsoleLogger : ILogger
                 break;
             case LogLevel.Debug:
                 levelText = "Debug";
-                levelColour = "salmon1";
+                levelColour = "chartreuse3";
                 break;
             case LogLevel.Information:
                 levelText = "Info";
@@ -79,7 +80,8 @@ internal sealed class SpectreConsoleLogger : ILogger
                 break;
             case LogLevel.Critical:
                 levelText = "Crit";
-                levelColour = "purple";
+                levelColour = "white";
+                levelBackground = " on red3_1";
                 break;
         }
 
@@ -94,12 +96,12 @@ internal sealed class SpectreConsoleLogger : ILogger
         // Add the rows to the table containing the information
         if (Program.DebugMode)
         {
-            table.AddRow($"[grey]{DateTime.Now.ToString("HH:mm:ss zzz")}[/]", $"[[[bold {levelColour}]{levelText.PadRight(5)}[/]]]", $"[bold]{_categoryName}:[/]");
+            table.AddRow($"[grey]{DateTime.Now.ToString("HH:mm:ss zzz")}[/]", $"[[[bold {levelColour}{levelBackground}]{levelText.PadRight(5)}[/]]]", $"[bold]{_categoryName}:[/]");
             table.AddRow(string.Empty, string.Empty, formatter(state, exception));
         }
         else
         {
-            table.AddRow($"[grey]{DateTime.Now.ToString("HH:mm:ss zzz")}[/]", $"[[[bold {levelColour}]{levelText.PadRight(5)}[/]]]", formatter(state, exception));
+            table.AddRow($"[grey]{DateTime.Now.ToString("HH:mm:ss zzz")}[/]", $"[[[bold {levelColour}{levelBackground}]{levelText.PadRight(5)}[/]]]", formatter(state, exception));
         }
         if (exception != null)
         {
