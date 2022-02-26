@@ -242,6 +242,12 @@ internal abstract class RadioBase : IRadio
         {
             _logger.LogInformation($"Setting the gain to level {value}");
 
+            if (value >= GainLevelsSupported)
+            {
+                _logger.LogError("The gain level is outside the available range");
+                return;
+            }
+
             int result = SetGain(value);
             _logger.LogDebug($"SetGain result: {result}");
 

@@ -347,7 +347,7 @@ internal sealed class Radio : RadioBase
     /// <inheritdoc/>
     protected override int SetGain(uint level)
     {
-        if (_device != IntPtr.Zero && level < _gains.Length)
+        if (_device != IntPtr.Zero)
         {
             return Interop.SetTunerGain(_device, _gains[level]);
         }
