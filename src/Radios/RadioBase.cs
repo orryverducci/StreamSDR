@@ -373,7 +373,7 @@ internal abstract class RadioBase : IRadio
     }
 
     /// <summary>
-    /// Finalises the instance of the <see cref="Radio"/> class.
+    /// Finalises the instance of the <see cref="RadioBase"/> class.
     /// </summary>
     ~RadioBase() => Dispose();
 
@@ -487,13 +487,13 @@ internal abstract class RadioBase : IRadio
     /// <summary>
     /// Gets the mode in which the radio's gain is operating.
     /// </summary>
-    /// <returns>The currently set <see cref="GainMode"/>.</returns>
+    /// <returns>The currently set <see cref="Radios.GainMode"/>.</returns>
     protected abstract GainMode GetGainMode();
 
     /// <summary>
     /// Sets the mode in which the radio's gain is operating.
     /// </summary>
-    /// <param name="mode">The <see cref="GainMode"/> to be used.</param>
+    /// <param name="mode">The <see cref="Radios.GainMode"/> to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
     protected abstract int SetGainMode(GainMode mode);
 
