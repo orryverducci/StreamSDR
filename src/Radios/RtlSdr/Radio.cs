@@ -207,17 +207,10 @@ internal sealed class Radio : RadioBase
     #endregion
 
     #region Radio parameter methods
-    /// <summary>
-    /// Gets the sample rate the device is operating at in Hertz.
-    /// </summary>
-    /// <returns>The sample rate the device is operating at in Hertz, or 0 if there was an error.</returns>
+    /// <inheritdoc/>
     protected override uint GetSampleRate() => _device != IntPtr.Zero ? Interop.GetSampleRate(_device) : 0;
 
-    /// <summary>
-    /// Sets the sample rate the device is operating at in Hertz.
-    /// </summary>
-    /// <param name="sampleRate">The sample rate to be used.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetSampleRate(uint sampleRate)
     {
         if (_device != IntPtr.Zero)
@@ -230,17 +223,10 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Gets the centre frequency the device is tuned to in Hertz.
-    /// </summary>
-    /// <returns>The centre frequency the device is tuned to in Hertz, or 0 if there was an error.</returns>
+    /// <inheritdoc/>
     protected override ulong GetFrequency() => _device != IntPtr.Zero ? Interop.GetCenterFreq(_device) : 0;
 
-    /// <summary>
-    /// Sets the centre frequency the device is tuned to in Hertz.
-    /// </summary>
-    /// <param name="frequency">The centre frequency to tune the device to.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetFrequency(ulong frequency)
     {
         if (_device != IntPtr.Zero)
@@ -253,17 +239,10 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Gets the tuner frequency correction in parts per million (PPM).
-    /// </summary>
-    /// <returns>The tuner frequency correction in parts per million (PPM), or 0 if there was an error.</returns>
+    /// <inheritdoc/>
     protected override int GetFrequencyCorrection() => _device != IntPtr.Zero ? Interop.GetFreqCorrection(_device) : 0;
 
-    /// <summary>
-    /// Sets the tuner frequency correction in parts per million (PPM).
-    /// </summary>
-    /// <param name="freqCorrection">The tuner frequency correction to be used.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetFrequencyCorrection(int freqCorrection)
     {
         if (_device != IntPtr.Zero)
@@ -285,10 +264,7 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Gets if offset tuning is enabled for zero IF tuners.
-    /// </summary>
-    /// <returns><see langword="true"/> if offset tuning is enabled, <see langword="false"/> otherwise.</returns>
+    /// <inheritdoc/>
     protected override bool GetOffsetTuning()
     {
         if (_device != IntPtr.Zero)
@@ -301,11 +277,7 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Sets if offset tuning is enabled for zero IF tuners.
-    /// </summary>
-    /// <param name="enabled">The offset tuning state to be used.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetOffsetTuning(bool enabled)
     {
         if (_device != IntPtr.Zero)
@@ -325,10 +297,7 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Gets the direct sampling mode.
-    /// </summary>
-    /// <returns>The currently set <see cref="DirectSamplingMode"/>.</returns>
+    /// <inheritdoc/>
     protected override DirectSamplingMode GetDirectSampling()
     {
         if (_device != IntPtr.Zero)
@@ -346,11 +315,7 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Sets the direct sampling mode.
-    /// </summary>
-    /// <param name="mode">The <see cref="DirectSamplingMode"/> to be used.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetDirectSampling(DirectSamplingMode mode)
     {
         if (_device != IntPtr.Zero)
@@ -370,10 +335,7 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Gets the current level of gain of the tuner.
-    /// </summary>
-    /// <returns>The level of gain the tuner is using.</returns>
+    /// <inheritdoc/>
     protected override uint GetGain()
     {
         if (_device == IntPtr.Zero)
@@ -386,11 +348,7 @@ internal sealed class Radio : RadioBase
         return i >= 0 ? (uint)i : 0;
     }
 
-    /// <summary>
-    /// Sets the current level of gain of the tuner.
-    /// </summary>
-    /// <param name="level">The tuner gain level to be used.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetGain(uint level)
     {
         if (_device != IntPtr.Zero && level < _gains.Length)
@@ -403,17 +361,10 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Gets the mode in which the radio's gain is operating.
-    /// </summary>
-    /// <returns>The currently set <see cref="GainMode"/>.</returns>
+    /// <inheritdoc/>
     protected override GainMode GetGainMode() => _gainMode;
 
-    /// <summary>
-    /// Sets the mode in which the radio's gain is operating.
-    /// </summary>
-    /// <param name="mode">The <see cref="GainMode"/> to be used.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetGainMode(GainMode mode)
     {
         if (_device != IntPtr.Zero)
@@ -434,17 +385,10 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Gets if automatic gain correction is enabled.
-    /// </summary>
-    /// <returns><see langword="true"/> if automatic gain correction, <see langword="false"/> otherwise.</returns>
+    /// <inheritdoc/>
     protected override bool GetAgc() => _rtlAgc;
 
-    /// <summary>
-    /// Sets if automatic gain correction is enabled.
-    /// </summary>
-    /// <param name="enabled">The automatic gain correction state to be used.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetAgc(bool enabled)
     {
         if (_device != IntPtr.Zero)
@@ -465,17 +409,10 @@ internal sealed class Radio : RadioBase
         }
     }
 
-    /// <summary>
-    /// Gets if the bias tee has been enabled.
-    /// </summary>
-    /// <returns><see langword="true"/> if the bias tee is enabled, <see langword="false"/> otherwise.</returns>
+    /// <inheritdoc/>
     protected override bool GetBiasTee() => _biasTee;
 
-    /// <summary>
-    /// Sets if the bias tee has been enabled.
-    /// </summary>
-    /// <param name="enabled">The bias tee state to be used.</param>
-    /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
+    /// <inheritdoc/>
     protected override int SetBiasTee(bool enabled)
     {
         if (_device != IntPtr.Zero)
