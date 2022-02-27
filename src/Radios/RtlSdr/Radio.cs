@@ -211,33 +211,13 @@ internal sealed class Radio : RadioBase
     protected override uint GetSampleRate() => _device != IntPtr.Zero ? Interop.GetSampleRate(_device) : 0;
 
     /// <inheritdoc/>
-    protected override int SetSampleRate(uint sampleRate)
-    {
-        if (_device != IntPtr.Zero)
-        {
-            return Interop.SetSampleRate(_device, sampleRate);
-        }
-        else
-        {
-            return int.MinValue;
-        }
-    }
+    protected override int SetSampleRate(uint sampleRate) => _device != IntPtr.Zero ? Interop.SetSampleRate(_device, sampleRate) : int.MinValue;
 
     /// <inheritdoc/>
     protected override ulong GetFrequency() => _device != IntPtr.Zero ? Interop.GetCenterFreq(_device) : 0;
 
     /// <inheritdoc/>
-    protected override int SetFrequency(ulong frequency)
-    {
-        if (_device != IntPtr.Zero)
-        {
-            return Interop.SetCenterFreq(_device, (uint)frequency);
-        }
-        else
-        {
-            return int.MinValue;
-        }
-    }
+    protected override int SetFrequency(ulong frequency) => _device != IntPtr.Zero ? Interop.SetCenterFreq(_device, (uint)frequency) : int.MinValue;
 
     /// <inheritdoc/>
     protected override int GetFrequencyCorrection() => _device != IntPtr.Zero ? Interop.GetFreqCorrection(_device) : 0;
@@ -344,17 +324,7 @@ internal sealed class Radio : RadioBase
     }
 
     /// <inheritdoc/>
-    protected override int SetGain(uint level)
-    {
-        if (_device != IntPtr.Zero)
-        {
-            return Interop.SetTunerGain(_device, _gains[level]);
-        }
-        else
-        {
-            return int.MinValue;
-        }
-    }
+    protected override int SetGain(uint level) => _device != IntPtr.Zero ? Interop.SetTunerGain(_device, _gains[level]) : int.MinValue;
 
     /// <inheritdoc/>
     protected override GainMode GetGainMode() => _gainMode;
