@@ -242,6 +242,12 @@ internal abstract class RadioBase : IDisposable
         {
             _logger.LogInformation($"Setting the gain to level {value}");
 
+            if (GainMode == GainMode.Automatic)
+            {
+                _logger.LogError("Unable to set a gain level while set to automatic gain mode");
+                return;
+            }
+
             if (value >= GainLevelsSupported)
             {
                 _logger.LogError("The gain level is outside the available range");
