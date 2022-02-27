@@ -289,6 +289,16 @@ internal abstract class RadioBase : IDisposable
             {
                 _logger.LogError("Unable to set the gain mode");
             }
+
+            // If switching to manual gain, reset the manual gain value
+            if (value == GainMode.Manual)
+            {
+                uint gain = Gain;
+
+                _logger.LogDebug($"Resetting to gain to level {gain}");
+
+                SetGain(gain);
+            }
         }
     }
 
