@@ -257,7 +257,6 @@ internal sealed unsafe class Radio : RadioBase
             BiasTee = false;
             Frequency = DefaultFrequency;
             SampleRate = DefaultSampleRate;
-            Gain = 0;
             GainMode = GainMode.Automatic;
 
             // Initialise the device
