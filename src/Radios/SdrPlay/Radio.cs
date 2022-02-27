@@ -578,11 +578,13 @@ internal sealed unsafe class Radio : RadioBase
             return int.MinValue;
         }
 
+        // Set 50 Hz AGC mode and reset LNA state to max value for current band (no gain reduction)
         _deviceParams->RxChannelA->CtrlParams.Agc.Enable = mode == GainMode.Automatic ? Parameters.Control.AgcControl.Agc50HZ : Parameters.Control.AgcControl.AgcDisable;
+        _deviceParams->RxChannelA->TunerParams.Gain.LnaState = _gainLevels!.LnaStates[_currentBand][AvailableGainLevels - 1];
 
         if (_deviceInitialised)
         {
-            return (int)Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Ctrl_Agc, ReasonForUpdateExtension1.Ext1_None);
+            return (int)Interop.Update(_device.Dev, _device.Tuner, ReasonForUpdate.Tuner_Gr | ReasonForUpdate.Ctrl_Agc, ReasonForUpdateExtension1.Ext1_None);
         }
         else
         {
