@@ -514,26 +514,6 @@ internal sealed unsafe class Radio : RadioBase
     }
 
     /// <inheritdoc/>
-    protected override bool GetOffsetTuning() => false;
-
-    /// <inheritdoc/>
-    protected override int SetOffsetTuning(bool enabled)
-    {
-        _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
-        return 0;
-    }
-
-    /// <inheritdoc/>
-    protected override DirectSamplingMode GetDirectSampling() => DirectSamplingMode.Off;
-
-    /// <inheritdoc/>
-    protected override int SetDirectSampling(DirectSamplingMode mode)
-    {
-        _logger.LogInformation("A change to the direct sampling setting has been requested, but it is not supported by this radio");
-        return 0;
-    }
-
-    /// <inheritdoc/>
     protected override uint GetGain() => _currentGainLevel;
 
     /// <inheritdoc/>
@@ -593,16 +573,6 @@ internal sealed unsafe class Radio : RadioBase
     }
 
     /// <inheritdoc/>
-    protected override bool GetAgc() => false;
-
-    /// <inheritdoc/>
-    protected override int SetAgc(bool enabled)
-    {
-        _logger.LogInformation("A change to the automatic gain correction setting has been requested, but it is not supported by this radio");
-        return 0;
-    }
-
-    /// <inheritdoc/>
     protected override bool GetBiasTee()
     {
         if (_deviceParams == null)
@@ -650,8 +620,7 @@ internal sealed unsafe class Radio : RadioBase
                 extendedReasonForUpdate = ReasonForUpdateExtension1.RspDx_BiasTControl;
                 break;
             default:
-                _logger.LogInformation("Bias tee is not supported by this radio");
-                return 0;
+                return base.SetBiasTee(enabled);
         }
 
         if (_deviceInitialised)

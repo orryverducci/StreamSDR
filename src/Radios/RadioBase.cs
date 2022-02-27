@@ -432,118 +432,154 @@ internal abstract class RadioBase : IDisposable
     /// Gets the sample rate the device is operating at in Hertz.
     /// </summary>
     /// <returns>The sample rate the device is operating at in Hertz, or 0 if there was an error.</returns>
-    protected abstract uint GetSampleRate();
+    protected virtual uint GetSampleRate() => 0;
 
     /// <summary>
     /// Sets the sample rate the device is operating at in Hertz.
     /// </summary>
     /// <param name="sampleRate">The sample rate to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetSampleRate(uint sampleRate);
+    protected virtual int SetSampleRate(uint sampleRate)
+    {
+        _logger.LogInformation("A change to the sample rate has been requested, but it is not supported by this radio");
+        return 0;
+    }
 
     /// <summary>
     /// Gets the centre frequency the device is tuned to in Hertz.
     /// </summary>
     /// <returns>The centre frequency the device is tuned to in Hertz, or 0 if there was an error.</returns>
-    protected abstract ulong GetFrequency();
+    protected virtual ulong GetFrequency() => 0;
 
     /// <summary>
     /// Sets the centre frequency the device is tuned to in Hertz.
     /// </summary>
     /// <param name="frequency">The centre frequency to tune the device to.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetFrequency(ulong frequency);
+    protected virtual int SetFrequency(ulong frequency)
+    {
+        _logger.LogInformation("A change to the frequency has been requested, but it is not supported by this radio");
+        return 0;
+    }
 
     /// <summary>
     /// Gets the tuner frequency correction in parts per million (PPM).
     /// </summary>
-    /// <returns>The tuner frequency correction in parts per million (PPM), or 0 if there was an error.</returns>
-    protected abstract int GetFrequencyCorrection();
+    /// <returns>The tuner frequency correction in parts per million (PPM).</returns>
+    protected virtual int GetFrequencyCorrection() => 0;
 
     /// <summary>
     /// Sets the tuner frequency correction in parts per million (PPM).
     /// </summary>
     /// <param name="freqCorrection">The tuner frequency correction to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetFrequencyCorrection(int freqCorrection);
+    protected virtual int SetFrequencyCorrection(int freqCorrection)
+    {
+        _logger.LogInformation("A change to the frequency correction has been requested, but it is not supported by this radio");
+        return 0;
+    }
 
     /// <summary>
     /// Gets if offset tuning is enabled for zero IF tuners.
     /// </summary>
     /// <returns><see langword="true"/> if offset tuning is enabled, <see langword="false"/> otherwise.</returns>
-    protected abstract bool GetOffsetTuning();
+    protected virtual bool GetOffsetTuning() => false;
 
     /// <summary>
     /// Sets if offset tuning is enabled for zero IF tuners.
     /// </summary>
     /// <param name="enabled">The offset tuning state to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetOffsetTuning(bool enabled);
+    protected virtual int SetOffsetTuning(bool enabled)
+    {
+        _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
+        return 0;
+    }
 
     /// <summary>
     /// Gets the direct sampling mode.
     /// </summary>
     /// <returns>The currently set <see cref="DirectSamplingMode"/>.</returns>
-    protected abstract DirectSamplingMode GetDirectSampling();
+    protected virtual DirectSamplingMode GetDirectSampling() => DirectSamplingMode.Off;
 
     /// <summary>
     /// Sets the direct sampling mode.
     /// </summary>
     /// <param name="mode">The <see cref="DirectSamplingMode"/> to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetDirectSampling(DirectSamplingMode mode);
+    protected virtual int SetDirectSampling(DirectSamplingMode mode)
+    {
+        _logger.LogInformation("A change to the direct sampling setting has been requested, but it is not supported by this radio");
+        return 0;
+    }
 
     /// <summary>
     /// Gets the current level of gain of the tuner.
     /// </summary>
     /// <returns>The level of gain the tuner is using.</returns>
-    protected abstract uint GetGain();
+    protected virtual uint GetGain() => 0;
 
     /// <summary>
     /// Sets the current level of gain of the tuner.
     /// </summary>
     /// <param name="level">The tuner gain level to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetGain(uint level);
+    protected virtual int SetGain(uint level)
+    {
+        _logger.LogInformation("A change to the gain level has been requested, but it is not supported by this radio");
+        return 0;
+    }
 
     /// <summary>
     /// Gets the mode in which the radio's gain is operating.
     /// </summary>
     /// <returns>The currently set <see cref="Radios.GainMode"/>.</returns>
-    protected abstract GainMode GetGainMode();
+    protected virtual GainMode GetGainMode() => GainMode.Manual;
 
     /// <summary>
     /// Sets the mode in which the radio's gain is operating.
     /// </summary>
     /// <param name="mode">The <see cref="Radios.GainMode"/> to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetGainMode(GainMode mode);
+    protected virtual int SetGainMode(GainMode mode)
+    {
+        _logger.LogInformation("A change to the gain mode has been requested, but it is not supported by this radio");
+        return 0;
+    }
 
     /// <summary>
     /// Gets if automatic gain correction is enabled.
     /// </summary>
     /// <returns><see langword="true"/> if automatic gain correction, <see langword="false"/> otherwise.</returns>
-    protected abstract bool GetAgc();
+    protected virtual bool GetAgc() => false;
 
     /// <summary>
     /// Sets if automatic gain correction is enabled.
     /// </summary>
     /// <param name="enabled">The automatic gain correction state to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetAgc(bool enabled);
+    protected virtual int SetAgc(bool enabled)
+    {
+        _logger.LogInformation("A change to the automatic gain correction setting has been requested, but it is not supported by this radio");
+        return 0;
+    }
 
     /// <summary>
     /// Gets if the bias tee has been enabled.
     /// </summary>
     /// <returns><see langword="true"/> if the bias tee is enabled, <see langword="false"/> otherwise.</returns>
-    protected abstract bool GetBiasTee();
+    protected virtual bool GetBiasTee() => false;
 
     /// <summary>
     /// Sets if the bias tee has been enabled.
     /// </summary>
     /// <param name="enabled">The bias tee state to be used.</param>
     /// <returns>The error code returned by the device API. Returns 0 if successful.</returns>
-    protected abstract int SetBiasTee(bool enabled);
+    protected virtual int SetBiasTee(bool enabled)
+    {
+        _logger.LogInformation("A change to the bias tee setting has been requested, but it is not supported by this radio");
+        return 0;
+    }
     #endregion
 
     #region Sample handling methods

@@ -285,8 +285,7 @@ internal sealed class Radio : RadioBase
 
         if (Tuner == TunerType.R820T || Tuner == TunerType.R828D)
         {
-            _logger.LogInformation("A change to the offset tuning mode has been requested, but it is not supported by this radio");
-            return 0;
+            return base.SetOffsetTuning(enabled);
         }
 
         int offsetTuning = enabled ? 1 : 0;
