@@ -1,0 +1,25 @@
+#
+# Checks for any common spelling errors
+#
+
+name: Spelling Check
+
+on: [push, pull_request]
+
+jobs:
+  dotnet-format:
+    name: Spelling Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install codespell
+        run: pip install codespell
+
+      - name: Add codespell problem matcher
+        uses: codespell-project/codespell-problem-matcher@v1
+
+      - name: Run codespell
+        run: codespell
