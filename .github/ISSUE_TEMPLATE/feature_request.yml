@@ -1,0 +1,26 @@
+name: Feature request
+description: Request a new or enhanced feature
+labels: enhancement
+
+body:
+  - type: textarea
+    attributes:
+      label: Feature to be added
+      description: Please provide a as much detail as possible about the feature you would like to be added and how it should work.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: What problem is the feature trying to resolve?
+      description: Please tell us what problem(s) this feature will resolve (e.g. I'm always frustrated when...).
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/orryverducci/StreamSDR/blob/main/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
