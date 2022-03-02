@@ -1,0 +1,28 @@
+#
+# Marks stale issues and closes them
+#
+
+name: Mark and close stale issues
+
+on:
+  schedule:
+    - cron: '00 12 * * *'
+
+jobs:
+  stale:
+    name: Close Stale Issues
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+
+    steps:
+      - uses: actions/stale@v5
+        with:
+          days-before-close: 14
+          exempt-issue-labels: confirmed,enhancement
+          stale-issue-message: 'Stale issue message'
+          stale-issue-label: |-
+              This issue has gone 60 days without comment. To avoid abandoned issues it will be closed in 14 days if there are no new comments.
+              
+              If you are the original submitter of this issue, please comment confirming if this issue still affects you in the latest release, or close the issue if it has been fixed. If you are another user also affected by this issue, please comment confirming so.
