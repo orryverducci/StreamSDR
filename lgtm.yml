@@ -6,3 +6,5 @@ extraction:
   csharp:
     index:
       solution: src/StreamSDR.csproj
+      dotnet:
+        version: 6.0.200
