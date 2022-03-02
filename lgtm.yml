@@ -1,0 +1,8 @@
+#
+# Configuration file for LGTM analysis
+#
+
+extraction:
+  csharp:
+    index:
+      solution: src/StreamSDR.csproj
