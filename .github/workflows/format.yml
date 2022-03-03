@@ -7,6 +7,7 @@ name: Formatting Check
 on:
   pull_request:
     paths:
+      - 'build/**'
       - 'src/**'
 
 jobs:

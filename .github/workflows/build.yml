@@ -7,9 +7,11 @@ name: Build Application
 on:
   push:
     paths:
+      - 'build/**'
       - 'src/**'
   pull_request:
     paths:
+      - 'build/**'
       - 'src/**'
 
 jobs:
