@@ -121,9 +121,12 @@ internal sealed unsafe class Radio : RadioBase
         try
         {
             // Open the API
-            if (Interop.Open() != ApiError.Success)
+            _logger.LogDebug("Opening the SDRplay API");
+            ApiError apiOpenResult = Interop.Open();
+
+            if (apiOpenResult != ApiError.Success)
             {
-                _logger.LogCritical("Unable to open the SDRplay API");
+                _logger.LogCritical($"Unable to open the SDRplay API - error {apiOpenResult}");
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -131,12 +134,16 @@ internal sealed unsafe class Radio : RadioBase
             // Check the API version
             float version = 0f;
             ApiError apiVersionCheck = Interop.ApiVersion(ref version);
+
             if (apiVersionCheck != ApiError.Success)
             {
-                _logger.LogCritical($"Unable to check the SDRplay API version {apiVersionCheck}");
+                _logger.LogCritical($"Unable to check the SDRplay API version - error {apiVersionCheck}");
                 _applicationLifetime.StopApplication();
                 return;
             }
+
+            _logger.LogDebug($"Installed SDRplay API version: {version}");
+
             if (version != SdrPlayApiVersion)
             {
                 _logger.LogWarning($"The installed SDRplay API is a different version to the one this application is designed for ({SdrPlayApiVersion}), which may result in compatibility issues");
@@ -145,26 +152,35 @@ internal sealed unsafe class Radio : RadioBase
             // Enable debug features if debug mode is enabled
             if (Program.DebugMode)
             {
+                _logger.LogDebug("Enabling API debugging");
                 Interop.DebugEnable(IntPtr.Zero, DebugLevel.Verbose);
                 Interop.DisableHeartbeat();
             }
 
             // Lock the API
-            if (Interop.LockDeviceApi() != ApiError.Success)
+            _logger.LogDebug("Locking the SDRplay API");
+            ApiError apiLockResult = Interop.LockDeviceApi();
+
+            if (apiLockResult != ApiError.Success)
             {
-                _logger.LogCritical("Unable to lock the SDRplay API");
+                _logger.LogCritical($"Unable to lock the SDRplay API - error {apiLockResult}");
                 _applicationLifetime.StopApplication();
                 return;
             }
+
             _apiLocked = true;
 
             // Get the list of the devices
-            if (Interop.GetDevices(out Device[]? devices, out uint numberOfDevices, 8) != ApiError.Success)
+            ApiError getDevicesResult = Interop.GetDevices(out Device[]? devices, out uint numberOfDevices, 8);
+
+            if (getDevicesResult != ApiError.Success)
             {
-                _logger.LogCritical("Unable to retrieve the list of SDRplay devices");
+                _logger.LogCritical($"Unable to retrieve the list of SDRplay devices - error {getDevicesResult}");
                 _applicationLifetime.StopApplication();
                 return;
             }
+
+            _logger.LogDebug($"Found {numberOfDevices} SDRplay device(s)");
 
             // Check if a SDRplay device is available
             if (numberOfDevices == 0 || devices == null || devices.Length == 0)
@@ -180,6 +196,8 @@ internal sealed unsafe class Radio : RadioBase
 
             if (serial != null)
             {
+                _logger.LogDebug($"Searching for device with serial {serial}");
+
                 deviceId = Array.FindIndex(devices, device => device.SerNo == serial);
 
                 if (deviceId < 0)
@@ -191,7 +209,11 @@ internal sealed unsafe class Radio : RadioBase
             }
 
             // Get the device and check if a tuner is available
+            _logger.LogDebug($"Getting the SDRplay device (device ID: {deviceId})");
             Device device = devices[deviceId];
+
+            _logger.LogDebug($"Device type: {device.HwVer.ToDeviceModel()}");
+
             if (device.Tuner == TunerSelect.Neither)
             {
                 _logger.LogCritical("No tuners are available on the SDRplay device");
@@ -210,9 +232,12 @@ internal sealed unsafe class Radio : RadioBase
             }
 
             // Select the device
-            if (Interop.SelectDevice(ref device) != ApiError.Success)
+            _logger.LogDebug("Selecting the SDRplay device");
+            ApiError selectDeviceResult = Interop.SelectDevice(ref device);
+
+            if (selectDeviceResult != ApiError.Success)
             {
-                _logger.LogCritical("Unable to select the device");
+                _logger.LogCritical($"Unable to select the device - error {selectDeviceResult}");
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -234,11 +259,15 @@ internal sealed unsafe class Radio : RadioBase
                 _ => new Rsp1.GainTables()
             };
             GainLevelsSupported = AvailableGainLevels;
+            _logger.LogDebug($"Supported levels of gain: {AvailableGainLevels}");
 
             // Get the pointer to the device parameters
-            if (Interop.GetDeviceParams(device.Dev, out _deviceParams) != ApiError.Success)
+            _logger.LogDebug("Getting the device parameters");
+            ApiError deviceParamsResult = Interop.GetDeviceParams(device.Dev, out _deviceParams);
+
+            if (deviceParamsResult != ApiError.Success)
             {
-                _logger.LogCritical("Unable to get the device parameters");
+                _logger.LogCritical($"Unable to get the device parameters - error {deviceParamsResult}");
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -246,29 +275,37 @@ internal sealed unsafe class Radio : RadioBase
             // Create the bit depth converter
             if (_device.HwVer == HardwareVersion.Rsp1 || _device.HwVer == HardwareVersion.Rsp2)
             {
+                _logger.LogDebug("Creating 12 bit to 8 bit depth converter");
                 _bitConverter = new(12, 8);
             }
             else
             {
+                _logger.LogDebug("Creating 14 bit to 8 bit depth converter");
                 _bitConverter = new(14, 8);
             }
 
             // Set the initial state
+            _logger.LogDebug("Setting the initial state for the radio");
+
             BiasTee = false;
             Frequency = DefaultFrequency;
             SampleRate = DefaultSampleRate;
             GainMode = GainMode.Automatic;
 
             // Initialise the device
+            _logger.LogDebug("Opening the SDRplay device");
+
             Functions callbacks = new()
             {
                 StreamACbFn = _readCallback,
                 StreamBCbFn = _readCallback,
                 EventCbFn = _eventCallback
             };
-            if (Interop.Init(device.Dev, callbacks, IntPtr.Zero) != ApiError.Success)
+            ApiError initResult = Interop.Init(device.Dev, callbacks, IntPtr.Zero);
+
+            if (initResult != ApiError.Success)
             {
-                _logger.LogCritical("Unable to initialise the device");
+                _logger.LogCritical($"Unable to initialise the device - error {initResult}");
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -292,6 +329,7 @@ internal sealed unsafe class Radio : RadioBase
             // Unlock the API
             if (_apiLocked)
             {
+                _logger.LogDebug("Unlocking the SDRplay API");
                 Interop.UnlockDeviceApi();
                 _apiLocked = false;
             }
@@ -310,12 +348,15 @@ internal sealed unsafe class Radio : RadioBase
         // Uninitialise the device
         Interop.Uninit(_device.Dev);
         _deviceInitialised = false;
+        _logger.LogDebug("Device uninitialised");
 
         // Release the device
         Interop.ReleaseDevice(_device);
+        _logger.LogDebug("Device released");
 
         // Stop the API
         Interop.Close();
+        _logger.LogDebug("SDRplay API closed");
 
         // Clear the device
         _device = default;
@@ -674,6 +715,8 @@ internal sealed unsafe class Radio : RadioBase
     /// <param name="cbContext">The user specific context passed to the callback.</param>
     private void ProcessEvents(Event eventId, TunerSelect tuner, EventParams* parameters, IntPtr cbContext)
     {
+        _logger.LogDebug($"Event received: {eventId}");
+
         switch (eventId)
         {
             case Event.PowerOverloadChange:

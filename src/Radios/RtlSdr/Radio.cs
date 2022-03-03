@@ -92,7 +92,10 @@ internal sealed class Radio : RadioBase
         try
         {
             // Check if a rtl-sdr device is available
-            if (Interop.GetDeviceCount() < 1)
+            uint deviceCount = Interop.GetDeviceCount();
+            _logger.LogDebug($"Found {deviceCount} rtl-sdr device(s)");
+
+            if (deviceCount < 1)
             {
                 _logger.LogCritical("No rtl-sdr devices could be found");
                 _applicationLifetime.StopApplication();
@@ -105,6 +108,8 @@ internal sealed class Radio : RadioBase
 
             if (serial != null)
             {
+                _logger.LogDebug($"Searching for device with serial {serial}");
+
                 deviceId = Interop.GetDeviceIndexBySerial(serial);
 
                 if (deviceId < 0)
@@ -119,15 +124,18 @@ internal sealed class Radio : RadioBase
             Name = Interop.GetDeviceName((byte)deviceId);
 
             // Open the device
-            if (Interop.Open(out _device, (byte)deviceId) != 0)
+            _logger.LogDebug($"Opening the rtl-sdr device (device ID: {deviceId})");
+            int deviceOpenResult = Interop.Open(out _device, (byte)deviceId);
+
+            if (deviceOpenResult != 0)
             {
-                _logger.LogCritical("The rtl-sdr device could not be opened");
+                _logger.LogCritical($"The rtl-sdr device could not be opened - error {deviceOpenResult}");
                 _applicationLifetime.StopApplication();
                 return;
             }
 
             // Get the tuner type
-            Tuner = Interop.GetTunerType(_device) switch
+            TunerType tuner = Interop.GetTunerType(_device) switch
             {
                 RtlSdr.Tuner.E4000 => TunerType.E4000,
                 RtlSdr.Tuner.FC0012 => TunerType.FC0012,
@@ -138,12 +146,18 @@ internal sealed class Radio : RadioBase
                 _ => TunerType.Unknown
             };
 
+            _logger.LogDebug($"Tuner type: {tuner}");
+            Tuner = tuner;
+
             // Get the gain values supported by the tuner
             int numberOfGains = Interop.GetTunerGains(_device, null);
+            _logger.LogDebug($"Supported levels of gain: {numberOfGains}");
+
             int[] gains = new int[numberOfGains];
             if (Interop.GetTunerGains(_device, gains) != 0)
             {
                 _gains = gains;
+                _logger.LogDebug($"Gain values: {string.Join(", ", gains)}");
                 GainLevelsSupported = (uint)_gains.Length;
             }
             else
@@ -152,6 +166,8 @@ internal sealed class Radio : RadioBase
             }
 
             // Set the initial state
+            _logger.LogDebug("Setting the initial state for the radio");
+
             BiasTee = false;
             Frequency = DefaultFrequency;
             SampleRate = DefaultSampleRate;
@@ -193,9 +209,11 @@ internal sealed class Radio : RadioBase
         // Stop reading samples from the device
         Interop.CancelAsync(_device);
         _receiverThread.Join();
+        _logger.LogDebug("Receiver thread stopped");
 
         // Close the device
         Interop.Close(_device);
+        _logger.LogDebug("Device closed");
 
         // Clear the device handle and name
         _device = IntPtr.Zero;
@@ -399,6 +417,8 @@ internal sealed class Radio : RadioBase
     /// </summary>
     private void ReceiverWorker()
     {
+        _logger.LogDebug("Receiver thread started");
+
         // Reset the device sample buffer
         Interop.ResetBuffer(_device);
 
