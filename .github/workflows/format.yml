@@ -5,6 +5,10 @@
 name: Formatting Check
 
 on:
+  push:
+    paths:
+      - 'build/**'
+      - 'src/**'
   pull_request:
     paths:
       - 'build/**'
