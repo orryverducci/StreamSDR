@@ -34,13 +34,13 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build libusb
-        run: ./build.sh -t BuildLibusb
+        run: .\build.ps1 -t BuildLibusb
 
       - name: Build rtl-sdr
-        run: ./build.sh --exclusive -t BuildRtlSdr
+        run: .\build.ps1 --exclusive -t BuildRtlSdr
 
       - name: Build StreamSDR
-        run: ./build.sh -t BuildStreamSDR
+        run: .\build.ps1 -t BuildStreamSDR
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
