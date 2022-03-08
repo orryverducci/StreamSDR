@@ -40,7 +40,8 @@ public sealed class BuildDockerImage : FrostingTask<BuildContext>
         {
             tags = new string[]
             {
-                $"orryverducci/streamsdr:{version.Major}.{version.Minor}.{version.Patch}"
+                "orryverducci/streamsdr:latest",
+                $"orryverducci/streamsdr:{version.Version}"
             };
         }
         else
