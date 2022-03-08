@@ -50,7 +50,7 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
                 context.MsBuildPath = msBuildPath;
             }
 
-            // Find MSBuild and check it is installed
+            // Find CMake and check it is installed
             FilePath? cMakePath = installationPath?.CombineWithFilePath("./Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe");
             if (cMakePath != null && context.FileExists(cMakePath))
             {
