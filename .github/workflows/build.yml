@@ -130,7 +130,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build container image
-        run: ./build.sh -t BuildDockerImage
+        run: ./build.sh -t BuildDockerImage --registry ghcr.io
 
       - name: Push container
         run: docker push --all-tags ghcr.io/orryverducci/streamsdr
