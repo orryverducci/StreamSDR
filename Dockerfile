@@ -19,16 +19,17 @@
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
-WORKDIR /src
+WORKDIR /app
 
 ARG version
 
 ENV MINVERVERSIONOVERRIDE=${version}
 
-COPY ./src .
+COPY ./src ./src
+COPY ./assets/icon.ico ./assets/icon.ico
 
 # Publish the app without the app host, which is not required by the runtime docker image
-RUN dotnet publish "StreamSDR.csproj" /p:UseAppHost=false /p:PublishSingleFile=false -c Release -o /app/publish
+RUN dotnet publish "src/StreamSDR.csproj" /p:UseAppHost=false /p:PublishSingleFile=false -c Release -o /app/publish
 
 #############
 ## APP IMAGE

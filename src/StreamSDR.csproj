@@ -6,6 +6,7 @@
     <AssemblyName>streamsdr</AssemblyName>
     <AssemblyTitle>StreamSDR</AssemblyTitle>
     <Product>StreamSDR</Product>
+    <ApplicationIcon>../assets/icon.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <MinVerTagPrefix>v</MinVerTagPrefix>
