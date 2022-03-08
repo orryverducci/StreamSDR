@@ -45,7 +45,7 @@ jobs:
         run: .\build.ps1 -t BuildStreamSDR
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: windows-x64
           path: artifacts/win-x64
@@ -73,7 +73,7 @@ jobs:
         run: ./build.sh -t BuildStreamSDR
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: linux-x64
           path: artifacts/linux-x64
@@ -101,7 +101,7 @@ jobs:
         run: ./build.sh -t BuildStreamSDR
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: macos-x64
           path: artifacts/osx-x64
