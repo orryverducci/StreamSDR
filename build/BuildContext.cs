@@ -55,6 +55,11 @@ public sealed class BuildContext : FrostingContext
     public DirectoryPath OutputFolder { get; private set; }
 
     /// <summary>
+    /// The domain for the Docker container registry to be used.
+    /// </summary>
+    public string ContainerRegistry { get; private set; }
+
+    /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
     /// </summary>
     /// <param name="context">The Cake context.</param>
@@ -92,5 +97,23 @@ public sealed class BuildContext : FrostingContext
 
         // Set the folder for the build output
         OutputFolder = context.Directory($"../artifacts/{Platform}-{Architecture}");
+
+        // Set the Docker container registry, if one is specified
+        if (context.HasArgument("registry"))
+        {
+            string registryDomain = context.Argument<string>("registry");
+
+            // Add a trailing forward slash if there isn't one already
+            if (!registryDomain.EndsWith('/'))
+            {
+                registryDomain += '/';
+            }
+
+            ContainerRegistry = registryDomain;
+        }
+        else
+        {
+            ContainerRegistry = string.Empty;
+        }
     }
 }

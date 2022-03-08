@@ -40,18 +40,18 @@ public sealed class BuildDockerImage : FrostingTask<BuildContext>
         {
             tags = new string[]
             {
-                "orryverducci/streamsdr:latest",
-                $"orryverducci/streamsdr:{version.Version}"
+                $"{context.ContainerRegistry}orryverducci/streamsdr:latest",
+                $"{context.ContainerRegistry}orryverducci/streamsdr:{version.Version}"
             };
         }
         else
         {
             tags = new string[]
             {
-                "orryverducci/streamsdr:latest",
-                $"orryverducci/streamsdr:{version.Major}.{version.Minor}.{version.Patch}",
-                $"orryverducci/streamsdr:{version.Major}.{version.Minor}",
-                $"orryverducci/streamsdr:{version.Major}"
+                $"{context.ContainerRegistry}orryverducci/streamsdr:latest",
+                $"{context.ContainerRegistry}orryverducci/streamsdr:{version.Major}.{version.Minor}.{version.Patch}",
+                $"{context.ContainerRegistry}orryverducci/streamsdr:{version.Major}.{version.Minor}",
+                $"{context.ContainerRegistry}orryverducci/streamsdr:{version.Major}"
             };
         }
 
