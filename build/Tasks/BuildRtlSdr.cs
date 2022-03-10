@@ -53,7 +53,7 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
                 { $"-DLIBUSB_INCLUDE_DIRS={context.MakeAbsolute(context.Directory("../contrib/libusb/libusb")).FullPath}" }
             },
             OutputPath = "../contrib/rtl-sdr/build",
-            Toolset = "v142",
+            Toolset = "v143",
             ToolPath = context.CMakePath
         });
 

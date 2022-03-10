@@ -31,15 +31,16 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
     {
         if (context.MsBuildPath == null)
         {
-            throw new Exception("Unable to locate MSBuild or the Visual Studio 2019 C++ build tools");
+            throw new Exception("Unable to locate MSBuild or the Visual Studio 2022 C++ build tools");
         }
 
         context.MSBuild("../contrib/libusb/msvc/libusb_dll_2019.vcxproj", new MSBuildSettings
         {
+            ArgumentCustomization = args => args.Append("/p:PlatformToolset=v143"),
             Configuration = context.BuildConfiguration,
             MSBuildPlatform = MSBuildPlatform.x64,
             PlatformTarget = PlatformTarget.x64,
-            ToolPath = context.MsBuildPath
+            ToolPath = context.MsBuildPath,
         });
 
         if (context.FileExists(context.OutputFolder.CombineWithFilePath(context.File("libusb-1.0.dll"))))
