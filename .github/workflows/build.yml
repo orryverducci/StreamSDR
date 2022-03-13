@@ -100,6 +100,15 @@ jobs:
       - name: Build StreamSDR
         run: ./build.sh -t BuildStreamSDR
 
+      - name: Add signing certificate to Keychain
+        uses: apple-actions/import-codesign-certs@v1
+        with: 
+          p12-file-base64: ${{ secrets.MAC_SIGNING_CERT }}
+          p12-password: ${{ secrets.MAC_SIGNING_CERT_KEY }}
+
+      - name: Sign StreamSDR
+        run: "./build.sh -t SignApp --certificate \"Apple Distribution: Orry Verducci (LSXZ8EX6F5)\""
+
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:

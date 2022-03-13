@@ -60,6 +60,11 @@ public sealed class BuildContext : FrostingContext
     public string ContainerRegistry { get; private set; }
 
     /// <summary>
+    /// The certificate to be used when signing the application.
+    /// </summary>
+    public string? SigningCertificate { get; private set; }
+
+    /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
     /// </summary>
     /// <param name="context">The Cake context.</param>
@@ -115,5 +120,8 @@ public sealed class BuildContext : FrostingContext
         {
             ContainerRegistry = string.Empty;
         }
+
+        // Set the code signing certificate to be used if specified
+        SigningCertificate = context.HasArgument("certificate") ? context.Argument<string>("certificate") : null;
     }
 }

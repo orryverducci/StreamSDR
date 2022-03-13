@@ -23,6 +23,7 @@ namespace StreamSDR.Build.Tasks;
 [TaskName("Default")]
 [IsDependentOn(typeof(CopySdrPlayApi))]
 [IsDependentOn(typeof(BuildStreamSdrTask))]
+[IsDependentOn(typeof(SignAppTask))]
 public sealed class DefaultTask : FrostingTask
 {
 }
