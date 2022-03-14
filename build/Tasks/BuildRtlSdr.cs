@@ -51,7 +51,7 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
             {
                 { $"-DLIBUSB_LIBRARIES={context.MakeAbsolute(context.Directory("../contrib/libusb/x64/Release/dll/libusb-1.0.lib")).FullPath}" },
                 { $"-DLIBUSB_INCLUDE_DIRS={context.MakeAbsolute(context.Directory("../contrib/libusb/libusb")).FullPath}" },
-                { "-DPKG_CONFIG_EXECUTABLE=C:\\non\\existant\\app.exe" } // A valid pkg-config install breaks the build, so we point to a non-existant executable
+                { "-DPKG_CONFIG_EXECUTABLE=C:\\non\\existent\\app.exe" } // A valid pkg-config install breaks the build, so we point to a non-existent executable
             },
             OutputPath = "../contrib/rtl-sdr/build",
             Toolset = "v143",
