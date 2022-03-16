@@ -31,7 +31,6 @@ public sealed class BuildDockerImage : FrostingTask<BuildContext>
         MinVerVersion version = context.MinVer(new MinVerSettings
         {
             DefaultPreReleasePhase = "preview",
-            Repo = context.MakeAbsolute(context.Directory("../")),
             TagPrefix = "v"
         });
 
