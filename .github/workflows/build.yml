@@ -36,13 +36,13 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build libusb
-        run: .\build.ps1 -t BuildLibusb
+        run: .\build.ps1 --exclusive -t BuildLibusb
 
       - name: Build rtl-sdr
         run: .\build.ps1 --exclusive -t BuildRtlSdr
 
       - name: Build StreamSDR
-        run: .\build.ps1 -t BuildStreamSDR
+        run: .\build.ps1 --exclusive -t BuildStreamSDR
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -70,7 +70,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build StreamSDR
-        run: ./build.sh -t BuildStreamSDR
+        run: ./build.sh --exclusive -t BuildStreamSDR
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -98,7 +98,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build StreamSDR
-        run: ./build.sh -t BuildStreamSDR
+        run: ./build.sh --exclusive -t BuildStreamSDR
 
       - name: Add signing certificate to Keychain
         uses: apple-actions/import-codesign-certs@v1
@@ -141,7 +141,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build container image
-        run: ./build.sh -t BuildDockerImage --registry ghcr.io
+        run: ./build.sh --exclusive -t BuildDockerImage --registry ghcr.io
 
       - name: Push container
         run: docker push --all-tags ghcr.io/orryverducci/streamsdr
