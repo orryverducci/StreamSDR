@@ -47,7 +47,7 @@ internal struct Device
     /// <summary>
     /// Indicator representing if the device is available for use.
     /// </summary>
-    //public char Valid;
+    public char Valid;
 
     /// <summary>
     /// The sample rate of the RSPduo slave.

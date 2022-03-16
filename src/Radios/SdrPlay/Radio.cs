@@ -31,9 +31,14 @@ internal sealed unsafe class Radio : RadioBase
 {
     #region Constants
     /// <summary>
-    /// The SDRplay API version this has been developed for.
+    /// The minimum SDRplay API version this has been developed for.
     /// </summary>
-    private const float SdrPlayApiVersion = 3.07f;
+    private const float MinSdrPlayApiVersion = 3.07f;
+
+    /// <summary>
+    /// The maximum SDRplay API version this has been developed for.
+    /// </summary>
+    private const float MaxSdrPlayApiVersion = 3.09f;
 
     /// <summary>
     /// The maximum decimation factor that can be used for sample rates smaller than 2 MHz.
@@ -144,9 +149,9 @@ internal sealed unsafe class Radio : RadioBase
 
             _logger.LogDebug($"Installed SDRplay API version: {version}");
 
-            if (version != SdrPlayApiVersion)
+            if (version < MinSdrPlayApiVersion || version > MaxSdrPlayApiVersion)
             {
-                _logger.LogWarning($"The installed SDRplay API is a different version to the one this application is designed for ({SdrPlayApiVersion}), which may result in compatibility issues");
+                _logger.LogWarning($"The installed SDRplay API is a different version to the one this application is designed for ({MinSdrPlayApiVersion} to {MaxSdrPlayApiVersion}), which may result in compatibility issues");
             }
 
             // Enable debug features if debug mode is enabled
