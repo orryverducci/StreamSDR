@@ -107,7 +107,9 @@ jobs:
           p12-password: ${{ secrets.MAC_SIGNING_CERT_KEY }}
 
       - name: Sign StreamSDR
-        run: "./build.sh -t SignApp --certificate \"Apple Distribution: Orry Verducci (LSXZ8EX6F5)\""
+        env:
+          MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_SIGNING_CERT_NAME }}
+        run: "./build.sh -t SignApp --certificate \"$MAC_SIGNING_CERT_NAME\""
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3

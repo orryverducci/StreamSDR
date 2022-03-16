@@ -36,7 +36,7 @@ public sealed class SignAppTask : FrostingTask<BuildContext>
             .Append("--entitlements")
             .Append("../src/Entitlements.plist")
             .Append("--sign")
-            .Append('"' + context.SigningCertificate + '"')
+            .AppendSecret('"' + context.SigningCertificate + '"')
             .Append(context.OutputFolder.CombineWithFilePath(context.File("streamsdr")).FullPath)
         });
     }
