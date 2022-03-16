@@ -101,12 +101,14 @@ jobs:
         run: ./build.sh --exclusive -t BuildStreamSDR
 
       - name: Add signing certificate to Keychain
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: apple-actions/import-codesign-certs@v1
         with: 
           p12-file-base64: ${{ secrets.MAC_SIGNING_CERT }}
           p12-password: ${{ secrets.MAC_SIGNING_CERT_KEY }}
 
       - name: Sign StreamSDR
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         env:
           MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_SIGNING_CERT_NAME }}
         run: "./build.sh -t SignApp --certificate \"$MAC_SIGNING_CERT_NAME\""
@@ -119,7 +121,7 @@ jobs:
   
   docker-build:
     name: Docker Image Build
-    if: github.repository == 'orryverducci/StreamSDR' && github.event_name == 'push'
+    if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
     runs-on: ubuntu-latest
 
     permissions:
