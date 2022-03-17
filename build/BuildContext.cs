@@ -55,6 +55,11 @@ public sealed class BuildContext : FrostingContext
     public DirectoryPath OutputFolder { get; private set; }
 
     /// <summary>
+    /// The directory to output the installer build artifacts to.
+    /// </summary>
+    public DirectoryPath InstallerOutputFolder { get; private set; }
+
+    /// <summary>
     /// The domain for the Docker container registry to be used.
     /// </summary>
     public string ContainerRegistry { get; private set; }
@@ -63,6 +68,11 @@ public sealed class BuildContext : FrostingContext
     /// The certificate to be used when signing the application.
     /// </summary>
     public string? SigningCertificate { get; private set; }
+
+    /// <summary>
+    /// The certificate to be used when signing the installer.
+    /// </summary>
+    public string? InstallerSigningCertificate { get; private set; }
 
     /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
@@ -100,8 +110,9 @@ public sealed class BuildContext : FrostingContext
             throw new PlatformNotSupportedException("This architecture is not supported");
         }
 
-        // Set the folder for the build output
+        // Set the folders for the build output
         OutputFolder = context.Directory($"../artifacts/{Platform}-{Architecture}");
+        InstallerOutputFolder = context.Directory($"../artifacts/{Platform}-{Architecture}-installer");
 
         // Set the Docker container registry, if one is specified
         if (context.HasArgument("registry"))
@@ -121,7 +132,8 @@ public sealed class BuildContext : FrostingContext
             ContainerRegistry = string.Empty;
         }
 
-        // Set the code signing certificate to be used if specified
-        SigningCertificate = context.HasArgument("certificate") ? context.Argument<string>("certificate") : null;
+        // Set the code signing certificates to be used if specified
+        SigningCertificate = context.HasArgument("appcert") ? context.Argument<string>("appcert") : null;
+        InstallerSigningCertificate = context.HasArgument("installcert") ? context.Argument<string>("installcert") : null;
     }
 }

@@ -102,7 +102,7 @@ jobs:
       - name: Build StreamSDR
         run: ./build.sh --exclusive -t BuildStreamSDR
 
-      - name: Add signing certificate to Keychain
+      - name: Add app signing certificate to Keychain
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: apple-actions/import-codesign-certs@v1
         with: 
@@ -113,14 +113,34 @@ jobs:
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         env:
           MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_SIGNING_CERT_NAME }}
-        run: "./build.sh -t SignApp --certificate \"$MAC_SIGNING_CERT_NAME\""
+        run: "./build.sh --exclusive -t SignApp --appcert \"$MAC_SIGNING_CERT_NAME\""
 
-      - name: Upload artifact
+      - name: Upload app artifact
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
           name: macos-x64
           path: artifacts/osx-x64
+
+      - name: Add installer signing certificate to Keychain
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        uses: apple-actions/import-codesign-certs@v1
+        with: 
+          p12-file-base64: ${{ secrets.MAC_INSTALLER_CERT }}
+          p12-password: ${{ secrets.MAC_INSTALLER_CERT_KEY }}
+
+      - name: Create installer package
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        env:
+          MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
+        run: "./build.sh --exclusive -t CreateInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\""
+
+      - name: Upload installer artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-x64-installer
+          path: artifacts/osx-x64-installer
   
   docker-build:
     name: Docker Image Build
