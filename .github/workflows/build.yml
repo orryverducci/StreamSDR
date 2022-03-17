@@ -45,6 +45,7 @@ jobs:
         run: .\build.ps1 --exclusive -t BuildStreamSDR
 
       - name: Upload artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
           name: windows-x64
@@ -73,6 +74,7 @@ jobs:
         run: ./build.sh --exclusive -t BuildStreamSDR
 
       - name: Upload artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
           name: linux-x64
@@ -114,6 +116,7 @@ jobs:
         run: "./build.sh -t SignApp --certificate \"$MAC_SIGNING_CERT_NAME\""
 
       - name: Upload artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
           name: macos-x64
