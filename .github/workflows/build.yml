@@ -125,7 +125,7 @@ jobs:
       - name: Create installer package
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         env:
-          MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
+          MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
         run: "./build.sh --exclusive -t CreateInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\""
 
       - name: Upload installer artifact
