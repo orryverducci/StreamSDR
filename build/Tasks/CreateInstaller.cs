@@ -69,9 +69,14 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
         arguments = arguments
             .Append(context.InstallerOutputFolder.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath);
 
-        context.StartProcess("pkgbuild", new ProcessSettings
+        int exitCode = context.StartProcess("pkgbuild", new ProcessSettings
         {
             Arguments = arguments
         });
+
+        if (exitCode != 0)
+        {
+            throw new Exception("Unable to create installer");
+        }
     }
 }

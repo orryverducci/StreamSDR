@@ -27,7 +27,7 @@ public sealed class SignAppTask : FrostingTask<BuildContext>
 
     public override void Run(BuildContext context)
     {
-        context.StartProcess("codesign", new ProcessSettings
+        int exitCode = context.StartProcess("codesign", new ProcessSettings
         {
             Arguments = new ProcessArgumentBuilder()
                 .Append("--timestamp")
@@ -39,5 +39,10 @@ public sealed class SignAppTask : FrostingTask<BuildContext>
                 .AppendSecret('"' + context.SigningCertificate + '"')
                 .Append(context.OutputFolder.CombineWithFilePath(context.File("streamsdr")).FullPath)
         });
+
+        if (exitCode != 0)
+        {
+            throw new Exception("Unable to sign app");
+        }
     }
 }
