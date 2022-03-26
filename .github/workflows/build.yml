@@ -102,12 +102,12 @@ jobs:
       - name: Build StreamSDR
         run: ./build.sh --exclusive -t BuildStreamSDR
 
-      - name: Add app signing certificate to Keychain
+      - name: Add app signing certificates to Keychain
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: apple-actions/import-codesign-certs@v1
         with: 
-          p12-file-base64: ${{ secrets.MAC_SIGNING_CERT }}
-          p12-password: ${{ secrets.MAC_SIGNING_CERT_KEY }}
+          p12-file-base64: ${{ secrets.MAC_SIGNING_CERTS }}
+          p12-password: ${{ secrets.MAC_SIGNING_CERTS_PASSWORD }}
 
       - name: Sign StreamSDR
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
@@ -121,13 +121,6 @@ jobs:
         with:
           name: macos-x64
           path: artifacts/osx-x64
-
-      - name: Add installer signing certificate to Keychain
-        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
-        uses: apple-actions/import-codesign-certs@v1
-        with: 
-          p12-file-base64: ${{ secrets.MAC_INSTALLER_CERT }}
-          p12-password: ${{ secrets.MAC_INSTALLER_CERT_KEY }}
 
       - name: Create installer package
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
