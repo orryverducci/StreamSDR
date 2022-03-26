@@ -30,14 +30,14 @@ public sealed class SignAppTask : FrostingTask<BuildContext>
         context.StartProcess("codesign", new ProcessSettings
         {
             Arguments = new ProcessArgumentBuilder()
-            .Append("--timestamp")
-            .Append("--force")
-            .Append("--options=runtime")
-            .Append("--entitlements")
-            .Append("../src/Entitlements.plist")
-            .Append("--sign")
-            .AppendSecret('"' + context.SigningCertificate + '"')
-            .Append(context.OutputFolder.CombineWithFilePath(context.File("streamsdr")).FullPath)
+                .Append("--timestamp")
+                .Append("--force")
+                .Append("--options=runtime")
+                .Append("--entitlements")
+                .Append("../src/Entitlements.plist")
+                .Append("--sign")
+                .AppendSecret('"' + context.SigningCertificate + '"')
+                .Append(context.OutputFolder.CombineWithFilePath(context.File("streamsdr")).FullPath)
         });
     }
 }
