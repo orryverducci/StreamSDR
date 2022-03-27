@@ -128,6 +128,15 @@ jobs:
           MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
         run: "./build.sh --exclusive -t CreateInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\""
 
+      - name: Notarize the installer package
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        env:
+          APPLE_DEV_TEAM: ${{ secrets.APPLE_DEV_TEAM }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
+        run: "./build.sh --exclusive -t NotarizeInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\" --appleid \"$APPLE_ID\" --applepassword \"$APPLE_ID_PASSWORD\" --teamid \"$APPLE_DEV_TEAM\""
+
       - name: Upload installer artifact
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: actions/upload-artifact@v3

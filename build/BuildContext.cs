@@ -75,6 +75,21 @@ public sealed class BuildContext : FrostingContext
     public string? InstallerSigningCertificate { get; private set; }
 
     /// <summary>
+    /// The Apple ID account to be used when notarizing the application.
+    /// </summary>
+    public string? AppleID { get; private set; }
+
+    /// <summary>
+    /// The Apple ID password to be used when notarizing the application.
+    /// </summary>
+    public string? AppleIDPassword { get; private set; }
+
+    /// <summary>
+    /// The Apple developer team ID to be used when notarizing the application.
+    /// </summary>
+    public string? AppleDeveloperTeam { get; private set; }
+
+    /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
     /// </summary>
     /// <param name="context">The Cake context.</param>
@@ -135,5 +150,10 @@ public sealed class BuildContext : FrostingContext
         // Set the code signing certificates to be used if specified
         SigningCertificate = context.HasArgument("appcert") ? context.Argument<string>("appcert") : null;
         InstallerSigningCertificate = context.HasArgument("installcert") ? context.Argument<string>("installcert") : null;
+
+        // Set the Apple ID credentials to be used when notarizing the app if specified
+        AppleID = context.HasArgument("appleid") ? context.Argument<string>("appleid") : null;
+        AppleIDPassword = context.HasArgument("applepassword") ? context.Argument<string>("applepassword") : null;
+        AppleDeveloperTeam = context.HasArgument("teamid") ? context.Argument<string>("teamid") : null;
     }
 }
