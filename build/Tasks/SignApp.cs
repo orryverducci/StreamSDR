@@ -23,7 +23,7 @@ namespace StreamSDR.Build.Tasks;
 [TaskName("SignApp")]
 public sealed class SignAppTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => context.Platform == "osx" && context.SigningCertificate != null;
+    public override bool ShouldRun(BuildContext context) => context.Platform == "osx" && context.Settings.SigningCertificate != null;
 
     public override void Run(BuildContext context)
     {
@@ -36,7 +36,7 @@ public sealed class SignAppTask : FrostingTask<BuildContext>
                 .Append("--entitlements")
                 .Append("../src/Entitlements.plist")
                 .Append("--sign")
-                .AppendSecret('"' + context.SigningCertificate + '"')
+                .AppendSecret('"' + context.Settings.SigningCertificate + '"')
                 .Append(context.OutputFolder.CombineWithFilePath(context.File("streamsdr")).FullPath)
         });
 

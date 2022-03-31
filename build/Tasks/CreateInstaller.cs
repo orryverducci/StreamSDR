@@ -59,11 +59,11 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
             .Append("--install-location")
             .Append("/usr/local/bin");
 
-        if (context.InstallerSigningCertificate != null)
+        if (context.Settings.InstallerSigningCertificate != null)
         {
             arguments = arguments
                 .Append("--sign")
-                .AppendSecret('"' + context.InstallerSigningCertificate + '"');
+                .AppendSecret('"' + context.Settings.InstallerSigningCertificate + '"');
         }
 
         arguments = arguments

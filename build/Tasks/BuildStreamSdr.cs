@@ -31,9 +31,9 @@ public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
     {
         context.DotNetPublish("../src/StreamSDR.csproj", new DotNetPublishSettings
         {
-            Configuration = context.BuildConfiguration,
+            Configuration = context.Settings.BuildConfiguration,
             OutputDirectory = context.OutputFolder,
-            Runtime = $"{context.Platform}-{context.Architecture}",
+            Runtime = $"{context.Platform}-{context.Settings.Architecture}",
             SelfContained = true
         });
     }

@@ -15,6 +15,7 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Reflection;
 using Cake.Common.Tools.VSWhere;
 using Cake.Common.Tools.VSWhere.Latest;
 
@@ -31,6 +32,30 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
     /// <param name="context">The build context.</param>
     public override void Setup(BuildContext context)
     {
+        // Get the settings from the arguments that have been provided
+        foreach (PropertyInfo setting in context.Settings.GetType().GetProperties())
+        {
+            Configuration.ArgumentAttribute? argument = setting.GetCustomAttribute<Configuration.ArgumentAttribute>();
+            if (argument == null)
+            {
+                continue;
+            }
+
+            if (context.HasArgument(argument.Name))
+            {
+                setting.SetValue(context.Settings, context.Argument<string>(argument.Name));
+            }
+        }
+
+        if (context.Settings.Architecture != "x64" && context.Settings.Architecture != "arm" && context.Settings.Architecture != "arm64")
+        {
+            throw new PlatformNotSupportedException("This architecture is not supported");
+        }
+
+        // Set the folders for the build output
+        context.OutputFolder = context.Directory($"../artifacts/{context.Platform}-{context.Settings.Architecture}");
+        context.InstallerOutputFolder = context.Directory($"../artifacts/{context.Platform}-{context.Settings.Architecture}-installer");
+
         context.EnsureDirectoryExists(context.OutputFolder);
 
         if (context.Platform == "win")

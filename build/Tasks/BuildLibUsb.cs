@@ -37,7 +37,7 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
         context.MSBuild("../contrib/libusb/msvc/libusb_dll_2019.vcxproj", new MSBuildSettings
         {
             ArgumentCustomization = args => args.Append("/p:PlatformToolset=v143"),
-            Configuration = context.BuildConfiguration,
+            Configuration = context.Settings.BuildConfiguration,
             MSBuildPlatform = MSBuildPlatform.x64,
             PlatformTarget = PlatformTarget.x64,
             ToolPath = context.MsBuildPath,

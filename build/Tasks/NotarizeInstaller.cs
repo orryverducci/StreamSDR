@@ -28,10 +28,10 @@ public sealed class NotarizeInstallerTask : FrostingTask<BuildContext>
 {
     public override bool ShouldRun(BuildContext context) =>
         context.Platform == "osx" &&
-        context.InstallerSigningCertificate != null &&
-        context.AppleID != null &&
-        context.AppleIDPassword != null &&
-        context.AppleDeveloperTeam != null;
+        context.Settings.InstallerSigningCertificate != null &&
+        context.Settings.AppleID != null &&
+        context.Settings.AppleIDPassword != null &&
+        context.Settings.AppleDeveloperTeam != null;
 
     public override void Run(BuildContext context)
     {
@@ -56,11 +56,11 @@ public sealed class NotarizeInstallerTask : FrostingTask<BuildContext>
                 .Append("submit")
                 .Append(tempDir.CombineWithFilePath("streamsdr.zip").FullPath)
                 .Append("--apple-id")
-                .AppendSecret('"' + context.AppleID + '"')
+                .AppendSecret('"' + context.Settings.AppleID + '"')
                 .Append("--team-id")
-                .AppendSecret('"' + context.AppleDeveloperTeam + '"')
+                .AppendSecret('"' + context.Settings.AppleDeveloperTeam + '"')
                 .Append("--password")
-                .AppendSecret('"' + context.AppleIDPassword + '"')
+                .AppendSecret('"' + context.Settings.AppleIDPassword + '"')
                 .Append("--wait")
             });
 

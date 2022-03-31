@@ -60,7 +60,7 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
 
         context.MSBuild("../contrib/rtl-sdr/build/src/rtl_sdr.vcxproj", new MSBuildSettings
         {
-            Configuration = context.BuildConfiguration,
+            Configuration = context.Settings.BuildConfiguration,
             MSBuildPlatform = MSBuildPlatform.x64,
             PlatformTarget = PlatformTarget.x64,
             ToolPath = context.MsBuildPath

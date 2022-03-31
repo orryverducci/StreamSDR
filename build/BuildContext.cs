@@ -25,9 +25,9 @@ namespace StreamSDR.Build;
 public sealed class BuildContext : FrostingContext
 {
     /// <summary>
-    /// The configuration to used while building the application and libraries.
+    /// The build settings.
     /// </summary>
-    public string BuildConfiguration { get; private set; }
+    public Configuration.Settings Settings { get; private set; } = new();
 
     /// <summary>
     /// The path to the installation of MSBuild (only used on the Windows platform).
@@ -45,49 +45,14 @@ public sealed class BuildContext : FrostingContext
     public string Platform { get; private set; }
 
     /// <summary>
-    /// The architecture the application is being built for.
-    /// </summary>
-    public string Architecture { get; private set; }
-
-    /// <summary>
     /// The directory to output the build artifacts to.
     /// </summary>
-    public DirectoryPath OutputFolder { get; private set; }
+    public DirectoryPath OutputFolder { get; set; }
 
     /// <summary>
     /// The directory to output the installer build artifacts to.
     /// </summary>
-    public DirectoryPath InstallerOutputFolder { get; private set; }
-
-    /// <summary>
-    /// The domain for the Docker container registry to be used.
-    /// </summary>
-    public string ContainerRegistry { get; private set; }
-
-    /// <summary>
-    /// The certificate to be used when signing the application.
-    /// </summary>
-    public string? SigningCertificate { get; private set; }
-
-    /// <summary>
-    /// The certificate to be used when signing the installer.
-    /// </summary>
-    public string? InstallerSigningCertificate { get; private set; }
-
-    /// <summary>
-    /// The Apple ID account to be used when notarizing the application.
-    /// </summary>
-    public string? AppleID { get; private set; }
-
-    /// <summary>
-    /// The Apple ID password to be used when notarizing the application.
-    /// </summary>
-    public string? AppleIDPassword { get; private set; }
-
-    /// <summary>
-    /// The Apple developer team ID to be used when notarizing the application.
-    /// </summary>
-    public string? AppleDeveloperTeam { get; private set; }
+    public DirectoryPath InstallerOutputFolder { get; set; }
 
     /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
@@ -95,9 +60,6 @@ public sealed class BuildContext : FrostingContext
     /// <param name="context">The Cake context.</param>
     public BuildContext(ICakeContext context) : base(context)
     {
-        // Set build properties from passed in arguments
-        BuildConfiguration = context.Argument("configuration", "Release");
-
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             Platform = "win";
@@ -115,45 +77,7 @@ public sealed class BuildContext : FrostingContext
             throw new PlatformNotSupportedException("This platform is not supported");
         }
 
-        string? architecture = context.Argument<string?>("architecture", null);
-        if (Architecture == null)
-        {
-            Architecture = RuntimeInformation.OSArchitecture.ToString().ToLower();
-        }
-        if (Architecture != "x64" && Architecture != "arm" && Architecture != "arm64")
-        {
-            throw new PlatformNotSupportedException("This architecture is not supported");
-        }
-
-        // Set the folders for the build output
-        OutputFolder = context.Directory($"../artifacts/{Platform}-{Architecture}");
-        InstallerOutputFolder = context.Directory($"../artifacts/{Platform}-{Architecture}-installer");
-
-        // Set the Docker container registry, if one is specified
-        if (context.HasArgument("registry"))
-        {
-            string registryDomain = context.Argument<string>("registry");
-
-            // Add a trailing forward slash if there isn't one already
-            if (!registryDomain.EndsWith('/'))
-            {
-                registryDomain += '/';
-            }
-
-            ContainerRegistry = registryDomain;
-        }
-        else
-        {
-            ContainerRegistry = string.Empty;
-        }
-
-        // Set the code signing certificates to be used if specified
-        SigningCertificate = context.HasArgument("appcert") ? context.Argument<string>("appcert") : null;
-        InstallerSigningCertificate = context.HasArgument("installcert") ? context.Argument<string>("installcert") : null;
-
-        // Set the Apple ID credentials to be used when notarizing the app if specified
-        AppleID = context.HasArgument("appleid") ? context.Argument<string>("appleid") : null;
-        AppleIDPassword = context.HasArgument("applepassword") ? context.Argument<string>("applepassword") : null;
-        AppleDeveloperTeam = context.HasArgument("teamid") ? context.Argument<string>("teamid") : null;
+        OutputFolder = Environment.WorkingDirectory;
+        InstallerOutputFolder = Environment.WorkingDirectory;
     }
 }

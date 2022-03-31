@@ -28,6 +28,20 @@ public sealed class BuildDockerImage : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
+        // Set the container registry domain if one is specified
+        string registryDomain = string.Empty;
+
+        if (context.Settings.ContainerRegistry != null)
+        {
+            registryDomain = context.Settings.ContainerRegistry;
+
+            // Add a trailing forward slash if there isn't one already
+            if (!registryDomain.EndsWith('/'))
+            {
+                registryDomain += '/';
+            }
+        }
+
         MinVerVersion version = context.MinVer(new MinVerSettings
         {
             DefaultPreReleasePhase = "preview",
@@ -39,18 +53,18 @@ public sealed class BuildDockerImage : FrostingTask<BuildContext>
         {
             tags = new string[]
             {
-                $"{context.ContainerRegistry}orryverducci/streamsdr:latest",
-                $"{context.ContainerRegistry}orryverducci/streamsdr:{version.Version}"
+                $"{registryDomain}orryverducci/streamsdr:latest",
+                $"{registryDomain}orryverducci/streamsdr:{version.Version}"
             };
         }
         else
         {
             tags = new string[]
             {
-                $"{context.ContainerRegistry}orryverducci/streamsdr:latest",
-                $"{context.ContainerRegistry}orryverducci/streamsdr:{version.Major}.{version.Minor}.{version.Patch}",
-                $"{context.ContainerRegistry}orryverducci/streamsdr:{version.Major}.{version.Minor}",
-                $"{context.ContainerRegistry}orryverducci/streamsdr:{version.Major}"
+                $"{registryDomain}orryverducci/streamsdr:latest",
+                $"{registryDomain}orryverducci/streamsdr:{version.Major}.{version.Minor}.{version.Patch}",
+                $"{registryDomain}orryverducci/streamsdr:{version.Major}.{version.Minor}",
+                $"{registryDomain}orryverducci/streamsdr:{version.Major}"
             };
         }
 
