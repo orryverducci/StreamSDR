@@ -39,7 +39,7 @@ public sealed class SignAppTask : FrostingTask<BuildContext>
                 .Append("../src/Entitlements.plist")
                 .Append("--sign")
                 .AppendSecret('"' + context.Settings.SigningCertificate + '"')
-                .Append(context.Settings.ArtifactsFolder!.CombineWithFilePath("streamsdr").FullPath)
+                .Append(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).CombineWithFilePath("streamsdr").FullPath)
         });
 
         // Check the exit code indicates it completed successfully
