@@ -172,9 +172,8 @@ internal sealed class Radio : RadioBase
             Frequency = DefaultFrequency;
             SampleRate = DefaultSampleRate;
             DirectSampling = DirectSamplingMode.Off;
-            Gain = 0;
-            AutomaticGainCorrection = false;
             GainMode = GainMode.Automatic;
+            AutomaticGainCorrection = false;
 
             // Start the receiver thread
             _receiverThread.Start();
