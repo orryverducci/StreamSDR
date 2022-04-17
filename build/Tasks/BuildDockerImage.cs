@@ -21,7 +21,7 @@ using Cake.MinVer;
 namespace StreamSDR.Build.Tasks;
 
 /// <summary>
-/// Task to build the StreamSDR application.
+/// Task to build the StreamSDR Docker image.
 /// </summary>
 [TaskName("BuildDockerImage")]
 public sealed class BuildDockerImage : FrostingTask<BuildContext>
@@ -42,12 +42,14 @@ public sealed class BuildDockerImage : FrostingTask<BuildContext>
             }
         }
 
+        // Get the app version from MinVer
         MinVerVersion version = context.MinVer(new MinVerSettings
         {
             DefaultPreReleasePhase = "preview",
             TagPrefix = "v"
         });
 
+        // Set the tags for the Docker image
         string[] tags;
         if (version.IsPreRelease)
         {
@@ -68,6 +70,7 @@ public sealed class BuildDockerImage : FrostingTask<BuildContext>
             };
         }
 
+        // Build the Docker image
         context.DockerBuild(new DockerImageBuildSettings
         {
             BuildArg = new string[] { $"version={version.Version}" },

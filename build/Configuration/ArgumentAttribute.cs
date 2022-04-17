@@ -18,7 +18,7 @@
 namespace StreamSDR.Build.Configuration;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ArgumentAttribute : Attribute
+public sealed class ArgumentAttribute : Attribute
 {
     public string Name { private set; get; }
 

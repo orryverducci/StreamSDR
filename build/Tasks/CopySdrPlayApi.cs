@@ -22,29 +22,37 @@ namespace StreamSDR.Build.Tasks;
 /// <summary>
 /// Task to copy the SDRplay API library.
 /// </summary>
-[TaskName("CopySdrPlay")]
+[TaskName("CopySdrPlayApi")]
 [ContinueOnError]
-public sealed class CopySdrPlayApi : FrostingTask<BuildContext>
+public sealed class CopySdrPlayApiTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => context.Platform == "win";
+    public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.Windows;
 
     public override void Run(BuildContext context)
     {
+        // Get the path to the Program Files directory
         DirectoryPath programFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
 
-        FilePath libraryPath = programFilesPath.CombineWithFilePath(context.File("SDRplay/API/x64/sdrplay_api.dll"));
+        // Set the path to the SDRplay API library
+        FilePath libraryPath = programFilesPath.CombineWithFilePath("SDRplay/API/x64/sdrplay_api.dll");
 
+        // Check the SDRplay API library has been installed
         if (!context.FileExists(libraryPath))
         {
-            context.Error($"Unable to find the SDRplay API at {libraryPath.FullPath}");
+            context.Error($"Unable to find the SDRplay API at {libraryPath}");
             throw new Exception("Unable to find the SDRplay API");
         }
 
-        if (context.FileExists(context.OutputFolder.CombineWithFilePath(context.File("sdrplay_api.dll"))))
+        // Set the path for the SDRplay API library to be output to
+        FilePath outputPath = context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).CombineWithFilePath("sdrplay_api.dll");
+
+        // Remove the SDRplay API library from the artifacts folder if it already exists
+        if (context.FileExists(outputPath))
         {
-            context.DeleteFile(context.OutputFolder.CombineWithFilePath(context.File("sdrplay_api.dll")));
+            context.DeleteFile(outputPath);
         }
 
-        context.CopyFile(libraryPath, context.OutputFolder.CombineWithFilePath(context.File("sdrplay_api.dll")));
+        // Copy the SDRplay API library to the artifacts folder
+        context.CopyFile(libraryPath, outputPath);
     }
 }

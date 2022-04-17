@@ -21,12 +21,14 @@ namespace StreamSDR.Build.Tasks;
 /// Task to sign the application.
 /// </summary>
 [TaskName("SignApp")]
+[IsDependentOn(typeof(BuildStreamSdrTask))]
 public sealed class SignAppTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => context.Platform == "osx" && context.Settings.SigningCertificate != null;
+    public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.MacOS && context.Settings.SigningCertificate != null;
 
     public override void Run(BuildContext context)
     {
+        // Run codesign on the StreamSDR app binary
         int exitCode = context.StartProcess("codesign", new ProcessSettings
         {
             Arguments = new ProcessArgumentBuilder()
@@ -37,9 +39,10 @@ public sealed class SignAppTask : FrostingTask<BuildContext>
                 .Append("../src/Entitlements.plist")
                 .Append("--sign")
                 .AppendSecret('"' + context.Settings.SigningCertificate + '"')
-                .Append(context.OutputFolder.CombineWithFilePath(context.File("streamsdr")).FullPath)
+                .Append(context.Settings.ArtifactsFolder!.CombineWithFilePath("streamsdr").FullPath)
         });
 
+        // Check the exit code indicates it completed successfully
         if (exitCode != 0)
         {
             throw new Exception("Unable to sign app");

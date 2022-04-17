@@ -15,13 +15,11 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace StreamSDR.Build.Tasks;
+namespace StreamSDR.Build.Configuration;
 
-/// <summary>
-/// Task to build the application.
-/// </summary>
-[TaskName("Default")]
-[IsDependentOn(typeof(BuildStreamSdrTask))]
-public sealed class DefaultTask : FrostingTask
+public enum Platform
 {
+    Windows,
+    MacOS,
+    Linux
 }

@@ -25,15 +25,23 @@ namespace StreamSDR.Build.Tasks;
 [TaskName("BuildLibusb")]
 public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => context.Platform == "win";
+    public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.Windows;
 
     public override void Run(BuildContext context)
     {
+        // Check MSBuild is available
         if (context.MsBuildPath == null)
         {
             throw new Exception("Unable to locate MSBuild or the Visual Studio 2022 C++ build tools");
         }
 
+        // Ensure the artifacts directory exists
+        context.EnsureDirectoryExists(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier));
+
+        // Set the path for the libusb library to be output to
+        FilePath outputPath = context.Settings.ArtifactsFolder.Combine(context.BuildIdentifier).CombineWithFilePath("libusb-1.0.dll");
+
+        // Build libusb using the VS 2022 build tools
         context.MSBuild("../contrib/libusb/msvc/libusb_dll_2019.vcxproj", new MSBuildSettings
         {
             ArgumentCustomization = args => args.Append("/p:PlatformToolset=v143"),
@@ -43,11 +51,13 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
             ToolPath = context.MsBuildPath,
         });
 
-        if (context.FileExists(context.OutputFolder.CombineWithFilePath(context.File("libusb-1.0.dll"))))
+        // Remove libusb from the artifacts folder if it already exists
+        if (context.FileExists(outputPath))
         {
-            context.DeleteFile(context.OutputFolder.CombineWithFilePath(context.File("libusb-1.0.dll")));
+            context.DeleteFile(outputPath);
         }
 
-        context.CopyFile("../contrib/libusb/x64/Release/dll/libusb-1.0.dll", context.OutputFolder.CombineWithFilePath(context.File("libusb-1.0.dll")));
+        // Copy the built library to the artifacts folder
+        context.CopyFile("../contrib/libusb/x64/Release/dll/libusb-1.0.dll", outputPath);
     }
 }

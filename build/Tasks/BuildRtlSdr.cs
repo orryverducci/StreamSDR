@@ -28,22 +28,32 @@ namespace StreamSDR.Build.Tasks;
 [IsDependentOn(typeof(BuildLibUsbTask))]
 public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => context.Platform == "win";
+    public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.Windows;
 
     public override void Run(BuildContext context)
     {
+        // Check MSBuild is available
         if (context.MsBuildPath == null)
         {
             throw new Exception("Unable to locate MSBuild or the Visual Studio 2019 C++ build tools");
         }
 
+        // Check CMake is available
         if (context.CMakePath == null)
         {
             throw new Exception("Unable to locate CMake");
         }
 
+        // Ensure the artifacts directory exists
+        context.EnsureDirectoryExists(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier));
+
+        // Set the path for the rtl-sdr library to be output to
+        FilePath outputPath = context.Settings.ArtifactsFolder.Combine(context.BuildIdentifier).CombineWithFilePath("rtlsdr.dll");
+
+        // Create a build directory for the output from CMake
         context.CreateDirectory("../contrib/rtl-sdr/build");
 
+        // Generate a Visual C++ project for rtl-sdr
         context.CMake("../contrib/rtl-sdr", new CMakeSettings
         {
             Generator = "Visual Studio 17 2022",
@@ -58,6 +68,7 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
             ToolPath = context.CMakePath
         });
 
+        // Build rtl-sdr using the VS 2022 build tools
         context.MSBuild("../contrib/rtl-sdr/build/src/rtl_sdr.vcxproj", new MSBuildSettings
         {
             Configuration = context.Settings.BuildConfiguration,
@@ -66,11 +77,13 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
             ToolPath = context.MsBuildPath
         });
 
-        if (context.FileExists(context.OutputFolder.CombineWithFilePath(context.File("rtlsdr.dll"))))
+        // Remove the rtl-sdr library from the artifacts folder if it already exists
+        if (context.FileExists(outputPath))
         {
-            context.DeleteFile(context.OutputFolder.CombineWithFilePath(context.File("rtlsdr.dll")));
+            context.DeleteFile(outputPath);
         }
 
-        context.CopyFile("../contrib/rtl-sdr/build/src/Release/rtlsdr.dll", context.OutputFolder.CombineWithFilePath(context.File("rtlsdr.dll")));
+        // Copy the built library to the artifacts folder
+        context.CopyFile("../contrib/rtl-sdr/build/src/Release/rtlsdr.dll", outputPath);
     }
 }

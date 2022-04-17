@@ -16,6 +16,7 @@
  */
 
 using System.Runtime.InteropServices;
+using StreamSDR.Build.Configuration;
 
 namespace StreamSDR.Build;
 
@@ -27,7 +28,18 @@ public sealed class BuildContext : FrostingContext
     /// <summary>
     /// The build settings.
     /// </summary>
-    public Configuration.Settings Settings { get; private set; } = new();
+    public Settings Settings { get; private set; } = new();
+
+    /// <summary>
+    /// The platform the application is being built for.
+    /// </summary>
+    public Platform Platform { get; private set; }
+
+    // The identifier for the build, used to name the app artifact output folder
+    public string BuildIdentifier { get; set; } = string.Empty;
+
+    // The identifier for the installer, used to name the installer artifact output folder
+    public string InstallerIdentifier { get; set; } = string.Empty;
 
     /// <summary>
     /// The path to the installation of MSBuild (only used on the Windows platform).
@@ -40,21 +52,6 @@ public sealed class BuildContext : FrostingContext
     public FilePath? CMakePath { get; set; }
 
     /// <summary>
-    /// The platform the application is being built for.
-    /// </summary>
-    public string Platform { get; private set; }
-
-    /// <summary>
-    /// The directory to output the build artifacts to.
-    /// </summary>
-    public DirectoryPath OutputFolder { get; set; }
-
-    /// <summary>
-    /// The directory to output the installer build artifacts to.
-    /// </summary>
-    public DirectoryPath InstallerOutputFolder { get; set; }
-
-    /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
     /// </summary>
     /// <param name="context">The Cake context.</param>
@@ -62,22 +59,19 @@ public sealed class BuildContext : FrostingContext
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            Platform = "win";
+            Platform = Platform.Windows;
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            Platform = "osx";
+            Platform = Platform.MacOS;
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            Platform = "linux";
+            Platform = Platform.Linux;
         }
         else
         {
             throw new PlatformNotSupportedException("This platform is not supported");
         }
-
-        OutputFolder = Environment.WorkingDirectory;
-        InstallerOutputFolder = Environment.WorkingDirectory;
     }
 }

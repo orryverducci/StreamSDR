@@ -15,6 +15,7 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace StreamSDR.Build.Configuration;
@@ -22,10 +23,16 @@ namespace StreamSDR.Build.Configuration;
 public record Settings
 {
     /// <summary>
-    /// The configuration to used while building the application and libraries.
+    /// The configuration to be used while building the application and libraries.
     /// </summary>
     [Argument("configuration")]
     public string BuildConfiguration { get; private set; } = "Release";
+
+    /// <summary>
+    /// The directory the build artifacts will be output to.
+    /// </summary>
+    [Argument("output")]
+    public DirectoryPath? ArtifactsFolder { get; set; }
 
     /// <summary>
     /// The architecture the application is being built for.

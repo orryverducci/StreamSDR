@@ -27,7 +27,7 @@ namespace StreamSDR.Build.Tasks;
 public sealed class NotarizeInstallerTask : FrostingTask<BuildContext>
 {
     public override bool ShouldRun(BuildContext context) =>
-        context.Platform == "osx" &&
+        context.Platform == Configuration.Platform.MacOS &&
         context.Settings.InstallerSigningCertificate != null &&
         context.Settings.AppleID != null &&
         context.Settings.AppleIDPassword != null &&
@@ -35,6 +35,9 @@ public sealed class NotarizeInstallerTask : FrostingTask<BuildContext>
 
     public override void Run(BuildContext context)
     {
+        // Set the path for the installer
+        FilePath installerPath = context.Settings.ArtifactsFolder!.Combine(context.InstallerIdentifier).CombineWithFilePath("streamsdr.pkg");
+
         // Create a temporary folder
         DirectoryPath tempDir = context.Directory(System.IO.Path.GetTempPath());
         tempDir = tempDir.Combine(Guid.NewGuid().ToString());
@@ -45,7 +48,7 @@ public sealed class NotarizeInstallerTask : FrostingTask<BuildContext>
             // Copy the installer package to the temporary directory and zip it
             DirectoryPath appDir = tempDir.Combine("upload");
             context.EnsureDirectoryExists(appDir);
-            context.CopyFile(context.InstallerOutputFolder.CombineWithFilePath("streamsdr.pkg"), appDir.CombineWithFilePath("streamsdr.pkg"));
+            context.CopyFile(installerPath, appDir.CombineWithFilePath("streamsdr.pkg"));
             context.Zip(appDir, tempDir.CombineWithFilePath("streamsdr.zip"));
 
             // Send the app for notarization
@@ -64,20 +67,22 @@ public sealed class NotarizeInstallerTask : FrostingTask<BuildContext>
                 .Append("--wait")
             });
 
+            // Check the exit code to ensure the installer was notarized
             if (exitCode != 0)
             {
                 throw new Exception("Unable to notarize the installer");
             }
 
-            // Staple the notarization to the app
+            // Staple the notarization to the installer
             exitCode = context.StartProcess("xcrun", new ProcessSettings
             {
                 Arguments = new ProcessArgumentBuilder()
                 .Append("stapler")
                 .Append("staple")
-                .Append(context.InstallerOutputFolder.CombineWithFilePath("streamsdr.pkg").FullPath)
+                .Append(installerPath.FullPath)
             });
 
+            // Check the exit code to ensure the notarization has been stapled to the installer
             if (exitCode != 0)
             {
                 throw new Exception("Unable to staple the notarization to the installer");

@@ -25,15 +25,29 @@ namespace StreamSDR.Build.Tasks;
 /// </summary>
 [TaskName("BuildStreamSDR")]
 [IsDependentOn(typeof(BuildRtlSdrTask))]
+[IsDependentOn(typeof(CopySdrPlayApiTask))]
 public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
+        // Generate the .NET runtime for the build
+        string runtime = context.Platform switch
+        {
+            Configuration.Platform.Windows => $"win-{context.Settings.Architecture}",
+            Configuration.Platform.MacOS => $"osx-{context.Settings.Architecture}",
+            Configuration.Platform.Linux => $"linux-{context.Settings.Architecture}",
+            _ => throw new Exception("Unable to set runtime")
+        };
+
+        // Ensure the artifacts directory exists
+        context.EnsureDirectoryExists(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier));
+
+        // Build StreamSDR to the artifacts folder
         context.DotNetPublish("../src/StreamSDR.csproj", new DotNetPublishSettings
         {
             Configuration = context.Settings.BuildConfiguration,
-            OutputDirectory = context.OutputFolder,
-            Runtime = $"{context.Platform}-{context.Settings.Architecture}",
+            OutputDirectory = context.Settings.ArtifactsFolder.Combine(context.BuildIdentifier),
+            Runtime = runtime,
             SelfContained = true
         });
     }

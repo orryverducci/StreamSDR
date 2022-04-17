@@ -23,21 +23,32 @@ namespace StreamSDR.Build.Tasks;
 /// Task to create the installer for the app.
 /// </summary>
 [TaskName("CreateInstaller")]
+[IsDependentOn(typeof(SignAppTask))]
 public sealed class CreateInstallerTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => context.Platform == "osx";
+    /// <summary>
+    /// The path to the installer output directory.
+    /// </summary>
+    private DirectoryPath? outputPath;
+
+    public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.MacOS;
 
     public override void Run(BuildContext context)
     {
+        // Get the app version from MinVer
         MinVerVersion version = context.MinVer(new MinVerSettings
         {
             DefaultPreReleasePhase = "preview",
             TagPrefix = "v"
         });
 
+        // Set the path for the installer to be output to
+        outputPath = context.Settings.ArtifactsFolder!.Combine(context.InstallerIdentifier);
+
+        // Create the installer for the specified platform
         switch (context.Platform)
         {
-            case "osx":
+            case Configuration.Platform.MacOS:
                 CreateMacPackage(context, version);
                 break;
         }
@@ -45,13 +56,13 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
 
     private void CreateMacPackage(BuildContext context, MinVerVersion version)
     {
-        // Create the output directory for the artifacts
-        context.EnsureDirectoryExists(context.InstallerOutputFolder);
+        // Create the output directory for the installer if it doesn't already
+        context.EnsureDirectoryExists(outputPath);
 
         // Build the arguments for pkgbuild
         ProcessArgumentBuilder arguments = new ProcessArgumentBuilder()
             .Append("--root")
-            .Append(context.OutputFolder.FullPath)
+            .Append(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath)
             .Append("--identifier")
             .Append("io.streamsdr.app")
             .Append("--version")
@@ -66,14 +77,15 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
                 .AppendSecret('"' + context.Settings.InstallerSigningCertificate + '"');
         }
 
-        arguments = arguments
-            .Append(context.InstallerOutputFolder.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath);
+        arguments = arguments.Append(outputPath!.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath);
 
+        // Run pkgbuild
         int exitCode = context.StartProcess("pkgbuild", new ProcessSettings
         {
             Arguments = arguments
         });
 
+        // Check the exit code indicates it completed successfully
         if (exitCode != 0)
         {
             throw new Exception("Unable to create installer");
