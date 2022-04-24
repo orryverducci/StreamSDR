@@ -51,7 +51,7 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
         FilePath outputPath = context.Settings.ArtifactsFolder.Combine(context.BuildIdentifier).CombineWithFilePath("rtlsdr.dll");
 
         // Create a build directory for the output from CMake
-        context.CreateDirectory("../contrib/rtl-sdr/build");
+        context.EnsureDirectoryExists("../contrib/rtl-sdr/build");
 
         // Generate a Visual C++ project for rtl-sdr
         context.CMake("../contrib/rtl-sdr", new CMakeSettings
