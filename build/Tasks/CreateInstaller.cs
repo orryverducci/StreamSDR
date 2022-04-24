@@ -45,6 +45,9 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
         // Set the path for the installer to be output to
         outputPath = context.Settings.ArtifactsFolder!.Combine(context.InstallerIdentifier);
 
+        // Create the output directory for the installer if it doesn't already
+        context.EnsureDirectoryExists(outputPath);
+
         // Create the installer for the specified platform
         switch (context.Platform)
         {
@@ -56,9 +59,6 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
 
     private void CreateMacPackage(BuildContext context, MinVerVersion version)
     {
-        // Create the output directory for the installer if it doesn't already
-        context.EnsureDirectoryExists(outputPath);
-
         // Build the arguments for pkgbuild
         ProcessArgumentBuilder arguments = new ProcessArgumentBuilder()
             .Append("--root")
