@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is part of StreamSDR.
  *
  * StreamSDR is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ namespace StreamSDR.Build.Tasks;
 [ContinueOnError]
 public sealed class CopySdrPlayApiTask : FrostingTask<BuildContext>
 {
-    public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.Windows;
+    public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.Windows && context.Settings.Architecture == "x64";
 
     public override void Run(BuildContext context)
     {
