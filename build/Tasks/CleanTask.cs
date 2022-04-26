@@ -28,8 +28,9 @@ public sealed class CleanTask : FrostingTask<BuildContext>
         // Delete the artifacts folder
         context.EnsureDirectoryDoesNotExist(context.Settings.ArtifactsFolder);
 
-        // Delete the libusb build folder
+        // Delete the libusb build folders
         context.EnsureDirectoryDoesNotExist("../contrib/libusb/x64");
+        context.EnsureDirectoryDoesNotExist("../contrib/libusb/arm64");
 
         // Delete the rtl-sdr build folder
         context.EnsureDirectoryDoesNotExist("../contrib/rtl-sdr/build");

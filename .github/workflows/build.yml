@@ -51,6 +51,42 @@ jobs:
           name: windows-x64
           path: artifacts/win-x64
 
+  win-arm64-build:
+    name: Windows ARM64 Build
+    runs-on: windows-latest
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build libusb
+        run: .\build.ps1 --exclusive --architecture arm64 -t BuildLibusb
+
+      - name: Build rtl-sdr
+        run: .\build.ps1 --exclusive --architecture arm64 -t BuildRtlSdr
+
+      - name: Build StreamSDR
+        run: .\build.ps1 --exclusive --architecture arm64 -t BuildStreamSDR
+
+      - name: Upload artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-arm64
+          path: artifacts/win-arm64
+
   linux-x64-build:
     name: Linux x64 Build
     runs-on: ubuntu-latest
@@ -80,8 +116,130 @@ jobs:
           name: linux-x64
           path: artifacts/linux-x64
 
+  linux-arm-build:
+    name: Linux ARM Build
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build StreamSDR
+        run: ./build.sh --exclusive --architecture arm -t BuildStreamSDR
+
+      - name: Upload artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-arm
+          path: artifacts/linux-arm
+
+  linux-arm64-build:
+    name: Linux ARM64 Build
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build StreamSDR
+        run: ./build.sh --exclusive --architecture arm64 -t BuildStreamSDR
+
+      - name: Upload artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-arm64
+          path: artifacts/linux-arm64
+
   macos-x64-build:
     name: macOS x64 Build
+    runs-on: macos-latest
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build StreamSDR
+        run: ./build.sh --exclusive --architecture arm64 -t BuildStreamSDR
+
+      - name: Add app signing certificates to Keychain
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.MAC_SIGNING_CERTS }}
+          p12-password: ${{ secrets.MAC_SIGNING_CERTS_PASSWORD }}
+
+      - name: Sign StreamSDR
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        env:
+          MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_SIGNING_CERT_NAME }}
+        run: "./build.sh --exclusive -t SignApp --appcert \"$MAC_SIGNING_CERT_NAME\""
+
+      - name: Upload app artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-arm64
+          path: artifacts/mac-arm64
+
+      - name: Create installer package
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        env:
+          MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
+        run: "./build.sh --exclusive -t CreateInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\""
+
+      - name: Notarize the installer package
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        env:
+          APPLE_DEV_TEAM: ${{ secrets.APPLE_DEV_TEAM }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
+        run: "./build.sh --exclusive -t NotarizeInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\" --appleid \"$APPLE_ID\" --applepassword \"$APPLE_ID_PASSWORD\" --teamid \"$APPLE_DEV_TEAM\""
+
+      - name: Upload installer artifact
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-installer
+          path: artifacts/mac-installer
+
+  macos-arm64-build:
+    name: macOS ARM64 Build
     runs-on: macos-latest
 
     permissions:
@@ -121,28 +279,6 @@ jobs:
         with:
           name: macos-x64
           path: artifacts/mac-x64
-
-      - name: Create installer package
-        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
-        env:
-          MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
-        run: "./build.sh --exclusive -t CreateInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\""
-
-      - name: Notarize the installer package
-        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
-        env:
-          APPLE_DEV_TEAM: ${{ secrets.APPLE_DEV_TEAM }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
-          MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
-        run: "./build.sh --exclusive -t NotarizeInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\" --appleid \"$APPLE_ID\" --applepassword \"$APPLE_ID_PASSWORD\" --teamid \"$APPLE_DEV_TEAM\""
-
-      - name: Upload installer artifact
-        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
-        uses: actions/upload-artifact@v3
-        with:
-          name: macos-installer
-          path: artifacts/mac-installer
 
   docker-build:
     name: Docker Image Build

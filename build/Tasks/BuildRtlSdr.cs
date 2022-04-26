@@ -53,13 +53,28 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
         // Create a build directory for the output from CMake
         context.EnsureDirectoryExists("../contrib/rtl-sdr/build");
 
+        // Set libusb library path
+        FilePath libUsbPath = context.Settings.Architecture switch
+        {
+            "arm64" => "../contrib/libusb/arm64/Release/dll/libusb-1.0.lib",
+            _ => "../contrib/libusb/x64/Release/dll/libusb-1.0.lib"
+        };
+
+        // Set the CMake target architecture
+        string cMakeArchitecture = context.Settings.Architecture switch
+        {
+            "arm64" => "ARM64",
+            _ => "x64"
+        };
+
         // Generate a Visual C++ project for rtl-sdr
         context.CMake("../contrib/rtl-sdr", new CMakeSettings
         {
             Generator = "Visual Studio 17 2022",
             Options = new List<string>()
             {
-                { $"-DLIBUSB_LIBRARIES={context.MakeAbsolute(context.Directory("../contrib/libusb/x64/Release/dll/libusb-1.0.lib")).FullPath}" },
+                { $"-A {cMakeArchitecture}" },
+                { $"-DLIBUSB_LIBRARIES={context.MakeAbsolute(libUsbPath).FullPath}" },
                 { $"-DLIBUSB_INCLUDE_DIRS={context.MakeAbsolute(context.Directory("../contrib/libusb/libusb")).FullPath}" },
                 { "-DPKG_CONFIG_EXECUTABLE=C:\\non\\existent\\app.exe" } // A valid pkg-config install breaks the build, so we point to a non-existent executable
             },
@@ -68,12 +83,19 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
             ToolPath = context.CMakePath
         });
 
+        // Set the MSBuild target architecture
+        PlatformTarget msBuildArchitecture = context.Settings.Architecture switch
+        {
+            "arm64" => PlatformTarget.ARM64,
+            _ => PlatformTarget.x64
+        };
+
         // Build rtl-sdr using the VS 2022 build tools
         context.MSBuild("../contrib/rtl-sdr/build/src/rtl_sdr.vcxproj", new MSBuildSettings
         {
             Configuration = context.Settings.BuildConfiguration,
             MSBuildPlatform = MSBuildPlatform.x64,
-            PlatformTarget = PlatformTarget.x64,
+            PlatformTarget = msBuildArchitecture,
             ToolPath = context.MsBuildPath
         });
 
