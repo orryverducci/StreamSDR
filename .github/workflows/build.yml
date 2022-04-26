@@ -194,7 +194,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build StreamSDR
-        run: ./build.sh --exclusive --architecture arm64 -t BuildStreamSDR
+        run: ./build.sh --exclusive -t BuildStreamSDR
 
       - name: Add app signing certificates to Keychain
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
@@ -213,8 +213,8 @@ jobs:
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
-          name: macos-arm64
-          path: artifacts/mac-arm64
+          name: macos-x64
+          path: artifacts/mac-x64
 
       - name: Create installer package
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
@@ -258,7 +258,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build StreamSDR
-        run: ./build.sh --exclusive -t BuildStreamSDR
+        run: ./build.sh --exclusive --architecture arm64 -t BuildStreamSDR
 
       - name: Add app signing certificates to Keychain
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
@@ -271,14 +271,14 @@ jobs:
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         env:
           MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_SIGNING_CERT_NAME }}
-        run: "./build.sh --exclusive -t SignApp --appcert \"$MAC_SIGNING_CERT_NAME\""
+        run: "./build.sh --exclusive --architecture arm64 -t SignApp --appcert \"$MAC_SIGNING_CERT_NAME\""
 
       - name: Upload app artifact
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
-          name: macos-x64
-          path: artifacts/mac-x64
+          name: macos-arm64
+          path: artifacts/mac-arm64
 
   docker-build:
     name: Docker Image Build
