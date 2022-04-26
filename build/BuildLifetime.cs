@@ -58,7 +58,7 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
         context.Information($"Platform: {context.Platform}");
         context.Information($"Architecture: {context.Settings.Architecture}");
         context.Information($"Configuration: {context.Settings.BuildConfiguration}");
-        context.Information($"Output path: {context.Settings.ArtifactsFolder}");
+        context.Information($"Output path: {context.MakeAbsolute(context.Settings.ArtifactsFolder)}");
 
         // Check if the architecture being built is supported
         if (context.Settings.Architecture != "x64" && context.Settings.Architecture != "arm" && context.Settings.Architecture != "arm64")
