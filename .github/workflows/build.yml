@@ -73,6 +73,7 @@ jobs:
         with:
           name: ${{ matrix.id }}-${{ matrix.architecture }}
           path: artifacts/${{ matrix.id }}-${{ matrix.architecture }}
+          if-no-files-found: error
 
   macos-installer-build:
     name: macOS Installer Build
@@ -130,6 +131,7 @@ jobs:
         with:
           name: macos-installer
           path: artifacts/macos-installer
+          if-no-files-found: error
 
   docker-build:
     name: Docker Image Build
