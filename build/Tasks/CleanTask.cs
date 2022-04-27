@@ -34,5 +34,9 @@ public sealed class CleanTask : FrostingTask<BuildContext>
 
         // Delete the rtl-sdr build folder
         context.EnsureDirectoryDoesNotExist("../contrib/rtl-sdr/build");
+
+        // Delete the StreamSDR build folders
+        context.EnsureDirectoryDoesNotExist("../src/bin");
+        context.EnsureDirectoryDoesNotExist("../src/obj");
     }
 }
