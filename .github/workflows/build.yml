@@ -34,6 +34,8 @@ jobs:
           - os: ubuntu-latest
             id: linux
             script: ./build.sh
+          - os: ubuntu-latest
+            architecture: arm
     runs-on: ${{ matrix.os }}
 
     permissions:
