@@ -18,10 +18,10 @@
 namespace StreamSDR.Build.Tasks;
 
 /// <summary>
-/// Task to create a univeral Mac app from x64 and arm64 builds.
+/// Task to create a universal Mac app from x64 and arm64 builds.
 /// </summary>
-[TaskName("CreateUniveralApp")]
-public sealed class CreateUniveralAppTask : FrostingTask<BuildContext>
+[TaskName("CreateUniversalApp")]
+public sealed class CreateUniversalAppTask : FrostingTask<BuildContext>
 {
     public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.MacOS;
 
