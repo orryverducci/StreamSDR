@@ -29,7 +29,7 @@ jobs:
             id: win
             script: .\build.ps1
           - os: macos-latest
-            id: mac
+            id: macos
             script: ./build.sh
           - os: ubuntu-latest
             id: linux
@@ -101,7 +101,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: macos-x64
-          path: artifacts/mac-x64
+          path: artifacts/macos-x64
 
       - name: Sign StreamSDR
         env:
@@ -131,7 +131,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: macos-installer
-          path: artifacts/mac-installer
+          path: artifacts/macos-installer
 
   docker-build:
     name: Docker Image Build
