@@ -108,12 +108,6 @@ jobs:
           MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_SIGNING_CERT_NAME }}
         run: "./build.sh --exclusive -t SignApp --appcert \"$MAC_SIGNING_CERT_NAME\""
 
-      - name: Upload app artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: macos-x64
-          path: artifacts/mac-x64
-
       - name: Create installer package
         env:
           MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
