@@ -15,6 +15,7 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using Cake.Docker;
 using Cake.MinVer;
 
@@ -49,6 +50,21 @@ public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
             TagPrefix = "v"
         });
 
+        // Get the latest Git commit SHA
+        int exitCode = context.StartProcess("git", new ProcessSettings
+        {
+            Arguments = new ProcessArgumentBuilder()
+                .Append("rev-parse")
+                .Append("HEAD"),
+            RedirectStandardOutput = true
+        }, out IEnumerable<string> gitOutput);
+
+        // Check the exit code indicates it completed successfully
+        if (exitCode != 0)
+        {
+            throw new Exception("Unable to get the Git commit SHA");
+        }
+
         // Set the tags for the Docker image
         string[] tags;
         if (version.IsPreRelease)
@@ -74,6 +90,11 @@ public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
         context.DockerBuild(new DockerImageBuildSettings
         {
             BuildArg = new string[] { $"version={version.Version}" },
+            Label = new string[] {
+                $"org.opencontainers.image.created=\"{DateTime.UtcNow.ToString("o")}\"",
+                $"org.opencontainers.image.version=\"{version.Version}\"",
+                $"org.opencontainers.image.revision=\"{string.Concat(gitOutput)}\""
+            },
             Pull = true,
             Tag = tags,
         }, "../");

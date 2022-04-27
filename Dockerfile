@@ -37,6 +37,13 @@ RUN dotnet publish "src/StreamSDR.csproj" /p:UseAppHost=false /p:PublishSingleFi
 
 FROM mcr.microsoft.com/dotnet/runtime:6.0 AS app
 
+LABEL org.opencontainers.image.title="StreamSDR"
+LABEL org.opencontainers.image.description="Server for software defined radios"
+LABEL org.opencontainers.image.url="https://github.com/orryverducci/StreamSDR"
+LABEL org.opencontainers.image.source="https://github.com/orryverducci/StreamSDR"
+LABEL org.opencontainers.image.vendor="Orry Verducci"
+LABEL org.opencontainers.image.licenses="GPL-3.0-only"
+
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends librtlsdr-dev && rm -rf /var/lib/apt/lists/*
