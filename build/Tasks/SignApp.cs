@@ -21,7 +21,7 @@ namespace StreamSDR.Build.Tasks;
 /// Task to sign the application.
 /// </summary>
 [TaskName("SignApp")]
-[IsDependentOn(typeof(BuildStreamSdrTask))]
+[IsDependentOn(typeof(CreateUniveralAppTask))]
 public sealed class SignAppTask : FrostingTask<BuildContext>
 {
     public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.MacOS && context.Settings.SigningCertificate != null;
@@ -39,7 +39,7 @@ public sealed class SignAppTask : FrostingTask<BuildContext>
                 .Append("../src/Entitlements.plist")
                 .Append("--sign")
                 .AppendSecret('"' + context.Settings.SigningCertificate + '"')
-                .Append(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).CombineWithFilePath("streamsdr").FullPath)
+                .Append(context.Settings.ArtifactsFolder!.Combine("macos-universal").CombineWithFilePath("streamsdr").FullPath)
         });
 
         // Check the exit code indicates it completed successfully

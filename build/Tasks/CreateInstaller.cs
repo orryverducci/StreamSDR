@@ -62,7 +62,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
         // Build the arguments for pkgbuild
         ProcessArgumentBuilder arguments = new ProcessArgumentBuilder()
             .Append("--root")
-            .Append(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath)
+            .Append(context.Settings.ArtifactsFolder!.Combine("macos-universal").FullPath)
             .Append("--identifier")
             .Append("io.streamsdr.app")
             .Append("--version")
