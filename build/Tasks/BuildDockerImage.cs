@@ -24,7 +24,7 @@ namespace StreamSDR.Build.Tasks;
 /// Task to build the StreamSDR Docker image.
 /// </summary>
 [TaskName("BuildDockerImage")]
-public sealed class BuildDockerImage : FrostingTask<BuildContext>
+public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
