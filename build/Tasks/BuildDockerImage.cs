@@ -90,7 +90,8 @@ public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
         context.DockerBuild(new DockerImageBuildSettings
         {
             BuildArg = new string[] { $"version={version.Version}" },
-            Label = new string[] {
+            Label = new string[]
+            {
                 $"org.opencontainers.image.created=\"{DateTime.UtcNow.ToString("o")}\"",
                 $"org.opencontainers.image.version=\"{version.Version}\"",
                 $"org.opencontainers.image.revision=\"{string.Concat(gitOutput)}\""
