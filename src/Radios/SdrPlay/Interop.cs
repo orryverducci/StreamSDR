@@ -24,6 +24,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// </summary>
 internal sealed class Interop
 {
+    #region Constants
     /// <summary>
     /// The name of the libsdrplay_api library.
     /// </summary>
@@ -33,6 +34,13 @@ internal sealed class Interop
     private const string LibSdrPlayApi = "sdrplay_api";
 #endif
 
+    /// <summary>
+    /// Integer representing the LOAD_LIBRARY_SEARCH_DEFAULT_DIRS flag in the Win32 API.
+    /// </summary>
+    public const uint LoadLibrarySearchDefaultDirs = 0x1000;
+    #endregion
+
+    #region SDRplay API Interop
     /// <summary>
     /// Delegate for the data read callback function called by the API after calling the <see cref="Init"/> method.
     /// </summary>
@@ -289,4 +297,23 @@ internal sealed class Interop
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_Update")]
     public static extern ApiError Update(IntPtr dev, TunerSelect tuner, ReasonForUpdate reasonForUpdate, ReasonForUpdateExtension1 reasonForUpdateExt1);
+    #endregion
+
+    #region Windows Interop
+    /// <summary>
+    /// Specifies the default set of directories to search when the process loads a DLL.
+    /// </summary>
+    /// <param name="directoryFlags">The directories to search.</param>
+    /// <returns>A non-zero value if successful, or 0 if there was an error.</returns>
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern bool SetDefaultDllDirectories(uint directoryFlags);
+
+    /// <summary>
+    /// Adds a directory to the process DLL search path.
+    /// </summary>
+    /// <param name="newDirectory">An absolute path to the directory to add to the search path.</param>
+    /// <returns>An an opaque pointer that can be passed to RemoveDllDirectory if successful, or 0 if there was an error.</returns>
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern int AddDllDirectory(string newDirectory);
+    #endregion
 }

@@ -112,6 +112,14 @@ internal sealed unsafe class Radio : RadioBase
     /// <param name="config">The application configuration.</param>
     public Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config) : base(logger, lifetime, config)
     {
+        // If running on Windows, tell the OS to load the API DLL from the SDRplay install folder
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+        {
+            Interop.SetDefaultDllDirectories(Interop.LoadLibrarySearchDefaultDirs);
+
+            Interop.AddDllDirectory($@"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)}\SDRplay\API\x64");
+        }
+
         // Set the sample reading callback
         _readCallback = new Interop.ReadDelegate(ProcessSamples);
         _eventCallback = new Interop.EventDelegate(ProcessEvents);
