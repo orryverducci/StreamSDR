@@ -173,4 +173,4 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build container image
-        run: ./build.sh --exclusive -t BuildDockerImage --registry ghcr.io
+        run: ./build.sh --exclusive -t BuildDockerImage --multiarch true --registry ghcr.io
