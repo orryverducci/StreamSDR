@@ -74,4 +74,10 @@ public record Settings
     /// </summary>
     [Argument("teamid")]
     public string? AppleDeveloperTeam { get; private set; }
+
+    /// <summary>
+    /// If the Docker image should be build for multiple architectures.
+    /// </summary>
+    [Argument("multiarch")]
+    public string MultiArchitecture { get; private set; } = "false";
 }

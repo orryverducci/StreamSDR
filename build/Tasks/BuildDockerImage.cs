@@ -86,18 +86,36 @@ public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
             };
         }
 
-        // Build the Docker image
-        context.DockerBuild(new DockerImageBuildSettings
+        // Set the labels for the Docker image
+        string[] labels = new string[]
         {
-            BuildArg = new string[] { $"version={version.Version}" },
-            Label = new string[]
+            $"org.opencontainers.image.created=\"{DateTime.UtcNow.ToString("o")}\"",
+            $"org.opencontainers.image.version=\"{version.Version}\"",
+            $"org.opencontainers.image.revision=\"{string.Concat(gitOutput)}\""
+        };
+
+        // Build the Docker image
+        if (context.Settings.MultiArchitecture == "true")
+        {
+            context.DockerBuildXBuild(new DockerBuildXBuildSettings
             {
-                $"org.opencontainers.image.created=\"{DateTime.UtcNow.ToString("o")}\"",
-                $"org.opencontainers.image.version=\"{version.Version}\"",
-                $"org.opencontainers.image.revision=\"{string.Concat(gitOutput)}\""
-            },
-            Pull = true,
-            Tag = tags,
-        }, "../");
+                BuildArg = new string[] { $"version={version.Version}" },
+                Label = labels,
+                Platform = new string[] { "linux/amd64", "linux/arm/v7", "linux/arm64/v8" },
+                Pull = true,
+                Push = true,
+                Tag = tags
+            }, "../");
+        }
+        else
+        {
+            context.DockerBuild(new DockerImageBuildSettings
+            {
+                BuildArg = new string[] { $"version={version.Version}" },
+                Label = labels,
+                Pull = true,
+                Tag = tags
+            }, "../");
+        }
     }
 }

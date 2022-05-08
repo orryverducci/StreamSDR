@@ -17,7 +17,7 @@
 ## BUILD IMAGE
 ###############
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 
 WORKDIR /app
 
@@ -35,7 +35,7 @@ RUN dotnet publish "src/StreamSDR.csproj" /p:UseAppHost=false /p:PublishSingleFi
 ## APP IMAGE
 #############
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0 AS app
+FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim AS app
 
 LABEL org.opencontainers.image.title="StreamSDR"
 LABEL org.opencontainers.image.description="Server for software defined radios"

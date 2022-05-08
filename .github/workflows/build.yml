@@ -157,6 +157,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Log in to the container registry
         uses: docker/login-action@v1
@@ -167,6 +174,3 @@ jobs:
 
       - name: Build container image
         run: ./build.sh --exclusive -t BuildDockerImage --registry ghcr.io
-
-      - name: Push container
-        run: docker push --all-tags ghcr.io/orryverducci/streamsdr
