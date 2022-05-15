@@ -1,0 +1,10 @@
+site_name: StreamSDR
+site_description: Documentation for StreamSDR, the server for SDR radios
+site_author: Orry Verducci
+site_url: https://docs.streamsdr.io/
+
+repo_name: StreamSDR's GitHub
+repo_url: https://github.com/orryverducci/StreamSDR/
+
+theme:
+  name: readthedocs

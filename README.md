@@ -4,6 +4,11 @@ StreamSDR is a free and open source server for SDR radios. It is compatible with
 
 StreamSDR is developed by [Orry Verducci](https://www.orryverducci.co.uk/).
 
+How do I use StreamSDR?
+-----------------------
+
+Full documentation on how to install and use StreamSDR can be found on the StreamSDR [documentation website](https://docs.streamsdr.io/).
+
 What's the license?
 -------------------
 
