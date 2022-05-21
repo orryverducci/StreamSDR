@@ -46,7 +46,7 @@ StreamSDR provides a Docker image that can be used to run the app within a conta
 
 To run StreamSDR in Docker:
 
-1. Follow the [offical guide to install Docker](https://docs.docker.com/engine/install/) if it is not already installed.
+1. Follow the [official guide to install Docker](https://docs.docker.com/engine/install/) if it is not already installed.
 2. Download the latest container image by running the following command in your terminal:
 
         docker pull orryverducci/streamsdr
@@ -59,7 +59,7 @@ To run StreamSDR in Docker:
 
             docker run -d --name streamsdr --publish 1234:1234 --privileged orryverducci/streamsdr
 
-        This command runs the container with priviledged capabilities, which allows full access to the hardware connected to the host system. If you don't wish to enable this you can remove `--privileged` from the command, but you will instead need to use the `--device` option to specifically allow access to each SDR device you wish to use.
+        This command runs the container with privileged capabilities, which allows full access to the hardware connected to the host system. If you don't wish to enable this you can remove `--privileged` from the command, but you will instead need to use the `--device` option to specifically allow access to each SDR device you wish to use.
     
     * **Docker Compose:**
 
