@@ -11,4 +11,5 @@ theme:
 
 nav:
   - About: index.md
+  - Installing and Uninstalling: installing.md
   - Using StreamSDR: using.md
