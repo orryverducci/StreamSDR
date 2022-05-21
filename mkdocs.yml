@@ -8,3 +8,7 @@ repo_url: https://github.com/orryverducci/StreamSDR/
 
 theme:
   name: readthedocs
+
+nav:
+  - About: index.md
+  - Using StreamSDR: using.md
