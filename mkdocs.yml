@@ -13,4 +13,5 @@ nav:
   - About: index.md
   - Installing and Uninstalling: installing.md
   - Using StreamSDR: using.md
+  - Device Specific Notes: devices.md
   - Getting Help: support.md
