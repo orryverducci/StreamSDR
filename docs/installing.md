@@ -42,7 +42,7 @@ You will be prompted for your password which you will need to enter to complete 
 
 ## Docker
 
-StreamSDR provides a Docker image that can be used to run the app within a container. Although Docker supports multiple operating systems StreamSDR only supports being run in a container on Linux systems due to the need to access hardware (i.e. SDR devices) connected to the system.
+StreamSDR provides a Docker image that can be used to run the app within a container. Although Docker supports multiple operating systems, StreamSDR only supports being run in a container on Linux systems due to the need to access hardware (i.e. SDR devices) connected to the system.
 
 To run StreamSDR in Docker:
 
@@ -72,3 +72,7 @@ To run StreamSDR in Docker:
                     ports:
                         - "1234:1234"
                     privileged: true
+
+        You can then start the service from the compose file by running the following command in the terminal:
+
+            docker-compose up
