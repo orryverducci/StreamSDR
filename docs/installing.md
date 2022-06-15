@@ -28,7 +28,7 @@ StreamSDR can be installed or updated using the installer package provided on St
 
 To install download the latest version of the installer package, open the package within Finder, and then follow the on screen instructions.
 
-The intaller package supports both Intel and Apple Silicon (aka M1) systems.
+The installer package supports both Intel and Apple Silicon (aka M1) systems.
 
 ### Uninstalling
 
