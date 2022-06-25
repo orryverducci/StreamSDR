@@ -233,7 +233,7 @@ internal sealed class RtlTcpServer : IHostedService
                 _radio.BiasTee = command.Value == 1;
                 break;
             default:
-                _logger.LogWarning($"The rtp_tcp client has sent an unsupported command (command 0x{command.Type.ToString("X2")}, value {command.Value})");
+                _logger.LogWarning($"The rtp_tcp client has sent an unsupported command (command 0x{((int)command.Type).ToString("X2")}, value {command.Value})");
                 break;
         }
     }
