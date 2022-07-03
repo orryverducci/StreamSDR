@@ -225,7 +225,7 @@ internal sealed class RtlTcpConnection : IDisposable
         Span<byte> partialCommand = new(new byte[5]);
         Span<byte> dataBuffer = new(new byte[5]);
         int commandBytesWritten = 0;
-        int bufferBytesRead = 0;
+        int bufferBytesRead;
         bool commandComplete = false;
 
         while (!_connectionCancellationToken.IsCancellationRequested)
