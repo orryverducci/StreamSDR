@@ -1,4 +1,9 @@
-<h1 align="center"><img alt="StreamSDR" src="https://raw.githubusercontent.com/orryverducci/StreamSDR/main/assets/logo.svg"/></h1>
+<h1 align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/orryverducci/StreamSDR/main/assets/logo-white.svg">
+        <img alt="StreamSDR" src="https://raw.githubusercontent.com/orryverducci/StreamSDR/main/assets/logo.svg"/>
+    </picture>
+</h1>
 
 StreamSDR is a free and open source server for SDR radios. It is compatible with [rtl_tcp](https://osmocom.org/projects/rtl-sdr/wiki).
 
