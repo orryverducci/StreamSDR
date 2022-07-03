@@ -286,11 +286,16 @@ internal sealed class RtlTcpConnection : IDisposable
                 // Reset the command status
                 commandComplete = false;
             }
-            catch (System.IO.IOException)
+            catch (Exception ex)
             {
-                // Stop the connection if an exception is thrown due to the client disconnecting
-                _disconnectEvent.Set();
-                return;
+                if (ex is InvalidOperationException || ex is System.IO.IOException)
+                {
+                    // Stop the connection if an exception is thrown due to the client disconnecting
+                    _disconnectEvent.Set();
+                    return;
+                }
+
+                throw;
             }
         }
     }
