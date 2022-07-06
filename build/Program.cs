@@ -29,6 +29,6 @@ public static class Program
     public static int Main(string[] args) =>
         new CakeHost().UseContext<BuildContext>()
                         .UseLifetime<BuildLifetime>()
-                        .InstallTool(new Uri("dotnet:?package=minver-cli&version=4.0.0"))
+                        .InstallTool(new Uri("dotnet:?package=minver-cli&version=4.1.0"))
                         .Run(args);
 }
