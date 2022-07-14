@@ -250,8 +250,8 @@ internal abstract class RadioBase : IDisposable
 
             if (value >= GainLevelsSupported)
             {
-                _logger.LogError("The gain level is outside the available range");
-                return;
+                _logger.LogError($"Gain level {value} is outside the available range. Using level {GainLevelsSupported - 1} instead");
+                value = GainLevelsSupported - 1;
             }
 
             int result = SetGain(value);
