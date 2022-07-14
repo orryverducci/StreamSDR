@@ -207,7 +207,8 @@ internal sealed class RtlTcpServer : IHostedService
                 // Setting gain by value is not supported as this only works for rtl-sdr radios, so instead we assume the given value is within the standard range
                 // of gains available on a rtl-sdr (0 to 49.6dB) and from this we calculate what the nearest gain level would be of the available levels
                 float desiredGain = command.Value / 10f;
-                double levelToUse = Math.Round(_radio.GainLevelsSupported / 49.6f * desiredGain);
+                uint maxLevel = _radio.GainLevelsSupported - 1;
+                double levelToUse = Math.Clamp(Math.Round(maxLevel / 49.6f * desiredGain), 0, maxLevel);
                 _logger.LogWarning($"Client has set the gain by value ({desiredGain}dB) which is not directly supported. Using gain level {levelToUse} instead");
                 _radio.Gain = (uint)levelToUse;
                 break;
