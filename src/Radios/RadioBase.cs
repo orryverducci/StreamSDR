@@ -295,7 +295,7 @@ internal abstract class RadioBase : IDisposable
             {
                 uint gain = Gain;
 
-                _logger.LogDebug($"Resetting to gain to level {gain}");
+                _logger.LogDebug($"Resetting the gain to level {gain}");
 
                 SetGain(gain);
             }
