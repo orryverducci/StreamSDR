@@ -77,7 +77,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
                 .Append("--install-location")
                 .Append("/usr/local/bin")
                 .Append(tempDir.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath);
-            
+
             // Run pkgbuild
             int pkgBuildExitCode = context.StartProcess("pkgbuild", new ProcessSettings
             {
