@@ -59,36 +59,78 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
 
     private void CreateMacPackage(BuildContext context, MinVerVersion version)
     {
-        // Build the arguments for pkgbuild
-        ProcessArgumentBuilder arguments = new ProcessArgumentBuilder()
-            .Append("--root")
-            .Append(context.Settings.ArtifactsFolder!.Combine("macos-universal").FullPath)
-            .Append("--identifier")
-            .Append("io.streamsdr.app")
-            .Append("--version")
-            .Append(version.FileVersion)
-            .Append("--install-location")
-            .Append("/usr/local/bin");
+        // Create a temporary folder
+        DirectoryPath tempDir = context.Directory(System.IO.Path.GetTempPath());
+        tempDir = tempDir.Combine(Guid.NewGuid().ToString());
+        context.EnsureDirectoryExists(tempDir);
 
-        if (context.Settings.InstallerSigningCertificate != null)
+        try
         {
-            arguments = arguments
-                .Append("--sign")
-                .AppendSecret('"' + context.Settings.InstallerSigningCertificate + '"');
+            // Build the arguments for pkgbuild
+            ProcessArgumentBuilder pkgBuildArguments = new ProcessArgumentBuilder()
+                .Append("--root")
+                .Append(context.Settings.ArtifactsFolder!.Combine("macos-universal").FullPath)
+                .Append("--identifier")
+                .Append("io.streamsdr.app.pkg")
+                .Append("--version")
+                .Append(version.FileVersion)
+                .Append("--install-location")
+                .Append("/usr/local/bin")
+                .Append(tempDir.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath);
+            
+            // Run pkgbuild
+            int pkgBuildExitCode = context.StartProcess("pkgbuild", new ProcessSettings
+            {
+                Arguments = pkgBuildArguments
+            });
+
+            // Check the exit code indicates it completed successfully
+            if (pkgBuildExitCode != 0)
+            {
+                throw new Exception("Unable to create installer");
+            }
+
+            // Build the arguments for productbuild
+            ProcessArgumentBuilder productBuildArguments = new ProcessArgumentBuilder()
+                .Append("--distribution")
+                .Append(context.File("../installers/macos/distribution.xml"))
+                .Append("--package-path")
+                .Append(tempDir.FullPath)
+                .Append("--resources")
+                .Append(context.Directory("../installers/macos"))
+                .Append("--identifier")
+                .Append("io.streamsdr.installer")
+                .Append("--version")
+                .Append(version.FileVersion);
+
+            if (context.Settings.InstallerSigningCertificate != null)
+            {
+                productBuildArguments = productBuildArguments
+                    .Append("--sign")
+                    .AppendSecret('"' + context.Settings.InstallerSigningCertificate + '"');
+            }
+
+            productBuildArguments = productBuildArguments.Append(outputPath!.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath);
+
+            // Run productbuild
+            int productBuildExitCode = context.StartProcess("productbuild", new ProcessSettings
+            {
+                Arguments = productBuildArguments
+            });
+
+            // Check the exit code indicates it completed successfully
+            if (productBuildExitCode != 0)
+            {
+                throw new Exception("Unable to create installer");
+            }
         }
-
-        arguments = arguments.Append(outputPath!.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath);
-
-        // Run pkgbuild
-        int exitCode = context.StartProcess("pkgbuild", new ProcessSettings
+        finally
         {
-            Arguments = arguments
-        });
-
-        // Check the exit code indicates it completed successfully
-        if (exitCode != 0)
-        {
-            throw new Exception("Unable to create installer");
+            // Delete the temporary folder
+            context.DeleteDirectory(tempDir, new DeleteDirectorySettings
+            {
+                Recursive = true
+            });
         }
     }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="1">
+    <title>StreamSDR</title>
+    <allowed-os-versions>
+        <os-version min="10.15" />
+    </allowed-os-versions>
+    <background file="background-light.png" mime-type="image/png" scaling="proportional" />
+    <background-darkAqua file="background-dark.png" mime-type="image/png" scaling="proportional" />
+    <license file="license.html" />
+    <conclusion file="conclusion.html" />
+    <options customize="never" hostArchitectures="x86_64,arm64" />
+    <choices-outline>
+        <line choice="streamsdr" />
+    </choices-outline>
+    <choice id="streamsdr" visible="true" title="Install StreamSDR" description="Installs the StreamSDR command line application">
+        <pkg-ref id="io.streamsdr.app.pkg">#streamsdr.pkg</pkg-ref>
+    </choice>
+</installer-gui-script>
