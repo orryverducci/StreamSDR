@@ -101,6 +101,9 @@ internal static class Program
                     case "sdrplay":
                         services.AddSingleton<Radios.RadioBase, Radios.SdrPlay.Radio>();
                         break;
+                    case "dummy":
+                        services.AddSingleton<Radios.RadioBase, Radios.Dummy.Radio>();
+                        break;
                     default:
                         logger.LogWarning("The type of radio has not been specified, assuming rtl-sdr");
                         goto case "rtlsdr";
