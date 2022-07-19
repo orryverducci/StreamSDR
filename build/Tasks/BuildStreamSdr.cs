@@ -29,15 +29,6 @@ public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        // Generate the .NET runtime for the build
-        string runtime = context.Platform switch
-        {
-            Configuration.Platform.Windows => $"win-{context.Settings.Architecture}",
-            Configuration.Platform.MacOS => $"osx-{context.Settings.Architecture}",
-            Configuration.Platform.Linux => $"linux-{context.Settings.Architecture}",
-            _ => throw new Exception("Unable to set runtime")
-        };
-
         // Ensure the artifacts directory exists
         context.EnsureDirectoryExists(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier));
 
@@ -46,7 +37,13 @@ public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
         {
             Configuration = context.Settings.BuildConfiguration,
             OutputDirectory = context.Settings.ArtifactsFolder.Combine(context.BuildIdentifier),
-            Runtime = runtime,
+            Runtime = context.Platform switch
+            {
+                Configuration.Platform.Windows => $"win-{context.Settings.Architecture}",
+                Configuration.Platform.MacOS => $"osx-{context.Settings.Architecture}",
+                Configuration.Platform.Linux => $"linux-{context.Settings.Architecture}",
+                _ => throw new Exception("Unable to set runtime")
+            },
             SelfContained = true
         });
     }

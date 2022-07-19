@@ -66,22 +66,19 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
 
         try
         {
-            // Build the arguments for pkgbuild
-            ProcessArgumentBuilder pkgBuildArguments = new ProcessArgumentBuilder()
-                .Append("--root")
-                .Append(context.Settings.ArtifactsFolder!.Combine("macos-universal").FullPath)
-                .Append("--identifier")
-                .Append("io.streamsdr.app.pkg")
-                .Append("--version")
-                .Append(version.FileVersion)
-                .Append("--install-location")
-                .Append("/usr/local/bin")
-                .Append(tempDir.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath);
-
             // Run pkgbuild
             int pkgBuildExitCode = context.StartProcess("pkgbuild", new ProcessSettings
             {
-                Arguments = pkgBuildArguments
+                Arguments = new ProcessArgumentBuilder()
+                    .Append("--root")
+                    .Append(context.Settings.ArtifactsFolder!.Combine("macos-universal").FullPath)
+                    .Append("--identifier")
+                    .Append("io.streamsdr.app.pkg")
+                    .Append("--version")
+                    .Append(version.FileVersion)
+                    .Append("--install-location")
+                    .Append("/usr/local/bin")
+                    .Append(tempDir.CombineWithFilePath(context.File("streamsdr.pkg")).FullPath)
             });
 
             // Check the exit code indicates it completed successfully
