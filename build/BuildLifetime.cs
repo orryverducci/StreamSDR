@@ -71,7 +71,7 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
         {
             case Configuration.Platform.Windows:
                 context.BuildIdentifier = $"win-{context.Settings.Architecture}";
-                context.InstallerIdentifier = "win-installer";
+                context.InstallerIdentifier = $"win-{context.Settings.Architecture}-installer";
                 break;
             case Configuration.Platform.MacOS:
                 context.BuildIdentifier = $"macos-{context.Settings.Architecture}";
