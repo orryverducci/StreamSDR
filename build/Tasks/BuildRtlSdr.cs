@@ -73,10 +73,10 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
             Generator = "Visual Studio 17 2022",
             Options = new List<string>()
             {
-                { $"-A {cMakeArchitecture}" },
-                { $"-DLIBUSB_LIBRARIES={context.MakeAbsolute(libUsbPath).FullPath}" },
-                { $"-DLIBUSB_INCLUDE_DIRS={context.MakeAbsolute(context.Directory("../contrib/libusb/libusb")).FullPath}" },
-                { "-DPKG_CONFIG_EXECUTABLE=C:\\non\\existent\\app.exe" } // A valid pkg-config install breaks the build, so we point to a non-existent executable
+                $"-A {cMakeArchitecture}",
+                $"-DLIBUSB_LIBRARIES={context.MakeAbsolute(libUsbPath).FullPath}",
+                $"-DLIBUSB_INCLUDE_DIRS={context.MakeAbsolute(context.Directory("../contrib/libusb/libusb")).FullPath}",
+                "-DPKG_CONFIG_EXECUTABLE=C:\\non\\existent\\app.exe" // A valid pkg-config install breaks the build, so we point to a non-existent executable
             },
             OutputPath = "../contrib/rtl-sdr/build",
             Toolset = "v143",

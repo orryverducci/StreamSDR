@@ -55,16 +55,16 @@ public sealed class NotarizeInstallerTask : FrostingTask<BuildContext>
             int exitCode = context.StartProcess("xcrun", new ProcessSettings
             {
                 Arguments = new ProcessArgumentBuilder()
-                .Append("notarytool")
-                .Append("submit")
-                .Append(tempDir.CombineWithFilePath("streamsdr.zip").FullPath)
-                .Append("--apple-id")
-                .AppendSecret('"' + context.Settings.AppleID + '"')
-                .Append("--team-id")
-                .AppendSecret('"' + context.Settings.AppleDeveloperTeam + '"')
-                .Append("--password")
-                .AppendSecret('"' + context.Settings.AppleIDPassword + '"')
-                .Append("--wait")
+                    .Append("notarytool")
+                    .Append("submit")
+                    .Append(tempDir.CombineWithFilePath("streamsdr.zip").FullPath)
+                    .Append("--apple-id")
+                    .AppendSecret('"' + context.Settings.AppleID + '"')
+                    .Append("--team-id")
+                    .AppendSecret('"' + context.Settings.AppleDeveloperTeam + '"')
+                    .Append("--password")
+                    .AppendSecret('"' + context.Settings.AppleIDPassword + '"')
+                    .Append("--wait")
             });
 
             // Check the exit code to ensure the installer was notarized
@@ -77,9 +77,9 @@ public sealed class NotarizeInstallerTask : FrostingTask<BuildContext>
             exitCode = context.StartProcess("xcrun", new ProcessSettings
             {
                 Arguments = new ProcessArgumentBuilder()
-                .Append("stapler")
-                .Append("staple")
-                .Append(installerPath.FullPath)
+                    .Append("stapler")
+                    .Append("staple")
+                    .Append(installerPath.FullPath)
             });
 
             // Check the exit code to ensure the notarization has been stapled to the installer
