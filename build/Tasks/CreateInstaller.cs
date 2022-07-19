@@ -84,7 +84,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
             // Check the exit code indicates it completed successfully
             if (pkgBuildExitCode != 0)
             {
-                throw new Exception("Unable to create installer");
+                throw new Exception("Unable to create app component package");
             }
 
             // Build the arguments for productbuild
