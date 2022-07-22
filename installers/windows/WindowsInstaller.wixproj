@@ -31,6 +31,9 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="background.bmp" />
+    <Content Include="banner.bmp" />
+    <Content Include="license.rtf" />
     <Content Include="PlatformDependentVariables.wxi" />
   </ItemGroup>
   <ItemGroup>

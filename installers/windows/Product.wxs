@@ -9,6 +9,9 @@
         <MediaTemplate EmbedCab="yes" />
 
         <UIRef Id="WixUI_InstallDir" />
+        <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+        <WixVariable Id="WixUIDialogBmp" Value="background.bmp" />
+        <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
 
         <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 
