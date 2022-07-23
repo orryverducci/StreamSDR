@@ -20,11 +20,15 @@
 
         <Feature Id="ProductFeature" Title="StreamSDR">
             <ComponentGroupRef Id="ProductComponents" />
+            <ComponentRef Id="StartMenuShortcuts" />
         </Feature>
 
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="$(var.PlatformProgramFilesFolder)">
                 <Directory Id="INSTALLFOLDER" Name="StreamSDR" />
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="StreamSDR" />
             </Directory>
         </Directory>
 
@@ -39,5 +43,24 @@
                 <File KeyPath="yes" Source="rtlsdr.dll" />
             </Component>
         </ComponentGroup>
+
+        <DirectoryRef Id="ApplicationProgramsFolder">
+            <Component Id="StartMenuShortcuts" Guid="*">
+                <Shortcut Id="RtlSdrShortcut"
+                          Name="StreamSDR (RTL-SDR)"
+                          Description="Server for RTL-SDR software defined radios "
+                          Target="[#streamsdr.exe]"
+                          Arguments="--radio rtlsdr"
+                          WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+                <Shortcut Id="SdrPlayShortcut"
+                          Name="StreamSDR (SDRplay)"
+                          Description="Server for SDRplay software defined radios "
+                          Target="[#streamsdr.exe]"
+                          Arguments="--radio sdrplay"
+                          WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+                <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall" />
+                <RegistryValue Root="HKCU" Key="Software\StreamSDR" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+            </Component>
+        </DirectoryRef>
     </Product>
 </Wix>
