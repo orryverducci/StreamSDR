@@ -32,6 +32,12 @@
             <Component Id="streamsdr.exe" Guid="*">
                 <File KeyPath="yes" Source="streamsdr.exe" />
             </Component>
+            <Component Id="libusb_1.0.dll" Guid="*">
+                <File KeyPath="yes" Source="libusb-1.0.dll" />
+            </Component>
+            <Component Id="rtlsdr.dll" Guid="*">
+                <File KeyPath="yes" Source="rtlsdr.dll" />
+            </Component>
         </ComponentGroup>
     </Product>
 </Wix>
