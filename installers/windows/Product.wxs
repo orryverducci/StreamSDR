@@ -15,6 +15,9 @@
 
         <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 
+        <Icon Id="icon.ico" SourceFile="icon.ico" />
+        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
         <Feature Id="ProductFeature" Title="StreamSDR">
             <ComponentGroupRef Id="ProductComponents" />
         </Feature>

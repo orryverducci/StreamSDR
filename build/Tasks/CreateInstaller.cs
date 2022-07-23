@@ -90,7 +90,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
                 "WixUIExtension"
             },
             OutputFile = outputPath!.CombineWithFilePath("streamsdr.msi"),
-            RawArguments = $"-b \"{context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath}\" -b \"../installers/windows\" -cultures:en-us -spdb"
+            RawArguments = $"-b \"{context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath}\" -b \"../installers/windows\" -b \"../assets\" -cultures:en-us -spdb"
         });
     }
 
