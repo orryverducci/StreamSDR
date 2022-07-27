@@ -24,7 +24,7 @@
         </Feature>
 
         <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="$(var.PlatformProgramFilesFolder)">
+            <Directory Id="ProgramFiles64Folder">
                 <Directory Id="INSTALLFOLDER" Name="StreamSDR" />
             </Directory>
             <Directory Id="ProgramMenuFolder">
