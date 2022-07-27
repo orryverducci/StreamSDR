@@ -2,7 +2,7 @@
 <?include PlatformDependentVariables.wxi?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="*" Name="StreamSDR" Language="2057" Version="$(var.Version)" Manufacturer="Orry Verducci" UpgradeCode="$(var.PlatformUpgradeCode)">
-        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+        <Package InstallerVersion="$(var.InstallerVersion)" Compressed="yes" InstallScope="perMachine" />
 
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed. Setup will now exit." />
         

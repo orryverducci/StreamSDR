@@ -78,7 +78,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
         // Compile the installer
         context.WiXCandle("../installers/windows/Product.wxs", new CandleSettings
         {
-            Architecture = Architecture.X64,
+            ArgumentCustomization = args => args.Append($"-arch {context.Settings.Architecture}"),
             Defines = new Dictionary<string, string>()
             {
                 ["Platform"] = context.Settings.Architecture,
