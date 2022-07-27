@@ -52,6 +52,11 @@ public sealed class BuildContext : FrostingContext
     public FilePath? CMakePath { get; set; }
 
     /// <summary>
+    /// The path to the installation of WiX (only used on the Windows platform).
+    /// </summary>
+    public DirectoryPath? WixPath { get; set; }
+
+    /// <summary>
     /// Initialises a new instance of the <see cref="BuildContext"/> class.
     /// </summary>
     /// <param name="context">The Cake context.</param>

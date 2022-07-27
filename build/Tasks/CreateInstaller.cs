@@ -66,6 +66,12 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
 
     private void CreateWindowsInstaller(BuildContext context, MinVerVersion version)
     {
+        // Check WiX is available
+        if (context.WixPath == null)
+        {
+            throw new Exception("Unable to locate WiX toolset");
+        }
+
         // Set WiX obj directory
         DirectoryPath objDirectory = new DirectoryPath($"../installers/windows/obj/{context.Settings.Architecture}/{context.Settings.BuildConfiguration}");
 
@@ -79,6 +85,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
                 ["Version"] = version.FileVersion
             },
             OutputDirectory = objDirectory,
+            ToolPath = context.WixPath.CombineWithFilePath("bin/candle.exe"),
             Verbose = true
         });
 
@@ -90,6 +97,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
                 "WixUIExtension"
             },
             OutputFile = outputPath!.CombineWithFilePath("streamsdr.msi"),
+            ToolPath = context.WixPath.CombineWithFilePath("bin/light.exe"),
             RawArguments = $"-b \"{context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath}\" -b \"../installers/windows\" -b \"../assets\" -cultures:en-us -spdb"
         });
     }
