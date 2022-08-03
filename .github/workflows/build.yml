@@ -105,14 +105,14 @@ jobs:
       - name: Download Windows x64 app artifact
         uses: actions/download-artifact@v3
         with:
-          name: windows-x64
-          path: artifacts/windows-x64
+          name: win-x64
+          path: artifacts/win-x64
 
       - name: Download Windows ARM64 app artifact
         uses: actions/download-artifact@v3
         with:
-          name: windows-arm64
-          path: artifacts/windows-arm64
+          name: win-arm64
+          path: artifacts/win-arm64
 
       - name: Create x64 installer MSI
         run: "./build.sh --exclusive -t CreateInstaller"
