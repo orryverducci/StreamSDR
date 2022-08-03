@@ -115,10 +115,10 @@ jobs:
           path: artifacts/win-arm64
 
       - name: Create x64 installer MSI
-        run: ".\build.ps1 --exclusive -t CreateInstaller"
+        run: ".\\build.ps1 --exclusive -t CreateInstaller"
 
       - name: Create ARM64 installer MSI
-        run: ".\build.ps1 --exclusive -t CreateInstaller --architecture arm64"
+        run: ".\\build.ps1 --exclusive -t CreateInstaller --architecture arm64"
 
       - name: Upload x64 installer artifact
         uses: actions/upload-artifact@v3
