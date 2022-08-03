@@ -39,6 +39,7 @@
         <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
             <Component Id="streamsdr.exe" Guid="*">
                 <File KeyPath="yes" Source="streamsdr.exe" />
+                <Environment Id="PATH" Name="PATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
             </Component>
             <Component Id="libusb_1.0.dll" Guid="*">
                 <File KeyPath="yes" Source="libusb-1.0.dll" />
