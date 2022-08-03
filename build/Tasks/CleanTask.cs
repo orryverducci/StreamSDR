@@ -38,5 +38,9 @@ public sealed class CleanTask : FrostingTask<BuildContext>
         // Delete the StreamSDR build folders
         context.EnsureDirectoryDoesNotExist("../src/bin");
         context.EnsureDirectoryDoesNotExist("../src/obj");
+
+        // Delete the Windows installer build folders
+        context.EnsureDirectoryDoesNotExist("../installers/windows/bin");
+        context.EnsureDirectoryDoesNotExist("../installers/windows/obj");
     }
 }

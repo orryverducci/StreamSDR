@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+    <?if $(var.Platform) = ARM64 ?>
+        <?define InstallerVersion = "500" ?>
+        <?define PlatformUpgradeCode = "05c2feed-b28b-4cac-a6c0-384674b3ab4c" ?>
+    <?else ?>
+        <?define InstallerVersion = "200" ?>
+        <?define PlatformUpgradeCode = "f8f303d9-2a35-4f8f-975d-4cc08662c682" ?>
+    <?endif ?>
+</Include>

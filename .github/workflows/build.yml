@@ -75,6 +75,65 @@ jobs:
           path: artifacts/${{ matrix.id }}-${{ matrix.architecture }}
           if-no-files-found: error
 
+  windows-installer-build:
+    name: Windows Installer Build
+    if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
+    needs: app-build
+    runs-on: windows-latest
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Download WiX 3.14
+        run: "Invoke-WebRequest -Uri https://wixtoolset.org/downloads/v3.14.0.6526/wix314.exe -OutFile $env:TEMP\\wix314.exe"
+
+      - name: Install WiX 3.14
+        run: "& $env:TEMP\\wix314.exe /install /quiet /norestart"
+
+      - name: Download Windows x64 app artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: windows-x64
+          path: artifacts/windows-x64
+
+      - name: Download Windows ARM64 app artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: windows-arm64
+          path: artifacts/windows-arm64
+
+      - name: Create x64 installer MSI
+        run: "./build.sh --exclusive -t CreateInstaller"
+
+      - name: Create ARM64 installer MSI
+        run: "./build.sh --exclusive -t CreateInstaller --architecture arm64"
+
+      - name: Upload x64 installer artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: win-x64-installer
+          path: artifacts/win-x64-installer
+          if-no-files-found: error
+
+      - name: Upload ARM64 installer artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: win-arm64-installer
+          path: artifacts/win-arm64-installer
+          if-no-files-found: error
+
   macos-installer-build:
     name: macOS Installer Build
     if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'

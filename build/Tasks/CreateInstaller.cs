@@ -15,6 +15,8 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using Cake.Common.Tools.WiX;
 using Cake.MinVer;
 
 namespace StreamSDR.Build.Tasks;
@@ -31,7 +33,9 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
     /// </summary>
     private DirectoryPath? outputPath;
 
-    public override bool ShouldRun(BuildContext context) => context.Platform == Configuration.Platform.MacOS;
+    public override bool ShouldRun(BuildContext context) =>
+        context.Platform == Configuration.Platform.Windows ||
+        context.Platform == Configuration.Platform.MacOS;
 
     public override void Run(BuildContext context)
     {
@@ -51,10 +55,51 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
         // Create the installer for the specified platform
         switch (context.Platform)
         {
+            case Configuration.Platform.Windows:
+                CreateWindowsInstaller(context, version);
+                break;
             case Configuration.Platform.MacOS:
                 CreateMacPackage(context, version);
                 break;
         }
+    }
+
+    private void CreateWindowsInstaller(BuildContext context, MinVerVersion version)
+    {
+        // Check WiX is available
+        if (context.WixPath == null)
+        {
+            throw new Exception("Unable to locate WiX toolset");
+        }
+
+        // Set WiX obj directory
+        DirectoryPath objDirectory = new DirectoryPath($"../installers/windows/obj/{context.Settings.Architecture}/{context.Settings.BuildConfiguration}");
+
+        // Compile the installer
+        context.WiXCandle("../installers/windows/Product.wxs", new CandleSettings
+        {
+            ArgumentCustomization = args => args.Append($"-arch {context.Settings.Architecture}"),
+            Defines = new Dictionary<string, string>()
+            {
+                ["Platform"] = context.Settings.Architecture,
+                ["Version"] = version.FileVersion
+            },
+            OutputDirectory = objDirectory,
+            ToolPath = context.WixPath.CombineWithFilePath("bin/candle.exe"),
+            Verbose = true
+        });
+
+        // Link and bundle the installer in to an MSI
+        context.WiXLight(objDirectory.CombineWithFilePath("Product.wixobj").FullPath, new LightSettings
+        {
+            Extensions = new List<string>
+            {
+                "WixUIExtension"
+            },
+            OutputFile = outputPath!.CombineWithFilePath("streamsdr.msi"),
+            ToolPath = context.WixPath.CombineWithFilePath("bin/light.exe"),
+            RawArguments = $"-b \"{context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath}\" -b \"../installers/windows\" -b \"../assets\" -cultures:en-us -spdb"
+        });
     }
 
     private void CreateMacPackage(BuildContext context, MinVerVersion version)
