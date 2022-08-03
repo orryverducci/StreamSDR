@@ -13,6 +13,10 @@
         <WixVariable Id="WixUIDialogBmp" Value="background.bmp" />
         <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
 
+        <Property Id="INSTALLFOLDER">
+            <RegistrySearch Id="InstallFolderRegSearch" Root="HKCU" Key="SOFTWARE\StreamSDR" Name="InstallationPath" Type="raw" />
+        </Property>
+
         <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 
         <Icon Id="icon.ico" SourceFile="icon.ico" />
@@ -41,6 +45,9 @@
             </Component>
             <Component Id="rtlsdr.dll" Guid="*">
                 <File KeyPath="yes" Source="rtlsdr.dll" />
+            </Component>
+            <Component Id="InstallFolderRegistry">
+                <RegistryValue Root="HKCU" Key="SOFTWARE\StreamSDR" Name="InstallationPath" Type="string" Value="[INSTALLFOLDER]" KeyPath="yes" />
             </Component>
         </ComponentGroup>
 
