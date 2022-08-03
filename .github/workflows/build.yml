@@ -102,6 +102,9 @@ jobs:
       - name: Install WiX 3.14
         run: "& $env:TEMP\\wix314.exe /install /quiet /norestart"
 
+      - name: Update environment variables
+        run: Update-SessionEnvironment
+
       - name: Download Windows x64 app artifact
         uses: actions/download-artifact@v3
         with:
