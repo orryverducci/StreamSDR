@@ -97,10 +97,10 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Download WiX 3.14
-        run: "Invoke-WebRequest -Uri https://wixtoolset.org/downloads/v3.14.0.6526/wix314.exe -OutFile $env:TEMP\wix314.exe"
+        run: "Invoke-WebRequest -Uri https://wixtoolset.org/downloads/v3.14.0.6526/wix314.exe -OutFile $env:TEMP\\wix314.exe"
 
       - name: Install WiX 3.14
-        run: "& $env:TEMP\wix314.exe /install /quiet /norestart"
+        run: "& $env:TEMP\\wix314.exe /install /quiet /norestart"
 
       - name: Download Windows x64 app artifact
         uses: actions/download-artifact@v3
