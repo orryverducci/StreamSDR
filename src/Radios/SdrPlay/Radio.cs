@@ -38,7 +38,7 @@ internal sealed unsafe class Radio : RadioBase
     /// <summary>
     /// The maximum SDRplay API version this has been developed for.
     /// </summary>
-    private const float MaxSdrPlayApiVersion = 3.09f;
+    private const float MaxSdrPlayApiVersion = 3.10f;
 
     /// <summary>
     /// The maximum decimation factor that can be used for sample rates smaller than 2 MHz.
@@ -155,7 +155,7 @@ internal sealed unsafe class Radio : RadioBase
                 return;
             }
 
-            _logger.LogDebug($"Installed SDRplay API version: {version}");
+            _logger.LogDebug($"Installed SDRplay API version: {version.ToString("N2")}");
 
             if (version < MinSdrPlayApiVersion || version > MaxSdrPlayApiVersion)
             {
