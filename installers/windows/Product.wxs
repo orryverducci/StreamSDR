@@ -59,7 +59,7 @@
                           Arguments="--radio sdrplay"
                           WorkingDirectory="APPLICATIONROOTDIRECTORY" />
                 <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall" />
-                <RegistryValue Root="HKCU" Key="Software\StreamSDR" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                <RegistryValue Root="HKCU" Key="SOFTWARE\StreamSDR" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
             </Component>
         </DirectoryRef>
     </Product>
