@@ -103,7 +103,7 @@ jobs:
         run: "& $env:TEMP\\wix314.exe /install /quiet /norestart"
 
       - name: Update environment variables
-        run: "$env:Path = [System.Environment]::GetEnvironmentVariable(\"WIX\",\"Machine\")"
+        run: "$env:WIX = [System.Environment]::GetEnvironmentVariable(\"WIX\",\"Machine\")"
 
       - name: Download Windows x64 app artifact
         uses: actions/download-artifact@v3
