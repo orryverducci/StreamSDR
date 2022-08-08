@@ -86,6 +86,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
             },
             Extensions = new List<string>
             {
+                "WixFirewallExtension",
                 "WixUIExtension"
             },
             OutputDirectory = objDirectory,
@@ -98,6 +99,7 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
         {
             Extensions = new List<string>
             {
+                "WixFirewallExtension",
                 "WixUIExtension"
             },
             OutputFile = outputPath!.CombineWithFilePath("streamsdr.msi"),
