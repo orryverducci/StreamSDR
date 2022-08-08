@@ -84,6 +84,10 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
                 ["Platform"] = context.Settings.Architecture,
                 ["Version"] = version.FileVersion
             },
+            Extensions = new List<string>
+            {
+                "WixUIExtension"
+            },
             OutputDirectory = objDirectory,
             ToolPath = context.WixPath.CombineWithFilePath("bin/candle.exe"),
             Verbose = true
