@@ -97,13 +97,13 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Download WiX 3.14
-        run: "Invoke-WebRequest -Uri https://wixtoolset.org/downloads/v3.14.0.6526/wix314.exe -OutFile $env:TEMP\\wix314.exe"
+        run: "Invoke-WebRequest -Uri https://wixtoolset.org/downloads/v3.14.0.6526/wix314-binaries.zip -OutFile $env:TEMP\\wix314-binaries.zip"
 
-      - name: Install WiX 3.14
-        run: "& $env:TEMP\\wix314.exe /install /quiet /norestart"
+      - name: Extract WiX 3.14
+        run: "Expand-Archive -Path $env:TEMP\\wix314-binaries.zip -DestinationPath $env:TEMP\\wix314-binaries"
 
-      - name: Update environment variables
-        run: "$env:WIX = [System.Environment]::GetEnvironmentVariable(\"WIX\",\"Machine\")"
+      - name: Update WiX environment variable
+        run: "Add-Content -Path $env:GITHUB_ENV -Value \"WIX=$env:TEMP\\wix314-binaries\""
 
       - name: Download Windows x64 app artifact
         uses: actions/download-artifact@v3
