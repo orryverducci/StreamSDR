@@ -101,6 +101,11 @@ internal sealed unsafe class Radio : RadioBase
     /// The current gain level.
     /// </summary>
     private uint _currentGainLevel;
+
+    /// <summary>
+    /// If events from the radio should be ignored.
+    /// </summary>
+    private bool _ignoreEvents;
     #endregion
 
     #region Constructor, finaliser and lifecycle methods
@@ -369,6 +374,10 @@ internal sealed unsafe class Radio : RadioBase
         {
             return;
         }
+
+        // Start ignoring events, required to work around the API erroneously raising
+        // overload events when the radio is being stopped.
+        _ignoreEvents = true;
 
         // Uninitialise the device
         Interop.Uninit(_device.Dev);
@@ -740,6 +749,11 @@ internal sealed unsafe class Radio : RadioBase
     /// <param name="cbContext">The user specific context passed to the callback.</param>
     private void ProcessEvents(Event eventId, TunerSelect tuner, EventParams* parameters, IntPtr cbContext)
     {
+        if (_ignoreEvents)
+        {
+            return;
+        }
+
         _logger.LogDebug($"Event received: {eventId}");
 
         switch (eventId)
