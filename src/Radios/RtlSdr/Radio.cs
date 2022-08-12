@@ -98,6 +98,7 @@ internal sealed class Radio : RadioBase
             if (deviceCount < 1)
             {
                 _logger.LogCritical("No rtl-sdr devices could be found");
+                Environment.ExitCode = (int)ExitCodes.NoDevicesFound;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -115,6 +116,7 @@ internal sealed class Radio : RadioBase
                 if (deviceId < 0)
                 {
                     _logger.LogCritical($"Could not find a rtl-sdr device with the serial {serial}");
+                    Environment.ExitCode = (int)ExitCodes.DeviceNotFound;
                     _applicationLifetime.StopApplication();
                     return;
                 }
@@ -130,6 +132,7 @@ internal sealed class Radio : RadioBase
             if (deviceOpenResult != 0)
             {
                 _logger.LogCritical($"The rtl-sdr device could not be opened - error {deviceOpenResult}");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -184,11 +187,13 @@ internal sealed class Radio : RadioBase
         catch (DllNotFoundException)
         {
             _logger.LogCritical("Unable to find the rtlsdr library");
+            Environment.ExitCode = (int)ExitCodes.UnableToStart;
             _applicationLifetime.StopApplication();
         }
         catch (BadImageFormatException)
         {
             _logger.LogCritical("The rtlsdr library or one of its dependencies has been built for the wrong system architecture");
+            Environment.ExitCode = (int)ExitCodes.UnableToStart;
             _applicationLifetime.StopApplication();
         }
     }

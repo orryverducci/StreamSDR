@@ -140,6 +140,7 @@ internal sealed unsafe class Radio : RadioBase
             if (apiOpenResult != ApiError.Success)
             {
                 _logger.LogCritical($"Unable to open the SDRplay API - error {apiOpenResult}");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -151,6 +152,7 @@ internal sealed unsafe class Radio : RadioBase
             if (apiVersionCheck != ApiError.Success)
             {
                 _logger.LogCritical($"Unable to check the SDRplay API version - error {apiVersionCheck}");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -177,6 +179,7 @@ internal sealed unsafe class Radio : RadioBase
             if (apiLockResult != ApiError.Success)
             {
                 _logger.LogCritical($"Unable to lock the SDRplay API - error {apiLockResult}");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -189,6 +192,7 @@ internal sealed unsafe class Radio : RadioBase
             if (getDevicesResult != ApiError.Success)
             {
                 _logger.LogCritical($"Unable to retrieve the list of SDRplay devices - error {getDevicesResult}");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -199,6 +203,7 @@ internal sealed unsafe class Radio : RadioBase
             if (numberOfDevices == 0 || devices == null || devices.Length == 0)
             {
                 _logger.LogCritical("No SDRplay devices could be found");
+                Environment.ExitCode = (int)ExitCodes.NoDevicesFound;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -216,6 +221,7 @@ internal sealed unsafe class Radio : RadioBase
                 if (deviceId < 0)
                 {
                     _logger.LogCritical($"Could not find a SDRplay device with the serial {serial}");
+                    Environment.ExitCode = (int)ExitCodes.DeviceNotFound;
                     _applicationLifetime.StopApplication();
                     return;
                 }
@@ -230,6 +236,7 @@ internal sealed unsafe class Radio : RadioBase
             if (device.Tuner == TunerSelect.Neither)
             {
                 _logger.LogCritical("No tuners are available on the SDRplay device");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -251,6 +258,7 @@ internal sealed unsafe class Radio : RadioBase
             if (selectDeviceResult != ApiError.Success)
             {
                 _logger.LogCritical($"Unable to select the device - error {selectDeviceResult}");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -281,6 +289,7 @@ internal sealed unsafe class Radio : RadioBase
             if (deviceParamsResult != ApiError.Success)
             {
                 _logger.LogCritical($"Unable to get the device parameters - error {deviceParamsResult}");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -319,6 +328,7 @@ internal sealed unsafe class Radio : RadioBase
             if (initResult != ApiError.Success)
             {
                 _logger.LogCritical($"Unable to initialise the device - error {initResult}");
+                Environment.ExitCode = (int)ExitCodes.UnableToStart;
                 _applicationLifetime.StopApplication();
                 return;
             }
@@ -330,11 +340,13 @@ internal sealed unsafe class Radio : RadioBase
         catch (DllNotFoundException)
         {
             _logger.LogCritical("Unable to find the SDRplay API library");
+            Environment.ExitCode = (int)ExitCodes.UnableToStart;
             _applicationLifetime.StopApplication();
         }
         catch (BadImageFormatException)
         {
             _logger.LogCritical("The SDRplay API library or one of its dependencies has been built for the wrong system architecture");
+            Environment.ExitCode = (int)ExitCodes.UnableToStart;
             _applicationLifetime.StopApplication();
         }
         finally
@@ -748,6 +760,7 @@ internal sealed unsafe class Radio : RadioBase
 
             case Event.DeviceRemoved:
                 _logger.LogCritical("The SDRplay device has been removed from the system");
+                Environment.ExitCode = (int)ExitCodes.DeviceRemoved;
                 _applicationLifetime.StopApplication();
                 break;
         }
