@@ -6,8 +6,13 @@ name: CodeQL Analysis
 
 on:
   push:
+    paths:
+      - '.github/workflows/build.yml'
+      - 'build/**'
+      - 'src/**'
   pull_request:
     paths:
+      - '.github/workflows/build.yml'
       - 'build/**'
       - 'src/**'
 
