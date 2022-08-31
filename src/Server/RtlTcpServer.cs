@@ -132,7 +132,7 @@ internal sealed class RtlTcpServer : IHostedService
         _listener?.Stop();
 
         // Wait until the listener thread stops
-        await Task.Run(() => _listenerThread.Join(), cancellationToken);
+        _listenerThread.Join();
 
         // Stop the radio
         _radio.Stop();
