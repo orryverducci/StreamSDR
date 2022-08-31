@@ -13,6 +13,13 @@
             "environmentVariables": {
                 "DOTNET_ENVIRONMENT": "Development"
             }
+        },
+        "StreamSDR (Dummy Device)": {
+            "commandName": "Project",
+            "commandLineArgs": "--radio dummy",
+            "environmentVariables": {
+                "DOTNET_ENVIRONMENT": "Development"
+            }
         }
     }
 }
