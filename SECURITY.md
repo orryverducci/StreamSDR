@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-If you’ve found or suspect a secuirty vulnerability in this application, please let us know so we can address and fix it.
+If you’ve found or suspect a security vulnerability in this application, please let us know so we can address and fix it.
 
 Please report any vulnerabilities you discover in the application to <orry@orryverducci.co.uk>, including:
 
