@@ -168,14 +168,17 @@ internal sealed class RtlTcpConnection : IDisposable
 
             // Dispose of the queue of sample buffers
             _buffers.Dispose();
-
-            // Wait for the communication threads to stop
-            _dataTxThread.Join();
-            _commandRxThread.Join();
         }
 
         // Dispose the tcpClient and all its resources
         _tcpClient.Dispose();
+
+        // Wait for the communication threads to stop if being disposed by the managed runtime
+        if (disposing)
+        {
+            _dataTxThread.Join();
+            _commandRxThread.Join();
+        }
 
         // Set that dispose has run
         _disposed = true;
