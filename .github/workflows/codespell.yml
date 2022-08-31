@@ -22,4 +22,4 @@ jobs:
         uses: codespell-project/codespell-problem-matcher@v1
 
       - name: Run codespell
-        run: codespell --skip="*.rtf" --ignore-words-list=recall
+        run: codespell --skip="*.rtf" --ignore-words-list=recal
