@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+    <defs>
+        <style>
+            .box, .logo {
+                filter: url(#shadow);
+            }
+
+            .box {
+                fill: url(#box-gradient);
+            }
+
+            .radio {
+                fill: url(#logo-gradient);
+            }
+
+            .radio-waves {
+                fill: #ffd23d;
+            }
+        </style>
+        <linearGradient id="box-gradient" x1="481.77" y1="30.23" x2="30.23" y2="481.77" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#faad14" />
+            <stop offset="1" stop-color="#bf330c" />
+        </linearGradient>
+        <linearGradient id="logo-gradient" x1="256" y1="162.62" x2="256" y2="430.17" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fafafa" />
+            <stop offset="1" stop-color="#feffe6" />
+        </linearGradient>
+        <filter id="shadow" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="0.6" />
+			<feOffset dx="0" dy="0.5" />
+            <feComponentTransfer result="layer1">
+                <feFuncA type="linear" slope="0.36" />
+            </feComponentTransfer>
+            <feGaussianBlur in="SourceAlpha" stdDeviation="1.8" />
+			<feOffset dx="0" dy="1.6" />
+            <feComponentTransfer result="layer2">
+                <feFuncA type="linear" slope="0.36" />
+            </feComponentTransfer>
+            <feGaussianBlur in="SourceAlpha" stdDeviation="4.5" />
+			<feOffset dx="0" dy="4" />
+            <feComponentTransfer result="layer3">
+                <feFuncA type="linear" slope="0.36" />
+            </feComponentTransfer>
+            <feGaussianBlur in="SourceAlpha" stdDeviation="11" />
+			<feOffset dx="0" dy="9.8" />
+            <feComponentTransfer result="layer4">
+                <feFuncA type="linear" slope="0.36" />
+            </feComponentTransfer>
+			<feMerge>
+				<feMergeNode in="layer1" />
+                <feMergeNode in="layer2" />
+                <feMergeNode in="layer3" />
+                <feMergeNode in="layer4" />
+				<feMergeNode in="SourceGraphic" />
+			</feMerge>
+        </filter>
+    </defs>
+    <g id="Icon">
+        <rect class="box" x="25" y="25" width="462" height="462" rx="17.87" />
+        <g class="logo">
+            <path class="radio" d="M311.05,162.62A15,15,0,0,0,296,177.68v105H90.06A15,15,0,0,0,75,297.74V415.1a15.05,15.05,0,0,0,15.06,15.07H421.94A15.05,15.05,0,0,0,437,415.1V297.74a15,15,0,0,0-15.06-15.06H326.11v-105a15,15,0,0,0-15.06-15.06ZM105.13,312.8H406.87V400H105.13Zm40.62,25.85a17.78,17.78,0,1,0,17.78,17.78A17.77,17.77,0,0,0,145.75,338.65Zm57.76,0a17.78,17.78,0,1,0,17.78,17.78A17.78,17.78,0,0,0,203.51,338.65Zm57.75,0A17.78,17.78,0,1,0,279,356.43,17.77,17.77,0,0,0,261.26,338.65Z" />
+            <path class="radio-waves" d="M237.87,81.83a15,15,0,0,0-10.14,3.81c-25.41,22.64-39.42,52.89-39.42,85.16s14,62.51,39.39,85.14a15.06,15.06,0,1,0,20-22.48c-18.89-16.84-29.3-39.1-29.3-62.66s10.41-45.83,29.33-62.65a15.07,15.07,0,0,0-9.9-26.32Zm146.4,0a15.05,15.05,0,0,0-9.88,26.3c18.89,16.83,29.3,39.1,29.3,62.66s-10.38,45.82-29.3,62.66a15.06,15.06,0,1,0,20,22.48c25.41-22.63,39.39-52.88,39.39-85.14s-14-62.52-39.39-85.16a15.06,15.06,0,0,0-10.16-3.8ZM272,111.12a15,15,0,0,0-10.14,3.82c-16.66,14.81-25.8,34.66-25.8,55.86s9.14,41,25.77,55.82a15.05,15.05,0,1,0,20-22.47c-10.1-9-15.68-20.87-15.68-33.35s5.58-24.35,15.71-33.39a15.06,15.06,0,0,0-9.9-26.29Zm78.1,0a15.05,15.05,0,0,0-9.89,26.29c10.12,9,15.68,20.9,15.68,33.39s-5.56,24.32-15.68,33.35a15.05,15.05,0,1,0,20,22.47C376.9,211.81,386,192,386,170.8s-9.14-41.05-25.78-55.86a15,15,0,0,0-10.14-3.82Z" />
+        </g>
+    </g>
+</svg>
