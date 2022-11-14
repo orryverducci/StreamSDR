@@ -166,7 +166,7 @@ internal sealed unsafe class Radio : RadioBase
 
             if (version < MinSdrPlayApiVersion || version > MaxSdrPlayApiVersion)
             {
-                _logger.LogWarning($"The installed SDRplay API is a different version to the one this application is designed for ({MinSdrPlayApiVersion} to {MaxSdrPlayApiVersion}), which may result in compatibility issues");
+                _logger.LogWarning($"The installed SDRplay API is a different version to the one this application is designed for ({MinSdrPlayApiVersion.ToString("F2")} to {MaxSdrPlayApiVersion.ToString("F2")}), which may result in compatibility issues");
             }
 
             // Enable debug features if debug mode is enabled
