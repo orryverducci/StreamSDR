@@ -105,7 +105,7 @@ internal sealed class Radio : RadioBase
 
             // Find the ID of the specified device, or use the first one if no device is specified
             int deviceId = 0;
-            string serial = _config.GetValue<string>("serial");
+            string? serial = _config.GetValue<string>("serial");
 
             if (serial != null)
             {
