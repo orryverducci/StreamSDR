@@ -31,7 +31,7 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
     /// Setup method executed before the build. Sets the build configuration and locates the required tools.
     /// </summary>
     /// <param name="context">The build context.</param>
-    public override void Setup(BuildContext context)
+    public override void Setup(BuildContext context, ISetupContext info)
     {
         // Sets the build settings from the arguments that have been provided
         foreach (PropertyInfo setting in context.Settings.GetType().GetProperties())
