@@ -44,8 +44,8 @@ jobs:
           languages: csharp
           queries: +security-extended
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+      - name: Build StreamSDR
+        run: "dotnet build src --configuration Release"
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
