@@ -220,6 +220,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
