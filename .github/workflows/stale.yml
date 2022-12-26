@@ -17,7 +17,7 @@ jobs:
       issues: write
 
     steps:
-      - uses: actions/stale@v6
+      - uses: actions/stale@v7
         with:
           days-before-close: 14
           exempt-issue-labels: confirmed,enhancement
