@@ -43,9 +43,9 @@ internal static class Program
     {
         Console.Title = "StreamSDR";
 
-        AnsiConsole.Write(new FigletText("StreamSDR").LeftAligned().Color(Color.DeepSkyBlue1));
+        AnsiConsole.Write(new FigletText("StreamSDR").LeftJustified().Color(Color.DeepSkyBlue1));
         string version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unavailable";
-        AnsiConsole.Write(new Rule($"[DeepSkyBlue1]Version {version}[/]").LeftAligned());
+        AnsiConsole.Write(new Rule($"[DeepSkyBlue1]Version {version}[/]").LeftJustified());
         AnsiConsole.WriteLine();
 
         CreateHostBuilder(args).Build().Run();
