@@ -15,6 +15,7 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Runtime.CompilerServices;
 using StreamSDR.Radios.SdrPlay.Hardware;
 
 namespace StreamSDR.Radios.SdrPlay;
@@ -22,7 +23,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// Provides access to the native methods provided by the SDRplay API shared library.
 /// </summary>
-internal sealed class Interop
+internal sealed partial class Interop
 {
     #region Constants
     /// <summary>
@@ -67,23 +68,26 @@ internal sealed class Interop
     /// Opens the SDRplay API for use
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_Open")]
-    public static extern ApiError Open();
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_Open")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError Open();
 
     /// <summary>
     /// Closes the SDRplay API.
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_Close")]
-    public static extern ApiError Close();
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_Close")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError Close();
 
     /// <summary>
     /// Checks the API version used by the application matches the API version installed on the system.
     /// </summary>
     /// <param name="apiVer">The version of the API desired.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_ApiVersion")]
-    public static extern ApiError ApiVersion(ref float apiVer);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_ApiVersion")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError ApiVersion(ref float apiVer);
 
     /// <summary>
     /// Enables debug output from the API.
@@ -91,30 +95,34 @@ internal sealed class Interop
     /// <param name="dev">Pointer to the current SDRplay device, if one has been selected.</param>
     /// <param name="dbgLvl">The desired debug level.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_DebugEnable")]
-    public static extern ApiError DebugEnable(IntPtr dev, DebugLevel dbgLvl);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_DebugEnable")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError DebugEnable(IntPtr dev, DebugLevel dbgLvl);
 
     /// <summary>
     /// Debug method which disables the API heartbeat. Allows the debugger to step through the code without the API theads timing out.
     /// Must be called before <see cref="SelectDevice"/>.
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_DisableHeartbeat")]
-    public static extern ApiError DisableHeartbeat();
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_DisableHeartbeat")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError DisableHeartbeat();
 
     /// <summary>
     /// Locks the SDRplay API so that no other application can use it.
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_LockDeviceApi")]
-    public static extern ApiError LockDeviceApi();
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_LockDeviceApi")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError LockDeviceApi();
 
     /// <summary>
     /// Unlocks the SDRplay API, allowing other applications to use it.
     /// </summary>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_UnlockDeviceApi")]
-    public static extern ApiError UnlockDeviceApi();
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_UnlockDeviceApi")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError UnlockDeviceApi();
 
     /// <summary>
     /// Gets a list of the available devices, up to the maximum number defined by the <paramref name="maxDevs"/> parameter.
@@ -123,8 +131,9 @@ internal sealed class Interop
     /// <param name="numDevs">Returns the number of devices available.</param>
     /// <param name="maxDevs">The maximum number of devices that can be returned.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_GetDevices")]
-    public static extern ApiError GetDevicesNative(IntPtr devices, out uint numDevs, uint maxDevs);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_GetDevices")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError GetDevicesNative(IntPtr devices, out uint numDevs, uint maxDevs);
 
     /// <summary>
     /// Gets a list of the available devices, up to the maximum number defined by the <paramref name="maxDevices"/> parameter.
@@ -175,8 +184,9 @@ internal sealed class Interop
     /// </summary>
     /// <param name="device">A pointer to the <see cref="Device"/> to be used, as returned by <see cref="GetDevices"/>.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_SelectDevice")]
-    public static extern ApiError SelectDeviceNative(IntPtr device);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_SelectDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError SelectDeviceNative(IntPtr device);
 
     /// <summary>
     /// Selects a device for use by the application.
@@ -209,8 +219,9 @@ internal sealed class Interop
     /// </summary>
     /// <param name="device">A pointer to the <see cref="Device"/> to be released, as returned by <see cref="GetDevices"/>.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_ReleaseDevice")]
-    public static extern ApiError ReleaseDeviceNative(IntPtr device);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_ReleaseDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError ReleaseDeviceNative(IntPtr device);
 
     /// <summary>
     /// Releases a device that was selected using <see cref="SelectDevice"/> so that it can be used by other application.
@@ -241,8 +252,9 @@ internal sealed class Interop
     /// <param name="dev">The device handle.</param>
     /// <param name="deviceParams">A pointer to the device parameters.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_GetDeviceParams")]
-    public static unsafe extern ApiError GetDeviceParams(IntPtr dev, out Parameters.DeviceParams* deviceParams);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_GetDeviceParams")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static unsafe partial ApiError GetDeviceParams(IntPtr dev, out Parameters.DeviceParams* deviceParams);
 
     /// <summary>
     /// Initialises the device and starts reading samples from the device.
@@ -251,8 +263,9 @@ internal sealed class Interop
     /// <param name="callbackFns">A struct of callback functions to be called when samples have been received or events have occurred.</param>
     /// <param name="cbContext">A user specific context to pass to the callback function.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_Init")]
-    public static extern ApiError InitNative(IntPtr dev, IntPtr callbackFns, IntPtr cbContext);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_Init")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError InitNative(IntPtr dev, IntPtr callbackFns, IntPtr cbContext);
 
     /// <summary>
     /// Initialises the device and starts reading samples from the device.
@@ -284,8 +297,9 @@ internal sealed class Interop
     /// </summary>
     /// <param name="dev">The device handle.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_Uninit")]
-    public static extern ApiError Uninit(IntPtr dev);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_Uninit")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError Uninit(IntPtr dev);
 
     /// <summary>
     /// Indicates to the API that parameters have changed and should be applied.
@@ -295,8 +309,9 @@ internal sealed class Interop
     /// <param name="reasonForUpdate">The reason for the update as specified in the <see cref="ReasonForUpdate"/> enum.</param>
     /// <param name="reasonForUpdateExt1">The reason for the update as specified in the <see cref="ReasonForUpdateExtension1"/> enum.</param>
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
-    [DllImport(LibSdrPlayApi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "sdrplay_api_Update")]
-    public static extern ApiError Update(IntPtr dev, TunerSelect tuner, ReasonForUpdate reasonForUpdate, ReasonForUpdateExtension1 reasonForUpdateExt1);
+    [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_Update")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    public static partial ApiError Update(IntPtr dev, TunerSelect tuner, ReasonForUpdate reasonForUpdate, ReasonForUpdateExtension1 reasonForUpdateExt1);
     #endregion
 
     #region Windows Interop
@@ -305,15 +320,16 @@ internal sealed class Interop
     /// </summary>
     /// <param name="directoryFlags">The directories to search.</param>
     /// <returns>A non-zero value if successful, or 0 if there was an error.</returns>
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern bool SetDefaultDllDirectories(uint directoryFlags);
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool SetDefaultDllDirectories(uint directoryFlags);
 
     /// <summary>
     /// Adds a directory to the process DLL search path.
     /// </summary>
     /// <param name="newDirectory">An absolute path to the directory to add to the search path.</param>
     /// <returns>An an opaque pointer that can be passed to RemoveDllDirectory if successful, or 0 if there was an error.</returns>
-    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-    public static extern int AddDllDirectory(string newDirectory);
+    [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+    public static partial int AddDllDirectory(string newDirectory);
     #endregion
 }
