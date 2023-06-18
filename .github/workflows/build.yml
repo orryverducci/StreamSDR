@@ -19,6 +19,12 @@ on:
 jobs:
   app-build:
     name: Application Build
+    runs-on: ${{ matrix.os }}
+    
+    permissions:
+      actions: read
+      contents: write
+
     strategy:
       fail-fast: false
       matrix:
@@ -38,11 +44,6 @@ jobs:
             architecture: arm
             id: linux
             script: ./build.sh
-    runs-on: ${{ matrix.os }}
-
-    permissions:
-      actions: read
-      contents: write
 
     steps:
       - name: Checkout repository
