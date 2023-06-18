@@ -4,7 +4,7 @@
 
 If you’ve found or suspect a security vulnerability in this application, please let us know so we can address and fix it.
 
-Please report any vulnerabilities you discover in the application to [online vulnerability reporting form](https://github.com/orryverducci/StreamSDR/security/advisories/new), including:
+Please report any vulnerabilities you discover in the application via the [online vulnerability reporting form](https://github.com/orryverducci/StreamSDR/security/advisories/new), including:
 
 - a brief description of the vulnerability
 - any information in how the vulnerability can be exploited
