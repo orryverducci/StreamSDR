@@ -10,11 +10,15 @@ on:
       - '.github/workflows/build.yml'
       - 'build/**'
       - 'src/**'
+      - 'Dockerfile'
+      - 'build.sh'
   pull_request:
     paths:
       - '.github/workflows/build.yml'
       - 'build/**'
       - 'src/**'
+      - 'Dockerfile'
+      - 'build.sh'
 
 jobs:
   app-build:
