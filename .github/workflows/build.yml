@@ -9,6 +9,7 @@ on:
     paths:
       - '.github/workflows/build.yml'
       - 'build/**'
+      - 'contrib/**'
       - 'src/**'
       - 'Dockerfile'
       - 'build.sh'
@@ -16,6 +17,7 @@ on:
     paths:
       - '.github/workflows/build.yml'
       - 'build/**'
+      - 'contrib/**'
       - 'src/**'
       - 'Dockerfile'
       - 'build.sh'
