@@ -40,7 +40,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: csharp
           queries: +security-extended
@@ -49,4 +49,4 @@ jobs:
         run: "dotnet build src --configuration Release"
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
