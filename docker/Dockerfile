@@ -45,9 +45,9 @@ LABEL org.opencontainers.image.licenses="GPL-3.0-only"
 
 WORKDIR /app
 
-COPY --chmod=0755 ./docker/scripts /app/scripts
+COPY --chmod=0755 ./docker/setup-scripts /tmp/scripts
 
-RUN /app/scripts/setup.sh && rm -r /app/scripts
+RUN /tmp/scripts/setup.sh && rm -rf /tmp/*
 
 USER appuser
 
