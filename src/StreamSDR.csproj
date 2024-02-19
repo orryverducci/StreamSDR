@@ -4,9 +4,6 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>streamsdr</AssemblyName>
-    <AssemblyTitle>StreamSDR</AssemblyTitle>
-    <Product>StreamSDR</Product>
-    <ApplicationIcon>../assets/icon.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <MinVerTagPrefix>v</MinVerTagPrefix>
@@ -18,6 +15,12 @@
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <DebugType>None</DebugType>
     <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(RuntimeIdentifier.StartsWith('win-'))">
+    <AssemblyTitle>StreamSDR</AssemblyTitle>
+    <Product>StreamSDR</Product>
+    <ApplicationIcon>../assets/icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(RuntimeIdentifier.StartsWith('osx-'))">
