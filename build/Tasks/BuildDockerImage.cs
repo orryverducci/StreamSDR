@@ -100,6 +100,7 @@ public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
             context.DockerBuildXBuild(new DockerBuildXBuildSettings
             {
                 BuildArg = new string[] { $"version={version.Version}" },
+                File = "../docker/Dockerfile",
                 Label = labels,
                 Platform = new string[] { "linux/amd64", "linux/arm/v7", "linux/arm64/v8" },
                 Pull = true,
@@ -112,6 +113,7 @@ public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
             context.DockerBuild(new DockerImageBuildSettings
             {
                 BuildArg = new string[] { $"version={version.Version}" },
+                File = "../docker/Dockerfile",
                 Label = labels,
                 Pull = true,
                 Tag = tags
