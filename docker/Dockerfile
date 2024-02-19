@@ -26,9 +26,9 @@ ARG version
 ENV MINVERVERSIONOVERRIDE=${version}
 
 COPY ./src ./src
+COPY --chmod=0755 ./docker/build-scripts ./scripts
 
-# Publish the app without the app host, which is not required by the runtime docker image
-RUN dotnet publish "src/StreamSDR.csproj" /p:UseAppHost=false /p:PublishSingleFile=false -c Release -o /build/publish
+RUN /build/scripts/build.sh
 
 #############
 ## APP IMAGE
