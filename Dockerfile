@@ -39,7 +39,7 @@ FROM mcr.microsoft.com/dotnet/runtime:8.0-bookworm-slim AS app
 
 LABEL org.opencontainers.image.title="StreamSDR"
 LABEL org.opencontainers.image.description="Server for software defined radios"
-LABEL org.opencontainers.image.url="https://github.com/orryverducci/StreamSDR"
+LABEL org.opencontainers.image.url="https://streamsdr.io/"
 LABEL org.opencontainers.image.source="https://github.com/orryverducci/StreamSDR"
 LABEL org.opencontainers.image.vendor="Orry Verducci"
 LABEL org.opencontainers.image.licenses="GPL-3.0-only"
