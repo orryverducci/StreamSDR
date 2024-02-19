@@ -46,10 +46,10 @@ LABEL org.opencontainers.image.licenses="GPL-3.0-only"
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends librtlsdr0 && rm -rf /var/lib/apt/lists/*
+COPY --chmod=0755 ./docker/scripts /app/scripts
 
-# Creates a non-root user with an explicit UID and adds permission to access the /app folder
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+RUN /app/scripts/setup.sh && rm -r /app/scripts
+
 USER appuser
 
 COPY --from=build /app/publish .
