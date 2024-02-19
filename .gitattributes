@@ -8,6 +8,7 @@
 *.sln text eol=crlf
 *.md text
 *.json text
+*.sh text eol=lf
 .gitattributes text
 .gitignore text
 .gitmodules text eol=lf
