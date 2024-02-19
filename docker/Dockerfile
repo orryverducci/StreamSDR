@@ -19,7 +19,7 @@
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim-amd64 AS build
 
-WORKDIR /app
+WORKDIR /build
 
 ARG version
 
@@ -28,7 +28,7 @@ ENV MINVERVERSIONOVERRIDE=${version}
 COPY ./src ./src
 
 # Publish the app without the app host, which is not required by the runtime docker image
-RUN dotnet publish "src/StreamSDR.csproj" /p:UseAppHost=false /p:PublishSingleFile=false -c Release -o /app/publish
+RUN dotnet publish "src/StreamSDR.csproj" /p:UseAppHost=false /p:PublishSingleFile=false -c Release -o /build/publish
 
 #############
 ## APP IMAGE
@@ -51,7 +51,7 @@ RUN /tmp/scripts/setup.sh && rm -rf /tmp/*
 
 USER appuser
 
-COPY --from=build /app/publish .
+COPY --from=build /build/publish .
 
 EXPOSE 1234
 
