@@ -4,7 +4,7 @@
 
 apt-get update
 
-# Instal dependencies
+# Install dependencies
 
 sh install-dependencies-rtlsdr.sh
 
