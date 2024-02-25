@@ -31,6 +31,7 @@ internal static class HardwareVersionExtension
     {
         HardwareVersion.Rsp1 => "RSP1",
         HardwareVersion.Rsp1A => "RSP1A",
+        HardwareVersion.Rsp1B => "RSP1B",
         HardwareVersion.Rsp2 => "RSP2",
         HardwareVersion.RspDuo => "RSPduo",
         HardwareVersion.RspDx => "RSPdx",

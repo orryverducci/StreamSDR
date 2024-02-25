@@ -38,7 +38,7 @@ internal sealed unsafe class Radio : RadioBase
     /// <summary>
     /// The maximum SDRplay API version this has been developed for.
     /// </summary>
-    private const float MaxSdrPlayApiVersion = 3.11f;
+    private const float MaxSdrPlayApiVersion = 3.14f;
 
     /// <summary>
     /// The maximum decimation factor that can be used for sample rates smaller than 2 MHz.
@@ -279,6 +279,7 @@ internal sealed unsafe class Radio : RadioBase
             _gainLevels = device.HwVer switch
             {
                 HardwareVersion.Rsp1A => new Rsp1a.GainTables(),
+                HardwareVersion.Rsp1B => new Rsp1a.GainTables(),
                 HardwareVersion.Rsp2 => new Rsp2.GainTables(),
                 HardwareVersion.RspDuo => new RspDuo.GainTables(),
                 HardwareVersion.RspDx => new RspDx.GainTables(),
@@ -657,6 +658,7 @@ internal sealed unsafe class Radio : RadioBase
         return _device.HwVer switch
         {
             HardwareVersion.Rsp1A => _deviceParams->RxChannelA->Rsp1aTunerParams.BiasTEnable,
+            HardwareVersion.Rsp1B => _deviceParams->RxChannelA->Rsp1aTunerParams.BiasTEnable,
             HardwareVersion.Rsp2 => _deviceParams->RxChannelA->Rsp2TunerParams.BiasTEnable,
             HardwareVersion.RspDuo => _deviceParams->RxChannelA->RspDuoTunerParams.BiasTEnable,
             HardwareVersion.RspDx => _deviceParams->DevParams->RspDxParams.BiasTEnable,
@@ -678,6 +680,7 @@ internal sealed unsafe class Radio : RadioBase
         switch (_device.HwVer)
         {
             case HardwareVersion.Rsp1A:
+            case HardwareVersion.Rsp1B:
                 _deviceParams->RxChannelA->Rsp1aTunerParams.BiasTEnable = enabled;
                 reasonForUpdate = ReasonForUpdate.Rsp1a_BiasTControl;
                 break;
