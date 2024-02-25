@@ -51,7 +51,9 @@ RUN /tmp/scripts/setup.sh && rm -rf /tmp/*
 
 USER appuser
 
-COPY --from=build /build/publish .
+COPY --from=build /build/s6/output /
+
+COPY --from=build /build/app .
 
 EXPOSE 1234
 
