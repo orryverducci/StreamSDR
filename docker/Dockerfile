@@ -47,15 +47,13 @@ WORKDIR /app
 
 ENV S6_KEEP_ENV=1
 
+COPY --from=build /build/s6/output /
+COPY --from=build /build/app .
 COPY --chmod=0755 ./docker/setup-scripts /tmp/scripts
 
 RUN /tmp/scripts/setup.sh && rm -rf /tmp/*
 
 USER appuser
-
-COPY --from=build /build/s6/output /
-
-COPY --from=build /build/app .
 
 EXPOSE 1234
 
