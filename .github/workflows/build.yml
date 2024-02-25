@@ -11,7 +11,7 @@ on:
       - 'build/**'
       - 'contrib/**'
       - 'src/**'
-      - 'Dockerfile'
+      - 'docker/**'
       - 'build.sh'
   pull_request:
     paths:
@@ -19,7 +19,7 @@ on:
       - 'build/**'
       - 'contrib/**'
       - 'src/**'
-      - 'Dockerfile'
+      - 'docker/**'
       - 'build.sh'
 
 jobs:
