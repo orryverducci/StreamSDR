@@ -27,6 +27,7 @@ ENV MINVERVERSIONOVERRIDE=${version}
 
 COPY ./src ./src
 COPY --chmod=0755 ./docker/build-scripts ./scripts
+COPY ./docker/patches ./patches
 
 RUN /build/scripts/build.sh
 
@@ -48,7 +49,9 @@ WORKDIR /app
 ENV S6_KEEP_ENV=1
 
 COPY --from=build /build/s6/output /
+COPY --from=build /build/sdrplay/installer /tmp/sdrplay
 COPY --from=build /build/app .
+COPY ./docker/services /etc/s6-overlay/s6-rc.d/
 COPY --chmod=0755 ./docker/setup-scripts /tmp/scripts
 
 RUN /tmp/scripts/setup.sh && rm -rf /tmp/*

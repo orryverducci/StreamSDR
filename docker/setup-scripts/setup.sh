@@ -7,6 +7,7 @@ apt-get update
 # Install dependencies
 
 bash /tmp/scripts/install-dependencies-rtlsdr.sh
+bash /tmp/scripts/install-dependencies-sdrplay.sh
 
 # Create a non-root user with an explicit UID and add permission to access the /app folder
 
