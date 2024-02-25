@@ -61,7 +61,7 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
         context.Information($"Output path: {context.MakeAbsolute(context.Settings.ArtifactsFolder)}");
 
         // Check if the architecture being built is supported
-        if (context.Settings.Architecture != "x64" && context.Settings.Architecture != "arm64" && !(context.Settings.Architecture == "arm" && context.Platform == Configuration.Platform.Linux))
+        if (context.Settings.Architecture != "x64" && context.Settings.Architecture != "arm64")
         {
             throw new PlatformNotSupportedException("This architecture is not supported");
         }

@@ -47,10 +47,6 @@ jobs:
           - os: ubuntu-latest
             id: linux
             script: ./build.sh
-          - os: ubuntu-latest
-            architecture: arm
-            id: linux
-            script: ./build.sh
 
     steps:
       - name: Checkout repository
