@@ -45,6 +45,8 @@ LABEL org.opencontainers.image.licenses="GPL-3.0-only"
 
 WORKDIR /app
 
+ENV S6_KEEP_ENV=1
+
 COPY --chmod=0755 ./docker/setup-scripts /tmp/scripts
 
 RUN /tmp/scripts/setup.sh && rm -rf /tmp/*
@@ -57,4 +59,6 @@ COPY --from=build /build/app .
 
 EXPOSE 1234
 
-ENTRYPOINT ["dotnet", "streamsdr.dll"]
+ENTRYPOINT ["/init"]
+
+CMD ["dotnet", "streamsdr.dll"]
