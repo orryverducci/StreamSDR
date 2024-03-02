@@ -49,6 +49,8 @@ internal static class Program
         AnsiConsole.Write(new Rule($"[DeepSkyBlue1]Version {version}[/]").LeftJustified());
         AnsiConsole.WriteLine();
 
+        NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), LibraryLoader.ImportResolver);
+
         CreateHostBuilder(args).Build().Run();
     }
 
