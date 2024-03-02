@@ -138,7 +138,7 @@ internal sealed class Radio : RadioBase
     protected override int SetSampleRate(uint sampleRate)
     {
         // Calculate the buffer size needed to simulate the sample rate
-        _bufferSize = (int)sampleRate / 1000 * SampleInterval;
+        _bufferSize = (int)(sampleRate / 1000 * SampleInterval) * 2;
 
         // Return success
         return 0;
