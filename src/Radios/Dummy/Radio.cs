@@ -15,13 +15,10 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using StreamSDR.Radios.SdrPlay.Hardware;
-using StreamSDR.Radios.SdrPlay.Parameters.Tuner;
 
 namespace StreamSDR.Radios.Dummy;
 

@@ -15,8 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Cake.Common.Diagnostics;
-
 namespace StreamSDR.Build.Tasks;
 
 /// <summary>
