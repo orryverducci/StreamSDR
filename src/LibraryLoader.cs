@@ -16,6 +16,7 @@
  */
 
 using System.Reflection;
+using Microsoft.Win32;
 
 namespace StreamSDR;
 
@@ -35,6 +36,7 @@ internal static class LibraryLoader
         libraryName switch
         {
             "rtlsdr" => ResolveRtlSdrLibrary(),
+            "sdrplay_api" => ResolveSdrPlayLibrary(),
             _ => IntPtr.Zero
         };
 
@@ -59,6 +61,39 @@ internal static class LibraryLoader
             }
         }
         
+        return libHandle;
+    }
+
+    /// <summary>
+    /// Resolves the SDRplay API library. Retrieves the library location from the
+    /// </summary>
+    /// <returns>Handle for the loaded library, or zero if the default import resolver should be used.</returns>
+    private static IntPtr ResolveSdrPlayLibrary()
+    {
+        IntPtr libHandle = IntPtr.Zero;
+
+        // Get the API library location from the registry on Windows
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            string? location = (string?)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\SDRplay\\Service\\API", "Install_Dir", null);
+
+            if (location == null)
+            {
+                location = (string?)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\SDRplay\\Service\\API", "Install_Dir", null);
+            }
+
+            if (location != null)
+            {
+                NativeLibrary.TryLoad($"{location}\\x64\\sdrplay_api.dll", out libHandle);
+            }
+        }
+
+        // Use the Linux library extension (.so) on macOS
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            NativeLibrary.TryLoad("libsdrplay_api.so", out libHandle);
+        }
+
         return libHandle;
     }
 }
