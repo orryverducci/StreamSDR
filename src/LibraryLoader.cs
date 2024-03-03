@@ -60,7 +60,7 @@ internal static class LibraryLoader
                 NativeLibrary.TryLoad("librtlsdr.so.0", out libHandle);
             }
         }
-        
+
         return libHandle;
     }
 
