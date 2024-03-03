@@ -49,7 +49,7 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
         };
 
         // Build libusb using the VS 2022 build tools
-        context.MSBuild("../contrib/libusb/msvc/libusb_dll_2019.vcxproj", new MSBuildSettings
+        context.MSBuild("../contrib/libusb/msvc/libusb_dll.vcxproj", new MSBuildSettings
         {
             ArgumentCustomization = args => args.Append("/p:PlatformToolset=v143"),
             Configuration = context.Settings.BuildConfiguration,
@@ -67,8 +67,8 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
         // Copy the built library to the artifacts folder
         FilePath builtLibraryPath = context.Settings.Architecture switch
         {
-            "arm64" => "../contrib/libusb/arm64/Release/dll/libusb-1.0.dll",
-            _ => "../contrib/libusb/x64/Release/dll/libusb-1.0.dll"
+            "arm64" => "../contrib/libusb/build/v143/arm64/Release/dll/libusb-1.0.dll",
+            _ => "../contrib/libusb/build/v143/x64/Release/dll/libusb-1.0.dll"
         };
         context.CopyFile(builtLibraryPath, outputPath);
     }
