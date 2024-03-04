@@ -15,6 +15,7 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Diagnostics;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,7 +46,7 @@ internal static class Program
         Console.Title = "StreamSDR";
 
         AnsiConsole.Write(new FigletText("StreamSDR").LeftJustified().Color(Color.DeepSkyBlue1));
-        string version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unavailable";
+        string version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion ?? "Unavailable";
         AnsiConsole.Write(new Rule($"[DeepSkyBlue1]Version {version}[/]").LeftJustified());
         AnsiConsole.WriteLine();
 
