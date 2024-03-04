@@ -66,6 +66,11 @@ internal sealed class Radio : RadioBase
     private uint _gainLevel;
 
     /// <summary>
+    /// The object to lock on to when using the gain.
+    /// </summary>
+    private readonly object _gainLock = new();
+
+    /// <summary>
     /// If the dummy radio is running.
     /// </summary>
     private bool _running = false;
@@ -155,14 +160,17 @@ internal sealed class Radio : RadioBase
     /// <inheritdoc/>
     protected override int SetGain(uint level)
     {
-        _gainLevel = level;
+        lock (_gainLock)
+        {
+            _gainLevel = level;
 
-        // Calculate linear gain, and then the logarithmic gain from mthat
-        double linearGain = 1d / (GainLevels - 1) * _gainLevel;
-        _gain = (Math.Pow(10, linearGain) - 1) / 9;
+            // Calculate linear gain, and then the logarithmic gain from mthat
+            double linearGain = 1d / (GainLevels - 1) * _gainLevel;
+            _gain = (Math.Pow(10, linearGain) - 1) / 9;
 
-        // Return success
-        return 0;
+            // Return success
+            return 0;
+        }
     }
     #endregion
 
@@ -179,10 +187,21 @@ internal sealed class Radio : RadioBase
             // Create a buffer
             byte[] buffer = new byte[_bufferSize];
 
-            // Generate samples
-            for (int i = 0; i < buffer.Length; i++)
+            // Generate samples of gaussian white noise
+            lock (_gainLock)
             {
-                buffer[i] = (byte)((_random.Next(-128, 127) * _gain) + 128);
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    double u1 = _random.NextDouble();
+                    double u2 = _random.NextDouble();
+
+                    double r = Math.Sqrt(-2 * Math.Log(u1));
+                    double theta = 2 * Math.PI * u2;
+
+                    double sample = Math.Clamp(r * Math.Cos(theta) * _gain, -1, 1);
+
+                    buffer[i] = (byte)Math.Round((sample * 127.5) + 128);
+                }
             }
 
             // Send the samples to the clients
