@@ -61,6 +61,11 @@ internal sealed class Radio : RadioBase
     private double _gain;
 
     /// <summary>
+    /// The gain level set by the client.
+    /// </summary>
+    private uint _gainLevel;
+
+    /// <summary>
     /// If the dummy radio is running.
     /// </summary>
     private bool _running = false;
@@ -145,12 +150,16 @@ internal sealed class Radio : RadioBase
     }
 
     /// <inheritdoc/>
-    protected override uint GetGain() => (uint)(_gain * GainLevels);
+    protected override uint GetGain() => _gainLevel;
 
     /// <inheritdoc/>
     protected override int SetGain(uint level)
     {
-        _gain = 1d / GainLevels * level;
+        _gainLevel = level;
+
+        // Calculate linear gain, and then the logarithmic gain from mthat
+        double linearGain = 1d / (GainLevels - 1) * _gainLevel;
+        _gain = (Math.Pow(10, linearGain) - 1) / 9;
 
         // Return success
         return 0;
