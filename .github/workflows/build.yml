@@ -100,15 +100,6 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Download WiX 3.14
-        run: "Invoke-WebRequest -Uri https://wixtoolset.org/downloads/v3.14.0.6526/wix314-binaries.zip -OutFile $env:GITHUB_WORKSPACE\\wix314-binaries.zip"
-
-      - name: Extract WiX 3.14
-        run: "Expand-Archive -Path $env:GITHUB_WORKSPACE\\wix314-binaries.zip -DestinationPath $env:GITHUB_WORKSPACE\\wix314-binaries\\bin"
-
-      - name: Update WiX environment variable
-        run: "Add-Content -Path $env:GITHUB_ENV -Value \"WIX=$env:GITHUB_WORKSPACE\\wix314-binaries\""
-
       - name: Download Windows x64 app artifact
         uses: actions/download-artifact@v4
         with:

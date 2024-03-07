@@ -30,5 +30,6 @@ public static class Program
         new CakeHost().UseContext<BuildContext>()
                         .UseLifetime<BuildLifetime>()
                         .InstallTool(new Uri("dotnet:?package=minver-cli&version=4.3.0"))
+                        .InstallTool(new Uri("dotnet:?package=wix&version=4.0.4"))
                         .Run(args);
 }

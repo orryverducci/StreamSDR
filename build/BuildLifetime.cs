@@ -129,18 +129,6 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
         {
             context.Information("CMake path: Not found");
         }
-
-        // Find WiX toolset
-        DirectoryPath? wixPath = context.EnvironmentVariable<DirectoryPath?>("WIX", null);
-        if (wixPath != null)
-        {
-            context.WixPath = wixPath;
-            context.Information($"WiX path: {wixPath}");
-        }
-        else
-        {
-            context.Information("WiX path: Not found");
-        }
     }
 
     /// <summary>

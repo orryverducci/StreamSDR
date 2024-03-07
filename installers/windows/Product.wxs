@@ -1,14 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <?include PlatformDependentVariables.wxi?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:fwext="http://schemas.microsoft.com/wix/FirewallExtension">
-    <Product Id="*" Name="StreamSDR" Language="2057" Version="$(var.Version)" Manufacturer="Orry Verducci" UpgradeCode="$(var.PlatformUpgradeCode)">
-        <Package InstallerVersion="$(var.InstallerVersion)" Compressed="yes" InstallScope="perMachine" />
-
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:fwext="http://wixtoolset.org/schemas/v4/wxs/firewall" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+    <Package Name="StreamSDR" Language="2057" Version="$(var.Version)" Manufacturer="Orry Verducci" UpgradeCode="$(var.PlatformUpgradeCode)" InstallerVersion="$(var.InstallerVersion)">
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed. Setup will now exit." />
         
         <MediaTemplate EmbedCab="yes" />
 
-        <UIRef Id="WixUI_InstallDir" />
+        <ui:WixUI Id="WixUI_InstallDir" />
         <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
         <WixVariable Id="WixUIDialogBmp" Value="background.bmp" />
         <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
@@ -27,26 +24,17 @@
             <ComponentRef Id="StartMenuShortcuts" />
         </Feature>
 
-        <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFiles64Folder">
-                <Directory Id="INSTALLFOLDER" Name="StreamSDR" />
-            </Directory>
-            <Directory Id="ProgramMenuFolder">
-                <Directory Id="ApplicationProgramsFolder" Name="StreamSDR" />
-            </Directory>
-        </Directory>
-
         <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-            <Component Id="streamsdr.exe" Guid="*">
-                <File KeyPath="yes" Source="streamsdr.exe" />
+            <Component Id="streamsdr.exe">
+                <File Id="streamsdr.exe" KeyPath="yes" Source="streamsdr.exe" />
                 <Environment Id="PATH" Name="PATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
                 <fwext:FirewallException Id="FirewallException" Name="StreamSDR" Program="[#streamsdr.exe]" Scope="any" />
             </Component>
-            <Component Id="libusb_1.0.dll" Guid="*">
-                <File KeyPath="yes" Source="libusb-1.0.dll" />
+            <Component Id="libusb_1.0.dll">
+                <File Id="libusb_1.0.dll" KeyPath="yes" Source="libusb-1.0.dll" />
             </Component>
-            <Component Id="rtlsdr.dll" Guid="*">
-                <File KeyPath="yes" Source="rtlsdr.dll" />
+            <Component Id="rtlsdr.dll">
+                <File Id="rtlsdr.dll" KeyPath="yes" Source="rtlsdr.dll" />
             </Component>
             <Component Id="InstallFolderRegistry">
                 <RegistryValue Root="HKCU" Key="SOFTWARE\StreamSDR" Name="InstallationPath" Type="string" Value="[INSTALLFOLDER]" KeyPath="yes" />
@@ -54,22 +42,19 @@
         </ComponentGroup>
 
         <DirectoryRef Id="ApplicationProgramsFolder">
-            <Component Id="StartMenuShortcuts" Guid="*">
-                <Shortcut Id="RtlSdrShortcut"
-                          Name="StreamSDR (RTL-SDR)"
-                          Description="Server for RTL-SDR software defined radios "
-                          Target="[#streamsdr.exe]"
-                          Arguments="--radio rtlsdr"
-                          WorkingDirectory="APPLICATIONROOTDIRECTORY" />
-                <Shortcut Id="SdrPlayShortcut"
-                          Name="StreamSDR (SDRplay)"
-                          Description="Server for SDRplay software defined radios "
-                          Target="[#streamsdr.exe]"
-                          Arguments="--radio sdrplay"
-                          WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+            <Component Id="StartMenuShortcuts">
+                <Shortcut Id="RtlSdrShortcut" Name="StreamSDR (RTL-SDR)" Description="Server for RTL-SDR software defined radios " Target="[#streamsdr.exe]" Arguments="--radio rtlsdr" WorkingDirectory="INSTALLFOLDER" />
+                <Shortcut Id="SdrPlayShortcut" Name="StreamSDR (SDRplay)" Description="Server for SDRplay software defined radios " Target="[#streamsdr.exe]" Arguments="--radio sdrplay" WorkingDirectory="INSTALLFOLDER" />
                 <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall" />
                 <RegistryValue Root="HKCU" Key="SOFTWARE\StreamSDR" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
             </Component>
         </DirectoryRef>
-    </Product>
+    
+            <StandardDirectory Id="ProgramFiles64Folder">
+                <Directory Id="INSTALLFOLDER" Name="StreamSDR" />
+            </StandardDirectory>
+            <StandardDirectory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="StreamSDR" />
+            </StandardDirectory>
+        </Package>
 </Wix>

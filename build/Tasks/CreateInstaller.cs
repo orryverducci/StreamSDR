@@ -15,8 +15,6 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-using Cake.Common.Tools.WiX;
 using Cake.MinVer;
 
 namespace StreamSDR.Build.Tasks;
@@ -66,46 +64,64 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
 
     private void CreateWindowsInstaller(BuildContext context, MinVerVersion version)
     {
-        // Check WiX is available
-        if (context.WixPath == null)
+        // Check MSBuild is available
+        if (context.MsBuildPath == null)
         {
-            throw new Exception("Unable to locate WiX toolset");
+            throw new Exception("Unable to locate MSBuild");
         }
 
-        // Set WiX obj directory
-        DirectoryPath objDirectory = new DirectoryPath($"../installers/windows/obj/{context.Settings.Architecture}/{context.Settings.BuildConfiguration}");
-
-        // Compile the installer
-        context.WiXCandle("../installers/windows/Product.wxs", new CandleSettings
+        // Add the extensions to the WiX
+        context.StartProcess(context.Tools.Resolve("wix.exe"), new ProcessSettings
         {
-            ArgumentCustomization = args => args.Append($"-arch {context.Settings.Architecture}"),
-            Defines = new Dictionary<string, string>()
-            {
-                ["Platform"] = context.Settings.Architecture,
-                ["Version"] = version.FileVersion
-            },
-            Extensions = new List<string>
-            {
-                "WixFirewallExtension",
-                "WixUIExtension"
-            },
-            OutputDirectory = objDirectory,
-            ToolPath = context.WixPath.CombineWithFilePath("bin/candle.exe"),
-            Verbose = true
+            Arguments = new ProcessArgumentBuilder()
+                    .Append("extension")
+                    .Append("add")
+                    .Append("-g")
+                    .Append("WixToolset.UI.winext")
         });
 
-        // Link and bundle the installer in to an MSI
-        context.WiXLight(objDirectory.CombineWithFilePath("Product.wixobj").FullPath, new LightSettings
+        context.StartProcess(context.Tools.Resolve("wix.exe"), new ProcessSettings
         {
-            Extensions = new List<string>
-            {
-                "WixFirewallExtension",
-                "WixUIExtension"
-            },
-            OutputFile = outputPath!.CombineWithFilePath("streamsdr.msi"),
-            ToolPath = context.WixPath.CombineWithFilePath("bin/light.exe"),
-            RawArguments = $"-b \"{context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath}\" -b \"../installers/windows\" -b \"../assets\" -cultures:en-us -spdb"
+            Arguments = new ProcessArgumentBuilder()
+                    .Append("extension")
+                    .Append("add")
+                    .Append("-g")
+                    .Append("WixToolset.Firewall.winext")
         });
+
+        // Build the installer
+        int wixExitCode = context.StartProcess(context.Tools.Resolve("wix.exe"), new ProcessSettings
+        {
+            Arguments = new ProcessArgumentBuilder()
+                    .Append("build")
+                    .Append("-arch")
+                    .Append("x64")
+                    .Append("-define")
+                    .Append($"Platform={context.Settings.Architecture}")
+                    .Append("-define")
+                    .Append($"Version={version.FileVersion}")
+                    .Append("-ext")
+                    .Append("WixToolset.UI.wixext")
+                    .Append("-ext")
+                    .Append("WixToolset.Firewall.wixext")
+                    .Append("-b")
+                    .Append(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath)
+                    .Append("-b")
+                    .Append("../assets")
+                    .Append("-b")
+                    .Append("../installers/windows")
+                    .Append("-pdbtype")
+                    .Append("none")
+                    .Append("-out")
+                    .Append(outputPath!.CombineWithFilePath("streamsdr.msi").FullPath)
+                    .Append("../installers/windows/Product.wxs")
+        });
+
+        // Check the exit code indicates it completed successfully
+        if (wixExitCode != 0)
+        {
+            throw new Exception("Unable to create MSI package");
+        }
     }
 
     private void CreateMacPackage(BuildContext context, MinVerVersion version)
