@@ -72,7 +72,6 @@ jobs:
         run: ${{ matrix.script }} --exclusive --architecture ${{ matrix.architecture }} -t BuildStreamSDR
 
       - name: Upload artifact
-        if: github.ref_name == 'main' && github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.id }}-${{ matrix.architecture }}
