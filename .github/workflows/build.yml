@@ -178,10 +178,15 @@ jobs:
           MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_SIGNING_CERT_NAME }}
         run: "./build.sh --exclusive -t SignApp --appcert \"$MAC_SIGNING_CERT_NAME\""
 
-      - name: Create installer package
+      - name: Create signed installer package
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main'
         env:
           MAC_INSTALLER_CERT_NAME: ${{ secrets.MAC_INSTALLER_CERT_NAME }}
         run: "./build.sh --exclusive -t CreateInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\""
+
+      - name: Create unsigned installer package
+        if: github.repository != 'orryverducci/StreamSDR' || github.ref_name != 'main'
+        run: "./build.sh --exclusive -t CreateInstaller"
 
       - name: Notarize the installer package
         if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main'
