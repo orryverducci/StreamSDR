@@ -81,7 +81,6 @@ jobs:
 
   windows-installer-build:
     name: Windows Installer Build
-    if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
     needs: app-build
     runs-on: windows-latest
 
@@ -134,7 +133,6 @@ jobs:
 
   macos-installer-build:
     name: macOS Installer Build
-    if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
     needs: app-build
     runs-on: macos-latest
 
@@ -149,6 +147,7 @@ jobs:
           fetch-depth: 0
 
       - name: Add app signing certificates to Keychain
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main' && github.event_name == 'push'
         uses: apple-actions/import-codesign-certs@v2
         with:
           p12-file-base64: ${{ secrets.MAC_SIGNING_CERTS }}
@@ -175,6 +174,7 @@ jobs:
         run: "./build.sh --exclusive -t CreateUniversalApp"
 
       - name: Sign StreamSDR
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main'
         env:
           MAC_SIGNING_CERT_NAME: ${{ secrets.MAC_SIGNING_CERT_NAME }}
         run: "./build.sh --exclusive -t SignApp --appcert \"$MAC_SIGNING_CERT_NAME\""
@@ -185,6 +185,7 @@ jobs:
         run: "./build.sh --exclusive -t CreateInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\""
 
       - name: Notarize the installer package
+        if: github.repository == 'orryverducci/StreamSDR' && github.ref_name == 'main'
         env:
           APPLE_DEV_TEAM: ${{ secrets.APPLE_DEV_TEAM }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
