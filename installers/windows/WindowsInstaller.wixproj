@@ -1,7 +1,7 @@
 <Project Sdk="WixToolset.Sdk/4.0.1">
   <PropertyGroup>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <OutputName>StreamSDR</OutputName>
+    <OutputName>streamsdr</OutputName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
@@ -26,6 +26,9 @@
     <Content Include="banner.bmp" />
     <Content Include="license.rtf" />
     <Content Include="PlatformDependentVariables.wxi" />
+  </ItemGroup>
+  <ItemGroup>
+    <BindPath Include="..\..\assets" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="WixToolset.Firewall.wixext" Version="4.0.1" />

@@ -15,6 +15,7 @@
  * along with StreamSDR. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Cake.Common.Tools.MSBuild;
 using Cake.MinVer;
 
 namespace StreamSDR.Build.Tasks;
@@ -70,58 +71,29 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
             throw new Exception("Unable to locate MSBuild");
         }
 
-        // Add the extensions to the WiX
-        context.StartProcess(context.Tools.Resolve("wix.exe"), new ProcessSettings
+        // Set the MSBuild target architecture
+        PlatformTarget architecture = context.Settings.Architecture switch
         {
-            Arguments = new ProcessArgumentBuilder()
-                    .Append("extension")
-                    .Append("add")
-                    .Append("-g")
-                    .Append("WixToolset.UI.winext")
-        });
-
-        context.StartProcess(context.Tools.Resolve("wix.exe"), new ProcessSettings
-        {
-            Arguments = new ProcessArgumentBuilder()
-                    .Append("extension")
-                    .Append("add")
-                    .Append("-g")
-                    .Append("WixToolset.Firewall.winext")
-        });
+            "arm64" => PlatformTarget.ARM64,
+            _ => PlatformTarget.x64
+        };
 
         // Build the installer
-        int wixExitCode = context.StartProcess(context.Tools.Resolve("wix.exe"), new ProcessSettings
-        {
-            Arguments = new ProcessArgumentBuilder()
-                    .Append("build")
-                    .Append("-arch")
-                    .Append("x64")
-                    .Append("-define")
-                    .Append($"Platform={context.Settings.Architecture}")
-                    .Append("-define")
-                    .Append($"Version={version.FileVersion}")
-                    .Append("-ext")
-                    .Append("WixToolset.UI.wixext")
-                    .Append("-ext")
-                    .Append("WixToolset.Firewall.wixext")
-                    .Append("-b")
-                    .Append(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier).FullPath)
-                    .Append("-b")
-                    .Append("../assets")
-                    .Append("-b")
-                    .Append("../installers/windows")
-                    .Append("-pdbtype")
-                    .Append("none")
-                    .Append("-out")
-                    .Append(outputPath!.CombineWithFilePath("streamsdr.msi").FullPath)
-                    .Append("../installers/windows/Product.wxs")
-        });
+        string artifactsPath = context.MakeAbsolute(context.Settings.ArtifactsFolder!.Combine(context.BuildIdentifier)).FullPath;
 
-        // Check the exit code indicates it completed successfully
-        if (wixExitCode != 0)
+        context.MSBuild("../installers/windows/WindowsInstaller.wixproj", new MSBuildSettings
         {
-            throw new Exception("Unable to create MSI package");
-        }
+            ArgumentCustomization = args => args
+                    .Append($"/p:DefineConstants=Version={version.FileVersion}")
+                    .Append($"/p:BindPath={artifactsPath}")
+                    .Append("/p:DebugType=none")
+                    .Append($"/p:OutDir={context.MakeAbsolute(outputPath!).FullPath}"),
+            Configuration = context.Settings.BuildConfiguration,
+            MSBuildPlatform = MSBuildPlatform.x64,
+            PlatformTarget = architecture,
+            Restore = true,
+            ToolPath = context.MsBuildPath
+        });
     }
 
     private void CreateMacPackage(BuildContext context, MinVerVersion version)
