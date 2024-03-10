@@ -4,6 +4,33 @@
 
 apt-get update
 
+# Detect architecture
+if [ -z ${TARGETARCH+x} ]; then
+
+    PLATFORM=$(uname -m)
+
+    if [[ $PLATFORM == x86_64* ]]; then
+        export ARCH="x86_64"
+    elif [[ $PLATFORM = aarch64 ]] || [[ $PLATFORM == arm64* ]]; then
+        export ARCH="aarch64"
+    else
+        echo "Unsupported platform ($TARGETARCH)"
+        exit 1
+    fi
+
+else
+
+    if [[ $TARGETARCH == amd64 ]]; then
+        export ARCH="x86_64"
+    elif [[ $TARGETARCH = arm64 ]]; then
+        export ARCH="aarch64"
+    else
+        echo "Unsupported platform ($TARGETARCH)"
+        exit 1
+    fi
+
+fi
+
 # Prepare runtime dependencies
 
 bash /build/scripts/download-s6.sh

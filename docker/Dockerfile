@@ -17,10 +17,11 @@
 ## BUILD IMAGE
 ###############
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS build
 
 WORKDIR /build
 
+ARG TARGETARCH
 ARG version
 
 ENV MINVERVERSIONOVERRIDE=${version}
