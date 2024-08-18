@@ -23,4 +23,4 @@ jobs:
         uses: codespell-project/codespell-problem-matcher@v1
 
       - name: Run codespell
-        run: codespell --skip="*.rtf" --ignore-words-list=recal
+        run: codespell build/ docker/ src/
