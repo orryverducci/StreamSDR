@@ -17,7 +17,7 @@
 ## BUILD IMAGE
 ###############
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS build
 
 WORKDIR /build
 
@@ -36,7 +36,7 @@ RUN /build/scripts/build.sh
 ## APP IMAGE
 #############
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0-bookworm-slim AS app
+FROM mcr.microsoft.com/dotnet/runtime:9.0-bookworm-slim AS app
 
 LABEL org.opencontainers.image.title="StreamSDR"
 LABEL org.opencontainers.image.description="Server for software defined radios"
