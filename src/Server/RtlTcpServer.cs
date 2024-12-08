@@ -128,7 +128,7 @@ internal sealed class RtlTcpServer : IHostedService
         _logger.LogInformation("Stopping TCP server");
 
         // Indicate to the listener worker thread that it needs to stop, and stop the TCP listener
-        _serverCancellationToken.Cancel();
+        await _serverCancellationToken.CancelAsync();
         _listener?.Stop();
 
         // Wait until the listener thread stops
