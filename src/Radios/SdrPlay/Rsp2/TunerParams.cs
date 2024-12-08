@@ -30,12 +30,12 @@ internal struct TunerParams
     public bool BiasTEnable;
 
     /// <summary>
-    /// The port that should be used for AM reception. Defaults to <see cref="Rsp2AmPortSelect.AmPort2"/>.
+    /// The port that should be used for AM reception. Defaults to <see cref="AmPortSelect.AmPort2"/>.
     /// </summary>
     public AmPortSelect AmPortSel;
 
     /// <summary>
-    /// The antenna that should be used for reception. Defaults to <see cref="Rsp2AntennaSelect.AntennaA"/>.
+    /// The antenna that should be used for reception. Defaults to <see cref="AntennaSelect.AntennaA"/>.
     /// </summary>
     public AntennaSelect AntennaSel;
 

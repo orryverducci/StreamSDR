@@ -30,11 +30,11 @@ internal struct TunerParams
     public bool BiasTEnable;
 
     /// <summary>
-    /// The port that should be used for AM reception. Defaults to <see cref="Rsp2AmPortSelect.AmPort2"/>.
+    /// The port that should be used for AM reception. Defaults to <see cref="AmPortSelect.AmPort2"/>.
     /// </summary>
     public AmPortSelect AmPortSel;
 
-    // <summary>
+    /// <summary>
     /// The state of the MW broadcast band notch filter on the high impedance port. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
     /// </summary>
     [MarshalAs(UnmanagedType.U8)]
@@ -46,7 +46,7 @@ internal struct TunerParams
     [MarshalAs(UnmanagedType.U8)]
     public bool RfNotchEnable;
 
-    // <summary>
+    /// <summary>
     /// The state of the DAB band notch. <see langword="true"/> if enabled, <see langword="false"/> otherwise.
     /// </summary>
     [MarshalAs(UnmanagedType.U8)]
