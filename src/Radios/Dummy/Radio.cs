@@ -164,7 +164,7 @@ internal sealed class Radio : RadioBase
         {
             _gainLevel = level;
 
-            // Calculate linear gain, and then the logarithmic gain from mthat
+            // Calculate linear gain, and then the logarithmic gain from that
             double linearGain = 1d / (GainLevels - 1) * _gainLevel;
             _gain = (Math.Pow(10, linearGain) - 1) / 9;
 
