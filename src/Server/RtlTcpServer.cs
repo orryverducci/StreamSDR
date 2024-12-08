@@ -63,7 +63,7 @@ internal sealed class RtlTcpServer : IHostedService
     /// <summary>
     /// The object to lock on to when using the list of connections.
     /// </summary>
-    private readonly object _connectionsLock = new();
+    private readonly Lock _connectionsLock = new();
     #endregion
 
     #region Constructor and lifetime methods

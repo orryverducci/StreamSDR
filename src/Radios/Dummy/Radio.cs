@@ -68,7 +68,7 @@ internal sealed class Radio : RadioBase
     /// <summary>
     /// The object to lock on to when using the gain.
     /// </summary>
-    private readonly object _gainLock = new();
+    private readonly Lock _gainLock = new();
 
     /// <summary>
     /// If the dummy radio is running.
