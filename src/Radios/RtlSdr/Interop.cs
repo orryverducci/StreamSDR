@@ -182,7 +182,7 @@ internal sealed partial class Interop
     public static partial int SetFreqCorrection(IntPtr dev, int ppm);
 
     /// <summary>
-    /// Gets the the tuner frequency correction.
+    /// Gets the tuner frequency correction.
     /// </summary>
     /// <param name="dev">The device handle.</param>
     /// <returns>The frequency correction in parts per million (PPM).</returns>
