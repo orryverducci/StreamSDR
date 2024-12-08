@@ -291,7 +291,7 @@ internal sealed class RtlTcpServer : IHostedService
     /// Event handler for the reception of samples. Sends the buffer of samples to the connected clients.
     /// </summary>
     /// <param name="sender">The sending object.</param>
-    /// <param name="e">The received buffer of samples.</param>
+    /// <param name="buffer">The received buffer of samples.</param>
     private void RadioSamplesAvailable(object? sender, byte[] buffer)
     {
         lock (_connectionsLock)
