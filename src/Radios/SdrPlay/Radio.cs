@@ -715,7 +715,7 @@ internal sealed unsafe class Radio : RadioBase
     /// <param name="cbContext">The user specific context passed to the callback.</param>
     private void ProcessSamples(short* xi, short* xq, StreamCbParams* parameters, uint numSamples, uint reset, IntPtr cbContext)
     {
-        // Create a new buffer to store the interleaved IQ samples to be send to clients
+        // Create a new buffer to store the interleaved IQ samples to be sent to clients
         Span<short> buffer = stackalloc short[(int)numSamples * 2];
 
         // Copy the samples to the interleaved buffer
