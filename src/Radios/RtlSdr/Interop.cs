@@ -63,7 +63,7 @@ internal sealed partial class Interop
     public static string GetDeviceName(uint index)
     {
         string? name = Marshal.PtrToStringUTF8(GetDeviceNameNative(index));
-        return name != null ? name : string.Empty;
+        return name ?? string.Empty;
     }
 
     /// <summary>
