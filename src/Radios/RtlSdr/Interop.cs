@@ -43,7 +43,7 @@ internal sealed partial class Interop
     /// </summary>
     /// <returns>The number of rtl-sdr devices available for use</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_device_count")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetDeviceCount();
 
     /// <summary>
@@ -52,7 +52,7 @@ internal sealed partial class Interop
     /// <param name="index">The index of the device to get the name of.</param>
     /// <returns>The name of the rtl-sdr device.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_device_name")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial IntPtr GetDeviceNameNative(uint index);
 
     /// <summary>
@@ -72,7 +72,7 @@ internal sealed partial class Interop
     /// <param name="serial">The serial of the device to get the index of.</param>
     /// <returns>The index of the rtl-sdr device, or -2 if no devices are connected, or -3 if a device with the specified serial can't be found.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_index_by_serial")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDeviceIndexBySerialNative(IntPtr serial);
 
     /// <summary>
@@ -89,7 +89,7 @@ internal sealed partial class Interop
     /// <param name="index">The index of the device to open.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_open")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int Open(out IntPtr dev, uint index);
 
     /// <summary>
@@ -98,7 +98,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_close")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int Close(IntPtr dev);
 
     /// <summary>
@@ -111,7 +111,7 @@ internal sealed partial class Interop
     /// <param name="bufLen">The buffer length. Must be a multiple of 512 and should be a multiple of 16384 (URB size). Set to 0 for default buffer count.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_read_async")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int ReadAsync(IntPtr dev, ReadDelegate cb, IntPtr ctx, uint bufNum, uint bufLen);
 
     /// <summary>
@@ -120,7 +120,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_cancel_async")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int CancelAsync(IntPtr dev);
 
     /// <summary>
@@ -129,7 +129,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_reset_buffer")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int ResetBuffer(IntPtr dev);
 
     /// <summary>
@@ -140,7 +140,7 @@ internal sealed partial class Interop
     /// <param name="rate">The desired sample rate in Hertz.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_sample_rate")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetSampleRate(IntPtr dev, uint rate);
 
     /// <summary>
@@ -149,7 +149,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>The sample rate in Hertz.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_sample_rate")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetSampleRate(IntPtr dev);
 
     /// <summary>
@@ -159,7 +159,7 @@ internal sealed partial class Interop
     /// <param name="freq">The desired frequency in Hertz.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_center_freq")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetCenterFreq(IntPtr dev, uint freq);
 
     /// <summary>
@@ -168,7 +168,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>The frequency in Hertz.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_center_freq")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetCenterFreq(IntPtr dev);
 
     /// <summary>
@@ -178,7 +178,7 @@ internal sealed partial class Interop
     /// <param name="ppm">The desired frequency correction in parts per million (PPM).</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_freq_correction")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetFreqCorrection(IntPtr dev, int ppm);
 
     /// <summary>
@@ -187,7 +187,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>The frequency correction in parts per million (PPM).</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_freq_correction")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetFreqCorrection(IntPtr dev);
 
     /// <summary>
@@ -197,7 +197,7 @@ internal sealed partial class Interop
     /// <param name="on">An integer representing if offset tuning should be enabled. 0 to disable or 1 to enable.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_offset_tuning")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetOffsetTuning(IntPtr dev, int on);
 
     /// <summary>
@@ -206,7 +206,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>An integer representing if offset has been enabled. Returns 0 if disabled, 1 if enabled, and -1 if an error occurs.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_offset_tuning")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetOffsetTuning(IntPtr dev);
 
     /// <summary>
@@ -216,7 +216,7 @@ internal sealed partial class Interop
     /// <param name="on">An integer representing the direct sampling mode. 0 to disable, 1 for I branch and 2 for Q branch.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_direct_sampling")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetDirectSampling(IntPtr dev, int on);
 
     /// <summary>
@@ -225,7 +225,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>An integer representing the direct sampling mode. Returns 0 if disabled, 1 for I branch, 2 for Q branch and -1 if an error occurs.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_direct_sampling")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDirectSampling(IntPtr dev);
 
     /// <summary>
@@ -234,7 +234,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>A <see cref="Tuner"/> struct indicating the type of tuner in the device. Returns <see cref="Tuner.Unknown"/> if an error occurs.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_tuner_type")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial Tuner GetTunerType(IntPtr dev);
 
     /// <summary>
@@ -244,7 +244,7 @@ internal sealed partial class Interop
     /// <param name="gain">The desired gain as a tenth of a dB (e.g. 115 for 11.5dB).</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_tuner_gain")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetTunerGain(IntPtr dev, int gain);
 
     /// <summary>
@@ -253,7 +253,7 @@ internal sealed partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <returns>The gain as a tenth of a dB (e.g. 115 for 11.5dB).</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_tuner_gain")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetTunerGain(IntPtr dev);
 
     /// <summary>
@@ -263,7 +263,7 @@ internal sealed partial class Interop
     /// <param name="manual">An integer representing the desired game mode. 0 for automatic or 1 for manual.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_tuner_gain_mode")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetTunerGainMode(IntPtr dev, int manual);
 
     /// <summary>
@@ -273,7 +273,7 @@ internal sealed partial class Interop
     /// <param name="gains">Point to an array to be populated with the list of gains, or <see cref="IntPtr.Zero"/> to just get the number of supported gains.</param>
     /// <returns>The number of gains supported, or 0 if an error occurred.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_tuner_gains")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public unsafe static partial int GetTunerGainsNative(IntPtr dev, int* gains);
 
     /// <summary>
@@ -297,7 +297,7 @@ internal sealed partial class Interop
     /// <param name="on">An integer representing if the AGC should be enabled. 0 to disable or 1 to enable.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_agc_mode")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetAGCMode(IntPtr dev, int on);
 
     /// <summary>
@@ -307,6 +307,6 @@ internal sealed partial class Interop
     /// <param name="on">An integer representing if the bias tee should be enabled. 0 to disable or 1 to enable.</param>
     /// <returns>An integer indicating an error if one occurred. Returns 0 if successful.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_set_bias_tee")]
-    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetBiasTee(IntPtr dev, int on);
 }
