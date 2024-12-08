@@ -53,7 +53,7 @@ internal sealed partial class Interop
     /// <returns>The name of the rtl-sdr device.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_device_name")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr GetDeviceNameNative(uint index);
+    private static partial IntPtr GetDeviceNameNative(uint index);
 
     /// <summary>
     /// Gets the name of the specified rtl-sdr device.
@@ -73,7 +73,7 @@ internal sealed partial class Interop
     /// <returns>The index of the rtl-sdr device, or -2 if no devices are connected, or -3 if a device with the specified serial can't be found.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_index_by_serial")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial int GetDeviceIndexBySerialNative(IntPtr serial);
+    private static partial int GetDeviceIndexBySerialNative(IntPtr serial);
 
     /// <summary>
     /// Gets the index of the device with the specified serial.
@@ -274,7 +274,7 @@ internal sealed partial class Interop
     /// <returns>The number of gains supported, or 0 if an error occurred.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_tuner_gains")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public unsafe static partial int GetTunerGainsNative(IntPtr dev, int* gains);
+    private unsafe static partial int GetTunerGainsNative(IntPtr dev, int* gains);
 
     /// <summary>
     /// Gets the list of gains supported by the tuner.

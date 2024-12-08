@@ -177,7 +177,7 @@ internal sealed partial class Interop
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_SelectDevice")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ApiError SelectDeviceNative(IntPtr device);
+    private static partial ApiError SelectDeviceNative(IntPtr device);
 
     /// <summary>
     /// Selects a device for use by the application.
@@ -212,7 +212,7 @@ internal sealed partial class Interop
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_ReleaseDevice")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ApiError ReleaseDeviceNative(IntPtr device);
+    private static partial ApiError ReleaseDeviceNative(IntPtr device);
 
     /// <summary>
     /// Releases a device that was selected using <see cref="SelectDevice"/> so that it can be used by other application.
@@ -256,7 +256,7 @@ internal sealed partial class Interop
     /// <returns>The <see cref="ApiError"/> returned by the API. Returns <see cref="ApiError.Success"/> if successful.</returns>
     [LibraryImport(LibSdrPlayApi, EntryPoint = "sdrplay_api_Init")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ApiError InitNative(IntPtr dev, IntPtr callbackFns, IntPtr cbContext);
+    private static partial ApiError InitNative(IntPtr dev, IntPtr callbackFns, IntPtr cbContext);
 
     /// <summary>
     /// Initialises the device and starts reading samples from the device.
