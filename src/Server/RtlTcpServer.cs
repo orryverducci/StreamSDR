@@ -140,9 +140,12 @@ internal sealed class RtlTcpServer : IHostedService
         _radio.Dispose();
 
         // Stop each of the running connections
-        foreach (RtlTcpConnection connection in _connections)
+        lock (_connectionsLock)
         {
-            await Task.Run(() => connection.Dispose());
+            foreach (RtlTcpConnection connection in _connections)
+            {
+                Task.Run(() => connection.Dispose(), cancellationToken).RunSynchronously();
+            }
         }
 
         // Log and return that the server has stopped
