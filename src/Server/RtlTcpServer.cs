@@ -71,6 +71,7 @@ internal sealed class RtlTcpServer : IHostedService
     /// Initialises a new instance of the <see cref="RtlTcpServer"/> class.
     /// </summary>
     /// <param name="logger">The logger provided by the host.</param>
+    /// <param name="radio">The radio provided by the host.</param>
     public RtlTcpServer(ILogger<RtlTcpServer> logger, Radios.RadioBase radio)
     {
         // Store a reference to the logger
