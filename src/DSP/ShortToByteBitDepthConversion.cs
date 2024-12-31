@@ -24,9 +24,14 @@ namespace StreamSDR.DSP;
 internal sealed class ShortToByteBitDepthConversion
 {
     /// <summary>
-    /// How many bits each sample is shifted by to move its most significant bit to the 16th bit.
+    /// How many bits each sample is shifted by.
     /// </summary>
     private readonly int _shiftFactor;
+
+    /// <summary>
+    /// The offset added to each sample to convert it to an unsigned value.
+    /// </summary>
+    private readonly int _offset;
 
     /// <summary>
     /// Initialises a new instance of the <see cref="ShortToByteBitDepthConversion"/> class.
@@ -53,8 +58,9 @@ internal sealed class ShortToByteBitDepthConversion
             throw new ArgumentException("The new bit depth must be less than or the same as the original bit depth", nameof(newDepth));
         }
 
-        // Calculate how many bits each sample needs to be shifted by
-        _shiftFactor = 16 - originalDepth;
+        // Calculate how many bits each sample needs to be shifted by, and the offset
+        _shiftFactor = originalDepth - newDepth;
+        _offset = (int)Math.Pow(2, originalDepth - 1);
     }
 
     /// <summary>
@@ -70,7 +76,7 @@ internal sealed class ShortToByteBitDepthConversion
         // Convert each sample to the lower bit depth, and then write back over the original buffer
         for (int i = 0; i < samples.Length; i++)
         {
-            convertedSamples[i] = (byte)(((samples[i] << _shiftFactor) + 32768) >> 8);
+            convertedSamples[i] = (byte)((samples[i] + _offset) >>> _shiftFactor);
         }
 
         // Trim the span of converted samples to number of samples and return it
