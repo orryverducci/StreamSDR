@@ -95,7 +95,7 @@ internal sealed class RtlTcpConnection : IDisposable
     public event EventHandler? Disconnected;
 
     /// <summary>
-    /// Fired when the a buffer overflow occurs.
+    /// Fired when a buffer overflow occurs.
     /// </summary>
     public event EventHandler? BufferOverflow;
     #endregion
@@ -338,7 +338,7 @@ internal sealed class RtlTcpConnection : IDisposable
         // Create an array of 12 bytes representing the dongle information
         byte[] header = new byte[12];
 
-        // Convert the tuner type to one of the rtl-sdr tuner values. If the tuner is not one found in an rtl-sdr, return R820T
+        // Convert the tuner type to one of the rtl-sdr tuner values. If the tuner is not one found in a rtl-sdr, return R820T
         uint tunerType = tuner switch
         {
             Radios.TunerType.Unknown => 0,
