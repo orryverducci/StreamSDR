@@ -168,6 +168,7 @@ internal sealed class RtlTcpServer : IHostedService
 
                 // Create a new connection instance to handle communication to the client, and add it to the list of connections
                 RtlTcpConnection connection = new(client, _radio.Tuner, _radio.GainLevelsSupported);
+                connection.BufferOverflow += BufferOverflowed;
                 connection.CommandReceived += CommandReceived;
                 connection.Disconnected += ClientDisconnected;
                 lock (_connectionsLock)
