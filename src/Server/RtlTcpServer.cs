@@ -144,7 +144,7 @@ internal sealed class RtlTcpServer : IHostedService
         {
             foreach (RtlTcpConnection connection in _connections)
             {
-                Task.Run(() => connection.Dispose(), cancellationToken).RunSynchronously();
+                Task.Run(() => connection.Dispose(), cancellationToken).Wait();
             }
         }
 
