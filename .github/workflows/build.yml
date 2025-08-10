@@ -99,13 +99,13 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Download Windows x64 app artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: win-x64
           path: artifacts/win-x64
 
       - name: Download Windows ARM64 app artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: win-arm64
           path: artifacts/win-arm64
@@ -158,13 +158,13 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Download Mac x64 app artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: macos-x64
           path: artifacts/macos-x64
 
       - name: Download Mac ARM64 app artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: macos-arm64
           path: artifacts/macos-arm64
