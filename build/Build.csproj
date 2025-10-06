@@ -17,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Cake.CMake" Version="1.4.0" />
     <PackageReference Include="Cake.Docker" Version="1.3.0" />
-    <PackageReference Include="Cake.Frosting" Version="5.0.0" />
+    <PackageReference Include="Cake.Frosting" Version="5.1.0" />
     <PackageReference Include="Cake.MinVer" Version="4.0.0" />
     <PackageReference Include="vswhere" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
