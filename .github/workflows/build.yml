@@ -72,7 +72,7 @@ jobs:
         run: ${{ matrix.script }} --exclusive --architecture ${{ matrix.architecture }} -t BuildStreamSDR
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ matrix.id }}-${{ matrix.architecture }}
           path: artifacts/${{ matrix.id }}-${{ matrix.architecture }}
@@ -117,14 +117,14 @@ jobs:
         run: ".\\build.ps1 --exclusive -t CreateInstaller --architecture arm64"
 
       - name: Upload x64 installer artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: win-x64-installer
           path: artifacts/win-x64-installer
           if-no-files-found: error
 
       - name: Upload ARM64 installer artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: win-arm64-installer
           path: artifacts/win-arm64-installer
@@ -198,7 +198,7 @@ jobs:
         run: "./build.sh --exclusive -t NotarizeInstaller --installcert \"$MAC_INSTALLER_CERT_NAME\" --appleid \"$APPLE_ID\" --applepassword \"$APPLE_ID_PASSWORD\" --teamid \"$APPLE_DEV_TEAM\""
 
       - name: Upload installer artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: macos-installer
           path: artifacts/macos-installer
