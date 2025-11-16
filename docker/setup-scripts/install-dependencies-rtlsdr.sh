@@ -2,4 +2,4 @@
 
 echo "Installing rtl-sdr dependencies"
 
-apt-get install -y --no-install-recommends librtlsdr0
+apt-get install -y --no-install-recommends librtlsdr2
