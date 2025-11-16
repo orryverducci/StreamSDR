@@ -2,7 +2,7 @@
 
 echo "Getting s6-overlay"
 
-S6_OVERLAY_VERSION="3.1.6.2"
+S6_OVERLAY_VERSION="3.2.1.0"
 
 apt-get install -y --no-install-recommends tar wget xz-utils
 
