@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/bin/Debug/net9.0/streamsdr.dll",
+            "program": "${workspaceFolder}/src/bin/Debug/net10.0/streamsdr.dll",
             "args": ["--radio", "rtlsdr"],
             "env": {
                 "DOTNET_ENVIRONMENT": "Development"
@@ -20,7 +20,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/bin/Debug/net9.0/streamsdr.dll",
+            "program": "${workspaceFolder}/src/bin/Debug/net10.0/streamsdr.dll",
             "args": ["--radio", "sdrplay"],
             "env": {
                 "DOTNET_ENVIRONMENT": "Development"
@@ -34,7 +34,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/bin/Debug/net9.0/streamsdr.dll",
+            "program": "${workspaceFolder}/src/bin/Debug/net10.0/streamsdr.dll",
             "args": ["--radio", "dummy"],
             "env": {
                 "DOTNET_ENVIRONMENT": "Development"
