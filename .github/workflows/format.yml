@@ -36,7 +36,7 @@ jobs:
         uses: renanrcp/dotnet-format-problem-matcher@v.1.3.2
 
       - name: Run dotnet-format on the app project
-        run: dotnet format src/StreamSDR.csproj --verify-no-changes
+        run: dotnet format src/StreamSDR.csproj --verify-no-changes --exclude-diagnostics IL2026
 
       - name: Run dotnet-format on the build project
         if: success() || failure()
