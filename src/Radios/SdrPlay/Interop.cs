@@ -142,7 +142,7 @@ internal sealed partial class Interop
         }
 
         // Allocate memory for the SDRplay API to store devices in
-        int deviceSize = Marshal.SizeOf(typeof(Device));
+        int deviceSize = Marshal.SizeOf<Device>();
         IntPtr devicesPtr = Marshal.AllocHGlobal(deviceSize * maxDevices);
 
         // Get the available devices
@@ -187,7 +187,7 @@ internal sealed partial class Interop
     public static ApiError SelectDevice(ref Device device)
     {
         // Allocate memory to store the device structure
-        IntPtr devicePtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Device)));
+        IntPtr devicePtr = Marshal.AllocHGlobal(Marshal.SizeOf<Device>());
 
         // Copy the device structure
         Marshal.StructureToPtr<Device>(device, devicePtr, false);
@@ -222,7 +222,7 @@ internal sealed partial class Interop
     public static ApiError ReleaseDevice(Device device)
     {
         // Allocate memory to store the device structure
-        IntPtr devicePtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Device)));
+        IntPtr devicePtr = Marshal.AllocHGlobal(Marshal.SizeOf<Device>());
 
         // Copy the device structure
         Marshal.StructureToPtr<Device>(device, devicePtr, false);
@@ -268,7 +268,7 @@ internal sealed partial class Interop
     public static ApiError Init(IntPtr dev, Callbacks.Functions callbackFns, IntPtr cbContext)
     {
         // Allocate memory to store the callback functions
-        IntPtr callbacksPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Callbacks.Functions)));
+        IntPtr callbacksPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Callbacks.Functions>());
 
         // Copy the callback functions structure
         Marshal.StructureToPtr<Callbacks.Functions>(callbackFns, callbacksPtr, false);
