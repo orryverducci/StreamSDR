@@ -43,8 +43,7 @@ public sealed class BuildStreamSdrTask : FrostingTask<BuildContext>
                 Configuration.Platform.MacOS => $"osx-{context.Settings.Architecture}",
                 Configuration.Platform.Linux => $"linux-{context.Settings.Architecture}",
                 _ => throw new Exception("Unable to set runtime")
-            },
-            SelfContained = true
+            }
         });
     }
 }
