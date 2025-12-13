@@ -63,4 +63,4 @@ EXPOSE 1234
 
 ENTRYPOINT ["/init"]
 
-CMD ["dotnet", "streamsdr.dll"]
+CMD ["/app/streamsdr"]
