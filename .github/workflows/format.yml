@@ -29,9 +29,6 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Install dotnet-format
-        run: dotnet tool install -g dotnet-format
-
       - name: Add dotnet-format problem matcher
         uses: renanrcp/dotnet-format-problem-matcher@v.1.3.2
 
