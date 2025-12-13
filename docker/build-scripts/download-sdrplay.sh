@@ -16,4 +16,6 @@ bash /build/sdrplay/package/SDRplay_RSP_API-Linux-${API_VERSION}.run --noexec --
 
 # Patch the install script
 
+echo "Patching SDRplay API installer"
+
 patch --verbose -N /build/sdrplay/installer/install_lib.sh /build/patches/sdrplay/install_lib.patch

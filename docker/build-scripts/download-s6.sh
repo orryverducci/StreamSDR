@@ -13,6 +13,8 @@ wget --no-http-keep-alive -P /build/s6/archive https://github.com/just-container
 
 # Extract from the archive
 
+echo "Extracting s6-overlay"
+
 mkdir /build/s6/output
 
 tar -C /build/s6/output -Jxpf /build/s6/archive/s6-overlay-noarch.tar.xz
