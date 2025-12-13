@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set script to exit if a command fails
+set -euo pipefail
+
 # Update package list
 
 apt-get update
