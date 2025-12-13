@@ -36,7 +36,7 @@ RUN /build/scripts/build.sh
 ## APP IMAGE
 #############
 
-FROM mcr.microsoft.com/dotnet/runtime:10.0-noble AS app
+FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-noble AS app
 
 LABEL org.opencontainers.image.title="StreamSDR"
 LABEL org.opencontainers.image.description="Server for software defined radios"
