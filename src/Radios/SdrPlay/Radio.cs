@@ -38,7 +38,7 @@ internal sealed unsafe class Radio : RadioBase
     /// <summary>
     /// The maximum SDRplay API version this has been developed for.
     /// </summary>
-    private const float MaxSdrPlayApiVersion = 3.14f;
+    private const float MaxSdrPlayApiVersion = 3.15f;
 
     /// <summary>
     /// The maximum decimation factor that can be used for sample rates smaller than 2 MHz.
