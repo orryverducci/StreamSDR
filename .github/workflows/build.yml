@@ -47,6 +47,9 @@ jobs:
           - os: ubuntu-latest
             id: linux
             script: ./build.sh
+          - os: ubuntu-24.04-arm
+            id: linux
+            script: ./build.sh
         exclude:
           - os: ubuntu-latest
             architecture: arm64
