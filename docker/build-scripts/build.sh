@@ -33,8 +33,8 @@ fi
 
 # Prepare runtime dependencies
 
-bash /build/scripts/download-s6.sh
-bash /build/scripts/download-sdrplay.sh
+source /build/scripts/download-s6.sh
+source /build/scripts/download-sdrplay.sh
 
 # Publish the app without the app host, which is not required by the runtime Docker image
 
