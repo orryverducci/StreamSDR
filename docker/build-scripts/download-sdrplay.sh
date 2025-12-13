@@ -2,7 +2,7 @@
 
 echo "Getting SDRplay API"
 
-API_VERSION="3.14.0"
+API_VERSION="3.15.2"
 
 apt-get install -y --no-install-recommends wget patch
 
