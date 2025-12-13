@@ -36,7 +36,7 @@ jobs:
       fail-fast: false
       matrix:
         architecture: [x64, arm64]
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest, ubuntu-24.04-arm]
         include:
           - os: windows-latest
             id: win
@@ -47,6 +47,11 @@ jobs:
           - os: ubuntu-latest
             id: linux
             script: ./build.sh
+        exclude:
+          - os: ubuntu-latest
+            architecture: arm64
+          - os: ubuntu-24.04-arm
+            architecture: x64
 
     steps:
       - name: Checkout repository
