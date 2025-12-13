@@ -22,6 +22,9 @@ on:
       - 'docker/**'
       - 'build.sh'
 
+env:
+  DOTNET_NOLOGO: true
+
 jobs:
   app-build:
     name: Application Build
