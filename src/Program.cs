@@ -68,7 +68,7 @@ internal static class Program
 
                 // Build the logger
                 builder.ClearProviders()
-                        .AddSpectreConsole(DebugMode ? SpectreConsoleLogger.Style.Standard : SpectreConsoleLogger.Style.Extended)
+                        .AddSpectreConsole(DebugMode ? SpectreConsoleLogger.Style.Extended : SpectreConsoleLogger.Style.Standard)
                         .SetMinimumLevel(DebugMode ? LogLevel.Debug : LogLevel.Information);
 
                 // Add the debug logger if running in debug mode
