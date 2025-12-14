@@ -1,2 +1,9 @@
-#!/command/execlineb -P
-/opt/sdrplay_api/sdrplay_apiService
+#!/bin/bash
+
+if [ "${radio,,}" != "sdrplay" ]; then
+    s6-svc -O .
+    exit 0
+fi
+
+exec /opt/sdrplay_api/sdrplay_apiService
+
