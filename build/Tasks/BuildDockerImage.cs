@@ -16,6 +16,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using Cake.Docker;
 using Cake.MinVer;
 
@@ -97,8 +98,29 @@ public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
         // Build the Docker image
         if (context.Settings.MultiArchitecture == "true")
         {
+            // Set the annotations for the multi-arch image index
+            string[] annotations = new string[]
+            {
+                "org.opencontainers.image.title=\"StreamSDR\"",
+                "org.opencontainers.image.description=\"Server for software defined radios\"",
+                "org.opencontainers.image.url=\"https://streamsdr.io/\"",
+                "org.opencontainers.image.source=\"https://github.com/orryverducci/StreamSDR\"",
+                "org.opencontainers.image.vendor=\"Orry Verducci\"",
+                "org.opencontainers.image.licenses=\"GPL-3.0-only\""
+            };
+            annotations = annotations.Concat(labels).ToArray();
+
             context.DockerBuildXBuild(new DockerBuildXBuildSettings
             {
+                ArgumentCustomization = args =>
+                {
+                    foreach (string annotation in annotations)
+                    {
+                        args.Append($"--annotation {annotation}");
+                    }
+
+                    return args;
+                },
                 BuildArg = new string[] { $"version={version.Version}" },
                 File = "../docker/Dockerfile",
                 Label = labels,
