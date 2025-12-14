@@ -119,6 +119,10 @@ public sealed class BuildDockerImageTask : FrostingTask<BuildContext>
                         args.Append($"--annotation {annotation}");
                     }
 
+                    // Disable attestations to prevent unknown/unknown platform appearing on registries
+                    args.Append("--provenance=false");
+                    args.Append("--sbom false");
+
                     return args;
                 },
                 BuildArg = new string[] { $"version={version.Version}" },
