@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "${radio,,}" != "sdrplay" ]; then
+if [ "${RADIO,,}" != "sdrplay" ]; then
     echo "SDRplay radio not selected - not starting API service"
     s6-svc -O .
     exit 0
