@@ -57,7 +57,7 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
         FilePath libUsbPath = context.Settings.Architecture switch
         {
             "arm64" => "../contrib/libusb/build/v145/arm64/Release/dll/libusb-1.0.lib",
-            _ => "../contrib/libusb/build/v143/x64/Release/dll/libusb-1.0.lib"
+            _ => "../contrib/libusb/build/v145/x64/Release/dll/libusb-1.0.lib"
         };
 
         // Set the CMake target architecture
