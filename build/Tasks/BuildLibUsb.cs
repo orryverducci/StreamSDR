@@ -48,10 +48,10 @@ public sealed class BuildLibUsbTask : FrostingTask<BuildContext>
             _ => PlatformTarget.x64
         };
 
-        // Build libusb using the VS 2022 build tools
+        // Build libusb using the VS 2026 build tools
         context.MSBuild("../contrib/libusb/msvc/libusb_dll.vcxproj", new MSBuildSettings
         {
-            ArgumentCustomization = args => args.Append("/p:PlatformToolset=v143"),
+            ArgumentCustomization = args => args.Append("/p:PlatformToolset=v145"),
             Configuration = context.Settings.BuildConfiguration,
             MSBuildPlatform = MSBuildPlatform.x64,
             PlatformTarget = architecture,

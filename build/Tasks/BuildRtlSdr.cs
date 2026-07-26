@@ -90,9 +90,10 @@ public sealed class BuildRtlSdrTask : FrostingTask<BuildContext>
             _ => PlatformTarget.x64
         };
 
-        // Build rtl-sdr using the VS 2022 build tools
+        // Build rtl-sdr using the VS 2026 build tools
         context.MSBuild("../contrib/rtl-sdr/build/src/rtl_sdr.vcxproj", new MSBuildSettings
         {
+            ArgumentCustomization = args => args.Append("/p:PlatformToolset=v145"),
             Configuration = context.Settings.BuildConfiguration,
             MSBuildPlatform = MSBuildPlatform.x64,
             PlatformTarget = msBuildArchitecture,
