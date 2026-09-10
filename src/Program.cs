@@ -93,7 +93,7 @@ internal static class Program
                 ILogger logger = loggerFactory.CreateLogger(typeof(Program));
 
                 // Get the configured radio type
-                string? radioType = hostContext.Configuration.GetValue<string>("radio");
+                string? radioType = hostContext.Configuration.GetValue<string>("radio")?.ToLowerInvariant();
 
                 // Add the service for the desired type of radio
                 switch (radioType)
