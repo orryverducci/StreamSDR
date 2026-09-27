@@ -41,7 +41,9 @@ public sealed class CreateInstallerTask : FrostingTask<BuildContext>
         // Get the app version from MinVer
         MinVerVersion version = context.MinVer(new MinVerSettings
         {
-            DefaultPreReleasePhase = "preview",
+            ArgumentCustomization = args => args
+                .Append("--default-pre-release-identifiers")
+                .Append("preview"),
             TagPrefix = "v"
         });
 
