@@ -34,10 +34,6 @@ else
 
 fi
 
-# Prepare runtime dependencies
-
-source /build/scripts/download-s6.sh
-
 # Publish the app
 
 source /build/scripts/publish-streamsdr.sh
