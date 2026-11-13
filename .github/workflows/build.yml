@@ -69,7 +69,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 11.0.x
 
       - name: Build libusb
         if: matrix.os == 'windows-latest'
@@ -107,7 +107,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 11.0.x
 
       - name: Download Windows x64 app artifact
         uses: actions/download-artifact@v8
@@ -166,7 +166,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 11.0.x
 
       - name: Download Mac x64 app artifact
         uses: actions/download-artifact@v8
@@ -234,7 +234,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 11.0.x
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
