@@ -28,7 +28,6 @@ ENV MINVERVERSIONOVERRIDE=${version}
 
 COPY ./src ./src
 COPY --chmod=0755 ./docker/build-scripts ./scripts
-COPY ./docker/patches ./patches
 
 RUN /build/scripts/build.sh
 
