@@ -17,7 +17,7 @@
 ## BUILD IMAGE
 ###############
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0-resolute-aot AS build
 
 WORKDIR /build
 
@@ -35,7 +35,7 @@ RUN /build/scripts/build.sh
 ## APP IMAGE
 #############
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-noble AS app
+FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-resolute AS app
 
 LABEL org.opencontainers.image.title="StreamSDR"
 LABEL org.opencontainers.image.description="Server for software defined radios"
