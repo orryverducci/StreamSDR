@@ -1,4 +1,5 @@
 {
     "files.insertFinalNewline": true,
-    "dotnet.defaultSolution": "StreamSDR.sln"
+    "dotnet.defaultSolution": "StreamSDR.slnx",
+    "cmake.sourceDirectory": "/Users/Orry/Documents/Development/StreamSDR/contrib/rtl-sdr"
 }
