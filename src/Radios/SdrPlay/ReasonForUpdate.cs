@@ -20,6 +20,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// The reason for a device parameters update.
 /// </summary>
+[Flags]
 internal enum ReasonForUpdate : uint
 {
     None = 0x00000000,
