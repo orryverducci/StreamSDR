@@ -275,6 +275,7 @@ internal sealed unsafe class Radio : RadioBase
                 HardwareVersion.Rsp2 => new Rsp2.GainTables(),
                 HardwareVersion.RspDuo => new RspDuo.GainTables(),
                 HardwareVersion.RspDx => new RspDx.GainTables(),
+                HardwareVersion.RspDxR2 => new RspDx.GainTables(),
                 _ => new Rsp1.GainTables()
             };
             GainLevelsSupported = AvailableGainLevels;
@@ -654,6 +655,7 @@ internal sealed unsafe class Radio : RadioBase
             HardwareVersion.Rsp2 => _deviceParams->RxChannelA->Rsp2TunerParams.BiasTEnable,
             HardwareVersion.RspDuo => _deviceParams->RxChannelA->RspDuoTunerParams.BiasTEnable,
             HardwareVersion.RspDx => _deviceParams->DevParams->RspDxParams.BiasTEnable,
+            HardwareVersion.RspDxR2 => _deviceParams->DevParams->RspDxParams.BiasTEnable,
             _ => false
         };
     }
@@ -685,6 +687,7 @@ internal sealed unsafe class Radio : RadioBase
                 reasonForUpdate = ReasonForUpdate.RspDuo_BiasTControl;
                 break;
             case HardwareVersion.RspDx:
+            case HardwareVersion.RspDxR2:
                 _deviceParams->DevParams->RspDxParams.BiasTEnable = enabled;
                 extendedReasonForUpdate = ReasonForUpdateExtension1.RspDx_BiasTControl;
                 break;

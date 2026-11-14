@@ -27,5 +27,6 @@ internal enum HardwareVersion : byte
     RspDuo = 3,
     RspDx = 4,
     Rsp1B = 6,
+    RspDxR2 = 7,
     Rsp1A = 255
 }
