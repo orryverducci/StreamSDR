@@ -274,7 +274,7 @@ internal static partial class Interop
     /// <returns>The number of gains supported, or 0 if an error occurred.</returns>
     [LibraryImport(LibRtlSdr, EntryPoint = "rtlsdr_get_tuner_gains")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private unsafe static partial int GetTunerGainsNative(IntPtr dev, int* gains);
+    private static unsafe partial int GetTunerGainsNative(IntPtr dev, int* gains);
 
     /// <summary>
     /// Gets the list of gains supported by the tuner.
@@ -282,7 +282,7 @@ internal static partial class Interop
     /// <param name="dev">The device handle.</param>
     /// <param name="gains">An array to be populated with the list of gains, or <see langword="null"/> to just get the number of supported gains.</param>
     /// <returns>The number of gains supported, or 0 if an error occurred.</returns>
-    public unsafe static int GetTunerGains(IntPtr dev, int[]? gains)
+    public static unsafe int GetTunerGains(IntPtr dev, int[]? gains)
     {
         fixed (int* gainsPtr = gains)
         {
