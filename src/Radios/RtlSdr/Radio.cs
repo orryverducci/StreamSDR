@@ -80,7 +80,7 @@ internal sealed class Radio : RadioBase
         };
 
         // Set the sample reading callback
-        _readCallback = new Interop.ReadDelegate(ProcessSamples);
+        _readCallback = new(ProcessSamples);
     }
 
     /// <inheritdoc/>
@@ -269,7 +269,7 @@ internal sealed class Radio : RadioBase
     {
         if (_device != IntPtr.Zero)
         {
-            return Interop.GetOffsetTuning(_device) == 1 ? true : false;
+            return Interop.GetOffsetTuning(_device) == 1;
         }
         else
         {

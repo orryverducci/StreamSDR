@@ -118,8 +118,8 @@ internal sealed unsafe class Radio : RadioBase
     public Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config) : base(logger, lifetime, config)
     {
         // Set the sample reading callback
-        _readCallback = new Interop.ReadDelegate(ProcessSamples);
-        _eventCallback = new Interop.EventDelegate(ProcessEvents);
+        _readCallback = new(ProcessSamples);
+        _eventCallback = new(ProcessEvents);
     }
 
     /// <inheritdoc/>
