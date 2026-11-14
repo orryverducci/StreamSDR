@@ -23,7 +23,7 @@ namespace StreamSDR.Radios.SdrPlay;
 /// <summary>
 /// Provides access to the native methods provided by the SDRplay API shared library.
 /// </summary>
-internal sealed partial class Interop
+internal static partial class Interop
 {
     #region Constants
     /// <summary>

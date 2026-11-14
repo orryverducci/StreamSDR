@@ -22,7 +22,7 @@ namespace StreamSDR.Radios.RtlSdr;
 /// <summary>
 /// Provides access to the native methods provided by the rtl-sdr shared library.
 /// </summary>
-internal sealed partial class Interop
+internal static partial class Interop
 {
     /// <summary>
     /// The name of the librtlsdr library.
