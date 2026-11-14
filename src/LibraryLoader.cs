@@ -50,7 +50,7 @@ internal static class LibraryLoader
     {
         IntPtr libHandle = IntPtr.Zero;
 
-        // Try to load the versioned libraries on linux
+        // Try to load the versioned libraries on Linux
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             bool v2Loaded = NativeLibrary.TryLoad("librtlsdr.so.2", out libHandle);

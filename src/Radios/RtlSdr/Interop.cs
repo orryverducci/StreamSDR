@@ -102,7 +102,7 @@ internal sealed partial class Interop
     public static partial int Close(IntPtr dev);
 
     /// <summary>
-    /// Read samples from the device asynchronously. This function will block until it is canceled using <see cref="CancelAsync"/>.
+    /// Read samples from the device asynchronously. This function will block until it is cancelled using <see cref="CancelAsync"/>.
     /// </summary>
     /// <param name="dev">The device handle.</param>
     /// <param name="cb">The callback function to be called when samples have been received.</param>
