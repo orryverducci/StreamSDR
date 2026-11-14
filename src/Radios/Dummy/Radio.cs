@@ -83,7 +83,7 @@ internal sealed class Radio : RadioBase
     /// <param name="logger">The logger for the <see cref="Radio"/> class.</param>
     /// <param name="lifetime">The application lifetime service.</param>
     /// <param name="config">The application configuration.</param>
-    public unsafe Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config) : base(logger, lifetime, config)
+    public Radio(ILogger<Radio> logger, IHostApplicationLifetime lifetime, IConfiguration config) : base(logger, lifetime, config)
     {
         // Create the sample receiver worker thread
         _generatorThread = new(SampleGenerator)
