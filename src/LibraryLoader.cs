@@ -88,8 +88,8 @@ internal static class LibraryLoader
             }
         }
 
-        // Use the Linux library extension (.so) on macOS
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        // Search in /usr/local/lib on Linux, and use the Linux library extension (.so) on macOS
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             NativeLibrary.TryLoad("/usr/local/lib/libsdrplay_api.so", out libHandle);
         }
